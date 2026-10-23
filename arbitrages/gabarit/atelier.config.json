@@ -1,0 +1,32 @@
+{
+  "application": "Gabarit",
+  "page": "points-ouverts.html",
+  "moteur": "../../vendor/ov-uidesigner-artefact/moteur",
+  "source": {
+    "titrePage": "Points ouverts du gabarit",
+    "titre": "Points ouverts du gabarit",
+    "intro": "Chaque carte est un point du § 15 de GABARIT.md. La vue du point montre toutes ses options, dessinées avec les jetons du gabarit ; choisis, puis valide.",
+    "nomVues": "Point",
+    "css": [
+      "source/arbitrage.css"
+    ],
+    "js": [
+      "source/palettes.js",
+      "source/arbitrage.js"
+    ],
+    "outilsTheme": "source/outils-theme.html"
+  },
+  "donnees": "donnees",
+  "registre": "registre-des-choix.md",
+  "fige": "valides-fige.json",
+  "tests": {
+    "listes": [
+      "#palette"
+    ]
+  },
+  "audit": {
+    "listes": [
+      "#palette"
+    ]
+  }
+}

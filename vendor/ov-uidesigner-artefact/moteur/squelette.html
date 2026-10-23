@@ -1,0 +1,64 @@
+<title>{{titrePage}}</title>
+{{tete}}
+<style>
+{{css}}
+</style>
+
+<div class="page">
+  <header class="top">
+    <h1>{{titre}}</h1>
+    <p>{{intro}}</p>
+    <div class="presets">
+      <button class="btn" id="p-now" type="button">Tout comme aujourd'hui</button>
+      <button class="btn" id="p-prop" type="button">Tout proposé</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div class="controls" id="controls"></div>
+
+    <div class="stage" id="stage">
+      <div id="subnav"></div>
+      <div class="stagebar">
+        <div class="seg ba" id="ba-seg" role="group" aria-label="Avant ou après"><button type="button" data-v="avant">Avant</button><button type="button" data-v="apres">Après</button></div>
+        <div class="seg" id="theme-seg" role="group" aria-label="Clair ou sombre"></div>
+{{outilsTheme}}
+        <div class="seg vues" id="v-seg" role="group" aria-label="{{nomVues}}"></div>
+        <button class="btn" id="fs-open" type="button">Plein écran</button>
+{{outils}}
+      </div>
+      <div class="scroller" id="scroller">
+        <div class="fsbar" id="fsbar" role="toolbar" aria-label="Plein écran">
+          <div class="seg" id="fs-ba" role="group" aria-label="Avant ou après"><button type="button" data-v="avant">Avant</button><button type="button" data-v="apres">Après</button></div>
+{{outilsFsTheme}}
+          <div class="seg" id="fs-th" role="group" aria-label="Thème"></div>
+          <div class="seg vues" id="fs-v" role="group" aria-label="{{nomVues}}"></div>
+          <div class="fsnav" id="fs-nav"><button type="button" id="fs-prev" aria-label="Point ouvert précédent">‹</button><span id="fs-lab"></span><button type="button" id="fs-next" aria-label="Point ouvert suivant">›</button></div>
+          <button type="button" class="fsx" id="fs-close" aria-label="Quitter le plein écran">Échap</button>
+        </div>
+        <div class="win" id="win"></div>
+      </div>
+      <div class="legend" id="legend"></div>
+      <section class="thread" aria-label="Fil de discussion">
+        <div class="th-head"><h2>Fil de discussion</h2><span class="status" id="status"></span></div>
+        <div class="th-list" id="thlist" tabindex="0" aria-live="polite"></div>
+        <form class="th-form" id="thform">
+          <div class="th-tag" id="thtag" hidden><span id="thtagtxt"></span><button type="button" id="thtagx" aria-label="Retirer le point visé">×</button></div>
+          <label for="global" class="sr">Ton message</label>
+          <textarea id="global" placeholder="Réagis ici. Tes choix en cours sont joints au message."></textarea>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <button class="btn primary" id="save" type="submit">Envoyer</button>
+            <span class="hint">⌘↵ pour envoyer · ensuite, dis « lis le fil » dans la conversation</span>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+{{moteur}}
+</script>
+<script>
+{{js}}
+</script>

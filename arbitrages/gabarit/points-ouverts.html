@@ -1,0 +1,718 @@
+<title>Points ouverts du gabarit</title>
+
+<style>
+/* Moteur de l'atelier @@@ui : page, cartes, fil, plein écran. Colonne des cartes à gauche, aperçu à droite ; empilés sur téléphone. */
+:root{
+  --bg:#F6F6F4; --panel:#FFFFFF; --fg:#1F2024; --muted:#5E616B; --line:#E3E3E0; --accent:#1E66F5; --accent-weak:#E6EEFE; --ok:#2F7D3A;
+  --ui:-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141418; --panel:#1C1C22; --fg:#E8E8EE; --muted:#A3A6B3; --line:#2C2C35; --accent:#89B4FA; --accent-weak:#23293A; --ok:#A6E3A1; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141418; --panel:#1C1C22; --fg:#E8E8EE; --muted:#A3A6B3; --line:#2C2C35; --accent:#89B4FA; --accent-weak:#23293A; --ok:#A6E3A1; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:14px}
+.page{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px;max-width:1720px;margin:0 auto}
+header.top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;margin-bottom:16px}
+header.top h1{font-size:20px;font-weight:600;margin:0;text-wrap:balance}
+header.top p{margin:0;color:var(--muted);max-width:70ch}
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+button{font:inherit;cursor:pointer}
+.btn{height:32px;padding:0 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--panel);font-weight:600}
+.btn:focus-visible,.seg button:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.layout{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
+.controls{flex:1 1 340px;max-width:400px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.stage{flex:999 1 760px;min-width:0;position:sticky;top:env(safe-area-inset-top,0px)}
+@media (min-width:901px){.layout{height:calc(100dvh - 110px);flex-wrap:nowrap}.controls,.stage{height:100%;overflow-y:auto;overscroll-behavior:contain}.controls{padding-right:4px}.stage{position:static}}
+@media (max-width:900px){.controls{max-width:none}.stage{position:static}}
+.axis{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.axis h2{font-size:13px;font-weight:600;margin:0;display:flex;align-items:center;gap:8px}
+.axis h2 .now{font-size:11px;font-weight:500;color:var(--muted);margin-left:auto}
+.axis .why{font-size:12.5px;color:var(--muted);margin:0;line-height:1.4}
+.seg{display:flex;flex-wrap:wrap;gap:4px;padding:3px;border-radius:9px;background:var(--bg)}
+.seg button{flex:1 1 auto;min-height:30px;padding:4px 10px;border:0;border-radius:7px;background:transparent;color:var(--muted);font-size:12.5px}
+.seg button[aria-pressed="true"]{background:var(--panel);color:var(--fg);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.seg button .cur{font-weight:400;opacity:.8}
+details.note summary{font-size:12px;color:var(--accent);cursor:pointer;list-style:none}
+details.note summary::-webkit-details-marker{display:none}
+textarea{width:100%;box-sizing:border-box;min-height:56px;margin-top:6px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:inherit;font-size:13px;resize:vertical}
+.thread{margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;overflow:hidden}
+.th-head{display:flex;align-items:baseline;gap:12px;padding:12px 14px 8px;border-bottom:1px solid var(--line)}
+.th-head h2{font-size:14px;margin:0}
+.status{font-size:12px;color:var(--muted)}
+.status.ok{color:var(--ok)}
+.th-list{height:360px;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;overscroll-behavior:contain}
+.th-empty{color:var(--muted);font-size:13px;margin:auto;text-align:center;max-width:44ch}
+.msg{max-width:min(92%,640px);padding:8px 12px;border-radius:12px;line-height:1.45;font-size:13.5px;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.me{align-self:flex-end;background:var(--accent-weak)}
+.msg.cl{align-self:flex-start;background:var(--bg);border:1px solid var(--line)}
+.msg .who{display:flex;gap:8px;font-size:11px;color:var(--muted);margin-bottom:3px;white-space:normal}
+.msg .ax{display:inline-block;font-size:11px;font-weight:600;color:var(--accent);margin-bottom:3px;white-space:normal}
+.msg .apply{display:block;margin-top:6px;font-size:12px;padding:0;border:0;background:none;color:var(--accent);text-decoration:underline;white-space:normal}
+.th-form{border-top:1px solid var(--line);padding:10px 14px 12px;display:flex;flex-direction:column;gap:6px}
+.th-form textarea{margin-top:0;min-height:52px;max-height:160px}
+.th-tag{display:inline-flex;align-self:flex-start;align-items:center;gap:6px;font-size:12px;background:var(--accent-weak);color:var(--fg);border-radius:6px;padding:2px 4px 2px 8px}
+.th-tag button{border:0;background:none;color:var(--muted);font-size:14px;line-height:1;padding:0 4px}
+.hint{font-size:12px;color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.axis.frozen>:not(h2){display:none}
+.axis.pv{border:1.5px dashed #D97706;background:repeating-linear-gradient(135deg,transparent 0 10px,rgba(217,119,6,.05) 10px 20px),var(--panel)}
+.axis.pv h2::before{content:"POINT À VALIDER";display:block;font-size:10px;font-weight:700;letter-spacing:.08em;color:#D97706;margin-bottom:2px;flex-basis:100%}
+.axis.pv h2{flex-wrap:wrap}
+.axis.pv[data-st="neuf"]{border-color:#D97706;box-shadow:inset 3px 0 0 #D97706}
+.axis.pv .cyc{border-color:#D97706;color:#D97706;font-weight:600}
+.axis.pv.frozen{border:1px solid var(--line);background:var(--panel);box-shadow:none}
+.axis.pv.frozen h2::before{display:none}
+.axis.clos.frozen h2 .now{color:var(--muted)}
+.axis[data-st="neuf"]{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.axis[data-st="neuf"] h2 .now{color:var(--accent);font-weight:600}
+.axis[data-st="revoir"]{box-shadow:inset 3px 0 0 var(--muted)}
+.axis[data-st="revoir"] h2 .now{color:var(--fg);font-weight:600}
+.axis.frozen{padding-block:8px;opacity:.85}
+.axis.frozen h2 .now{color:var(--ok)}
+.frz{font-size:11.5px;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:6px;padding:2px 8px;margin-left:6px}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.cyc{font-size:12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:7px;padding:3px 9px;font-variant-numeric:tabular-nums;white-space:pre}
+.cyc:disabled{opacity:.45;cursor:default}
+.ask{align-self:flex-start;font-size:12px;border:0;background:none;color:var(--accent);padding:0;text-decoration:underline}
+.stagebar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-bottom:10px;font-size:12.5px;color:var(--muted)}
+.stagebar label{display:flex;align-items:center;gap:6px;cursor:pointer}
+.scroller{overflow-x:auto;border-radius:12px;position:relative}
+.fsbar{display:none}
+.scroller.fs{position:fixed;inset:0;z-index:50;border-radius:0;overflow:auto;background:#000}
+.scroller.fs .win{min-width:900px;height:100%;min-height:560px;border-radius:0;box-shadow:none}
+.scroller.fs .fsbar{display:flex;position:fixed;z-index:51;top:calc(8px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);gap:6px;align-items:center;padding:4px;border-radius:12px;background:rgba(20,20,26,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);opacity:.4;transition:opacity .2s}
+.scroller.fs .fsbar:hover,.scroller.fs .fsbar:focus-within{opacity:1}
+.fsbar .seg{background:rgba(255,255,255,.08);padding:2px}
+.fsbar .seg button{color:#C8CAD4;min-height:26px;font-size:12px}
+.fsbar .seg button[aria-pressed="true"]{background:rgba(255,255,255,.18);color:#fff;box-shadow:none}
+.fsnav{display:flex;align-items:center;gap:4px;padding:2px 4px;border-radius:9px;background:rgba(217,119,6,.22);color:#FDE7C8;font-size:12px;max-width:340px}
+.fsnav button{border:0;background:none;color:#FDE7C8;font-size:15px;padding:0 6px;cursor:pointer}.fsnav span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fsx{border:0;background:none;color:#C8CAD4;font-size:12px;padding:4px 8px}
+.ba button{min-width:64px}
+.envdd{height:28px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);font:inherit;font-size:12px;padding:0 6px}
+.fsdd{background:rgba(255,255,255,.08);color:#C8CAD4;border-color:transparent}
+.pts{margin-bottom:10px;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12.5px;background:var(--panel)}
+.pts summary{cursor:pointer;font-weight:600}.pts ol{margin:6px 0 0;padding-left:22px;columns:2;column-gap:24px}.pts li{break-inside:avoid;padding:1px 0}
+.pts button{border:0;background:none;padding:0;color:var(--accent);font:inherit;text-align:left;cursor:pointer}.pts li.on button{font-weight:700;color:var(--fg)}
+
+.legend{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:8px;height:8px;border-radius:4px;display:inline-block}
+
+
+/* Aperçu, mode référence, encadré, barre de l'aperçu. */
+.win{min-width:900px;height:640px;display:flex;flex-direction:column;border-radius:12px;overflow:hidden;background:var(--w-base);color:var(--w-text);font-family:var(--ui);font-size:13px;box-shadow:0 10px 40px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.08)}
+body.ref{margin:0;overflow:hidden}body.ref *{visibility:hidden}body.ref #win,body.ref #win *{visibility:visible}
+body.ref #win{position:fixed;left:0;top:0;z-index:1000;width:var(--refw,1280px);height:var(--refh,800px);min-width:0;border-radius:0;box-shadow:none}
+.ptx{outline:2px dashed var(--w-accent);outline-offset:2px;border-radius:4px;animation:ptflash 2.4s ease-out forwards}
+@keyframes ptflash{0%,30%,60%{outline-color:var(--w-accent)}15%,45%{outline-color:transparent}75%{outline-color:var(--w-accent)}100%{outline-color:transparent}}
+.win.noanim .ptx{animation:none;outline-color:var(--w-accent)}
+.stagebar{flex-wrap:wrap}.stagebar .seg button{min-height:26px;padding:2px 8px;font-size:12px}.stagebar .btn{height:28px;padding:0 10px;font-size:12px}.stagebar label{white-space:nowrap}
+.vues button{flex:0 1 auto}
+/* Aperçu des options : jetons du gabarit posés en --w-* par le rendu ; mesures de COMPOSANTS.md. */
+.win{height:auto;min-height:520px;color:var(--w-texte);background:var(--w-base);padding:16px 18px 20px;gap:14px;font-size:12px;line-height:1.45;overflow:visible}
+.ar-h{display:flex;flex-direction:column;gap:4px;max-width:78ch}
+.ar-h b{font-size:16px;font-weight:600}
+.ar-h span{color:var(--w-secondaire)}
+.ar-g{display:grid;gap:14px;align-items:start}
+.ar-g.n2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ar-g.n3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.ar-g.n2,.ar-g.n3{grid-template-columns:minmax(0,1fr)}}
+.opt{display:flex;flex-direction:column;gap:8px;padding:10px;border-radius:12px;box-shadow:0 0 0 1px var(--w-separateur);min-width:0}
+.opt.choix{box-shadow:0 0 0 2px var(--w-accent)}
+.opt-l{display:flex;align-items:center;gap:8px;font-weight:600}
+.opt-c{margin-left:auto;font-size:10.5px;font-weight:600;color:var(--w-surAccent);background:var(--w-accent);border-radius:9px;padding:1px 8px}
+.opt-i{min-width:0}
+/* Fenêtre miniature */
+.mw{display:flex;flex-direction:column;border-radius:10px;overflow:hidden;background:var(--w-base);box-shadow:0 0 0 1px var(--w-separateur);position:relative}
+.mwt{display:flex;align-items:center;gap:6px;height:26px;padding:0 10px;background:var(--w-crust);border-bottom:1px solid var(--w-separateur);font-size:11px;color:var(--w-secondaire);flex:none}
+.mwt i{width:9px;height:9px;border-radius:5px;background:var(--w-separateur);display:block}.mwt i:first-child{background:#FF5F57}
+.mwt span{margin-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mwb{flex:1;min-height:0;padding:8px;display:flex;flex-direction:column;gap:2px;background:var(--w-mantle);position:relative;overflow:hidden}
+.lg{font-size:10.5px;color:var(--w-secondaire);margin:4px 2px 6px}
+/* Colonne */
+.ln{display:flex;align-items:center;gap:0;height:26px;padding:0 6px 0 4px;border-radius:6px;font-size:12.5px;min-width:0}
+.ln.on{background:var(--w-selection);box-shadow:inset 2px 0 0 var(--w-accent)}
+.pd{width:8px;height:8px;border-radius:4px;flex:none;margin:0 4px}
+.mode{width:14px;font-size:11px;text-align:center;flex:none}
+.nm{margin-left:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.nm sup{font-size:9px;margin-left:1px}
+.mt{margin-left:auto;font-size:11px;color:var(--w-secondaire);font-variant-numeric:tabular-nums;white-space:nowrap}
+.mj{width:26px;height:4px;border-radius:2px;background:var(--w-champ);position:relative;margin-left:auto;margin-right:6px;flex:none}
+.mj i{position:absolute;left:0;top:0;bottom:0;border-radius:2px}
+.ln .mj+.mt{margin-left:0}
+.mbar{height:6px;border-radius:3px;background:var(--w-champ);position:relative;margin:6px 4px 0}
+.mbar i{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
+.bars{display:flex;align-items:flex-end;gap:5px;height:56px;padding:0 4px}.bars i{flex:1;border-radius:3px 3px 0 0;display:block}
+.gh,.ent{display:flex;align-items:center;gap:7px;height:24px;padding:0 4px;font-size:11px;color:var(--w-secondaire);font-weight:600}
+.ent{font-size:11px;font-weight:400;border-radius:5px}.ent b{font-size:12px;color:var(--w-texte)}
+.ent.hov{background:var(--w-champ)}.ent .mt{margin-left:2px}.ent .x{color:var(--w-secondaire);margin-left:6px}
+.tr{width:2px;border-radius:1px;display:inline-block;flex:none}
+.bandeau{display:flex;gap:6px;padding:4px 14px;font-size:11.5px;color:var(--w-texte)}.bandeau b{font-weight:600}
+.term{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-weight:300;font-size:11.5px;line-height:1.6;padding:8px 10px;background:var(--w-base);color:var(--w-texte);border-radius:6px;white-space:pre}
+.cap{font-size:11px;font-weight:600;border-radius:9px;padding:1px 8px}
+/* Panneaux */
+.pnl{background:var(--w-mantle);border-radius:10px;padding:6px;box-shadow:0 10px 30px rgba(0,0,0,.28),0 0 0 1px var(--w-separateur);position:relative;font-size:12px}
+.pnf{height:28px;border-radius:7px;background:var(--w-base);box-shadow:inset 0 0 0 1px var(--w-separateur);display:flex;align-items:center;padding:0 10px;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11.5px;margin-bottom:4px}
+.sel-h{display:flex;align-items:center;gap:6px;padding:2px 6px 6px;font-weight:600;position:relative}
+.sel-g{display:grid;grid-template-columns:110px minmax(0,1fr);gap:8px}
+.sel-a{padding:8px 10px;border-radius:7px;background:var(--w-base)}
+.pied{font-size:11px;color:var(--w-secondaire);padding:6px 6px 2px;border-top:1px solid var(--w-separateur);margin-top:6px}
+.bul{position:absolute;right:0;top:24px;z-index:3;background:var(--w-mantle);color:var(--w-texte);border-radius:9px;padding:6px 10px;font-size:11.5px;font-weight:400;box-shadow:0 10px 30px rgba(0,0,0,.28),0 0 0 1px var(--w-separateur);white-space:nowrap}
+.vh{display:flex;align-items:center;gap:8px;padding:6px}.vh b{font-size:14px;font-weight:600}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.duo.col{grid-template-columns:minmax(0,1fr)}
+.pane{border-radius:10px;padding:8px;background:var(--w-mantle);box-shadow:0 0 0 1px var(--w-separateur)}
+.pt{font-size:10.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--w-secondaire);margin-bottom:4px}
+.gl{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;padding:6px 0;border-bottom:1px solid var(--w-separateur);font-size:12px}
+.sgs{display:inline-flex;gap:2px;padding:2px;border-radius:7px;background:var(--w-champ);font-size:11px}
+.sgs span{padding:2px 7px;border-radius:5px;color:var(--w-secondaire)}.sgs span.on{background:var(--w-segmentActif);color:var(--w-texte);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.pr{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;font-size:12px}.pr.open{box-shadow:0 0 0 2px var(--w-accent)}
+.menu{align-self:flex-end;width:150px;margin-top:4px;background:var(--w-mantle);border-radius:9px;padding:5px;box-shadow:0 10px 30px rgba(0,0,0,.28),0 0 0 1px var(--w-separateur)}
+.mi{display:flex;align-items:center;gap:8px;padding:4px 6px;border-radius:5px;font-size:11.5px}.mi:first-child{background:var(--w-selection)}
+.paire{display:inline-flex;border-radius:4px;overflow:hidden;box-shadow:0 0 0 1px var(--w-separateur)}.paire i{width:10px;height:12px;display:block}
+.minicol{border-radius:7px;padding:6px 8px;font-size:11px;display:flex;flex-direction:column;gap:3px;margin-bottom:6px}
+.tx{padding:6px 8px;border-radius:7px;background:var(--w-base);margin-bottom:4px}
+.fenmin{border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px var(--w-separateur);background:var(--w-base)}
+.dim{height:80px;display:flex;align-items:center;justify-content:center;color:var(--w-secondaire);font-size:11px;font-variant-numeric:tabular-nums}
+.fsec{font-size:10.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--w-secondaire);margin-bottom:4px}
+.seg-bar,.cont-bar{display:flex;height:6px}.seg-bar{gap:3px}.seg-bar i{border-radius:2px;display:block}.cont-bar{border-radius:3px;overflow:hidden}.cont-bar i{display:block}
+.carte-etat{margin:10px;padding:14px 16px;border-radius:10px;background:var(--w-mantle);box-shadow:0 0 0 1px var(--w-separateur);display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.carte-etat b,.centre-etat b{font-size:14px;font-weight:600}
+.centre-etat{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:20px}
+.fbtn{display:inline-block;padding:3px 9px;border-radius:7px;background:var(--w-champ);font-size:12px}.fbtn.prim{background:var(--w-accent);color:var(--w-surAccent)}
+.fond-app{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.faux{height:46px;border-radius:7px;background:var(--w-base)}
+.voile{position:absolute;inset:0;z-index:1}
+.racc{position:absolute;left:50%;top:22px;transform:translateX(-50%);z-index:2;width:200px;padding:10px 12px}
+.kr{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:11.5px}
+.key{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;padding:1px 7px;border-radius:5px;background:var(--w-champ)}
+.bande{display:flex;gap:10px;padding:6px}
+.vig{width:88px;display:flex;flex-direction:column;gap:3px;position:relative}
+.vig .img{aspect-ratio:16/10;border-radius:6px;background:var(--w-champ);box-shadow:0 0 0 1px var(--w-separateur)}
+.vig.arm .img{box-shadow:0 0 0 2px var(--w-rouge)}
+.vig .h{font-size:10.5px;color:var(--w-secondaire);font-variant-numeric:tabular-nums}
+.del{position:absolute;right:4px;top:4px;font-size:10px;font-weight:600;color:#fff;background:var(--w-rouge);border-radius:4px;padding:0 4px}
+.decompte{position:absolute;left:4px;right:4px;top:48px;height:2px;border-radius:1px;background:var(--w-rouge);transform-origin:left;animation:decompte 1.5s linear infinite}
+@keyframes decompte{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.toc{font-size:12px;padding:2px 0}
+.msg-act{font-size:11.5px;color:var(--w-secondaire);padding:6px 4px 0}
+.msg-act.droite{text-align:right}
+.msg-act.efface{animation:efface 4s ease-in infinite}
+@keyframes efface{0%,70%{opacity:1}100%{opacity:0}}
+.pulse{animation:pulse 1.1s ease-in-out infinite alternate}
+@keyframes pulse{from{opacity:1}to{opacity:.25}}
+.sws{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:11px;color:var(--w-secondaire)}
+.sw{display:inline-flex;align-items:center;gap:5px}.sw i{width:12px;height:12px;border-radius:3px;box-shadow:0 0 0 1px var(--w-separateur);display:block}
+@media (prefers-reduced-motion:reduce){.pulse,.decompte,.msg-act.efface{animation:none}}
+</style>
+
+<div class="page">
+  <header class="top">
+    <h1>Points ouverts du gabarit</h1>
+    <p>Chaque carte est un point du § 15 de GABARIT.md. La vue du point montre toutes ses options, dessinées avec les jetons du gabarit ; choisis, puis valide.</p>
+    <div class="presets">
+      <button class="btn" id="p-now" type="button">Tout comme aujourd'hui</button>
+      <button class="btn" id="p-prop" type="button">Tout proposé</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div class="controls" id="controls"></div>
+
+    <div class="stage" id="stage">
+      <div id="subnav"></div>
+      <div class="stagebar">
+        <div class="seg ba" id="ba-seg" role="group" aria-label="Avant ou après"><button type="button" data-v="avant">Avant</button><button type="button" data-v="apres">Après</button></div>
+        <div class="seg" id="theme-seg" role="group" aria-label="Clair ou sombre"></div>
+        <label><span class="sr">Palette</span><select id="palette" class="envdd"><option value="catppuccin">catppuccin</option><option value="gruvbox">gruvbox</option><option value="nord">nord</option><option value="solarized">solarized</option><option value="tokyonight">tokyonight</option><option value="everforest">everforest</option><option value="edge">edge</option><option value="lucius">lucius</option><option value="papercolor">papercolor</option><option value="pencil">pencil</option><option value="xterm">xterm</option></select></label>
+        <div class="seg vues" id="v-seg" role="group" aria-label="Point"></div>
+        <button class="btn" id="fs-open" type="button">Plein écran</button>
+
+      </div>
+      <div class="scroller" id="scroller">
+        <div class="fsbar" id="fsbar" role="toolbar" aria-label="Plein écran">
+          <div class="seg" id="fs-ba" role="group" aria-label="Avant ou après"><button type="button" data-v="avant">Avant</button><button type="button" data-v="apres">Après</button></div>
+
+          <div class="seg" id="fs-th" role="group" aria-label="Thème"></div>
+          <div class="seg vues" id="fs-v" role="group" aria-label="Point"></div>
+          <div class="fsnav" id="fs-nav"><button type="button" id="fs-prev" aria-label="Point ouvert précédent">‹</button><span id="fs-lab"></span><button type="button" id="fs-next" aria-label="Point ouvert suivant">›</button></div>
+          <button type="button" class="fsx" id="fs-close" aria-label="Quitter le plein écran">Échap</button>
+        </div>
+        <div class="win" id="win"></div>
+      </div>
+      <div class="legend" id="legend"></div>
+      <section class="thread" aria-label="Fil de discussion">
+        <div class="th-head"><h2>Fil de discussion</h2><span class="status" id="status"></span></div>
+        <div class="th-list" id="thlist" tabindex="0" aria-live="polite"></div>
+        <form class="th-form" id="thform">
+          <div class="th-tag" id="thtag" hidden><span id="thtagtxt"></span><button type="button" id="thtagx" aria-label="Retirer le point visé">×</button></div>
+          <label for="global" class="sr">Ton message</label>
+          <textarea id="global" placeholder="Réagis ici. Tes choix en cours sont joints au message."></textarea>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <button class="btn primary" id="save" type="submit">Envoyer</button>
+            <span class="hint">⌘↵ pour envoyer · ensuite, dis « lis le fil » dans la conversation</span>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Moteur de l'atelier @@@ui (voir CDC-ATELIER-UI.md).
+   Il porte tout ce qui ne dépend pas de l'application : état de la page, cartes, points à valider,
+   encadré, Avant / Après, thème, vues, plein écran et navigation des points ouverts, fil de discussion
+   et validations (base de l'artifact), mode référence, lien #point=N.
+   La page de l'application fournit ses données (cartes, vues, points) et son rendu.
+
+   Utilisation :
+     const A = Atelier.creer({ cle, cartes, themes, etat });   // état prêt, rien n'est affiché
+     const st = A.st;                                         // l'état, partagé avec le rendu
+     …définitions de l'application (données, rendu, gestes)…
+     A.lancer({ vues, vuesCarte, encadrer, points, pointsAvant, valides, rendu, … });
+
+   Clés d'état tenues par le moteur : st.c (choix des cartes), st.frz (cartes validées), st.view
+   ('avant' | 'apres', Avant / Après général), st.v2 (vue affichée), st.theme, st.pt (point ouvert),
+   st.cur (carte courante), st.hl (carte à encadrer), st.cmt (états des cartes d'après le fil). */
+window.Atelier = (function () {
+  'use strict';
+  const $ = id => document.getElementById(id);
+
+  function creer(cfg) {
+    const AXES = cfg.cartes, LS = cfg.cle;
+    const TH = cfg.themes || [['clair', 'Clair'], ['sombre', 'Sombre']];
+    let sombre = false; try { sombre = matchMedia('(prefers-color-scheme: dark)').matches; } catch (e) {}
+    const st = Object.assign({ theme: sombre ? TH[1][0] : TH[0][0], c: {}, notes: {}, view: 'apres', frz: {} }, cfg.etat || {});
+    AXES.forEach(a => st.c[a.k] = a.pv ? a.prop : a.now);
+    try { const s = JSON.parse(localStorage.getItem(LS) || 'null'); if (s) { Object.assign(st.c, s.c || {}); st.notes = s.notes || {}; if (s.theme && TH.some(t => t[0] === s.theme)) st.theme = s.theme; } } catch (e) {}
+    AXES.forEach(a => { if (!a.o.some(o => o[0] === st.c[a.k])) st.c[a.k] = a.now; });
+    function persist() { try { localStorage.setItem(LS, JSON.stringify({ c: st.c, notes: st.notes, theme: st.theme })); } catch (e) {} }
+
+    let K = null, ctl, sc, db = null, tag = null, status, gl, list, tagBox, tagTxt;
+    const fige = k => st.frz && st.frz[k] !== undefined;
+
+    /* ---------- vues ---------- */
+    const vueCourante = () => K.vueCourante ? K.vueCourante() : st.v2;
+    const allerVue = id => { if (K.allerVue) K.allerVue(id); else st.v2 = id; };
+    function ongletCarte(k) { const o = (K.onglets || {})[k]; if (o && (K.vuesAOnglets || []).includes(st.v2)) st[o[0]] = o[1]; }
+    /* Choisir une option montre la carte : sa vue si l'aperçu est ailleurs, et son onglet. */
+    function montrerCarte(k) {
+      if (K.surCarte) K.surCarte(k);
+      const W = K.vuesCarte[k] || [], cur = vueCourante();
+      if (W.length && !W.includes(cur) && !W.includes(st.v2)) allerVue(W[0]);
+      ongletCarte(k); if (W.length) syncV();
+    }
+    function nomsVues() { const VN = {}; K.vues.forEach(([v, l]) => VN[v] = l); return Object.assign(VN, K.nomsVues || {}); }
+    function syncV() {
+      const VN = nomsVues(), cur = vueCourante();
+      AXES.forEach(a => {
+        if (a.pv) { a.el.cyc.textContent = '→ Voir'; return; }
+        const vs = K.vuesCarte[a.k] || [K.vueDefaut]; let i = vs.indexOf(cur); if (i < 0) i = vs.indexOf(st.v2);
+        const nx = vs[(i + 1) % vs.length];
+        a.el.cyc.textContent = (i < 0 ? 'Voir' : '→') + ' ' + VN[nx] + (vs.length > 1 ? '  ' + (i < 0 ? '' : (i + 1) + '/' + vs.length) : '');
+        a.el.cyc.title = 'Vues qui montrent cet élément : ' + vs.map(v => VN[v]).join(', ');
+        const o = (K.onglets || {})[a.k], ongOk = !o || (st[o[0]] || (K.ongletsDefaut || {})[o[0]]) === o[1];
+        a.el.cyc.disabled = (vs.length === 1 && i === 0 && ongOk);
+        if (vs.length === 1 && i === 0 && !ongOk) a.el.cyc.textContent = 'Voir ' + (((K.nomsOnglets || []).find(x => x[0] === o[1])) || [, ''])[1];
+      });
+      ['v-seg', 'fs-v'].forEach(id => document.querySelectorAll('#' + id + ' button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === st.v2))));
+      render();
+    }
+    function sync() {
+      AXES.forEach(a => {
+        const fz = fige(a.k) || !!a.clos; if (fz && !a.clos) st.c[a.k] = st.frz[a.k];
+        a.el.card.classList.toggle('clos', !!a.clos); a.el.frz.style.display = a.clos ? 'none' : '';
+        a.el.seg.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === st.c[a.k])));
+        a.el.card.classList.toggle('frozen', fz); a.el.frz.textContent = fz ? 'Rouvrir' : 'Valider';
+        a.el.frz.title = fz ? 'Rouvrir cette section' : 'Figer ce choix comme définitif';
+        const cm = st.cmt && st.cmt[a.k]; const stt = fz ? '' : (cm ? (cm.claude > cm.pierre ? 'revoir' : 'vu') : 'neuf'); a.el.card.dataset.st = stt;
+        a.el.now.textContent = a.clos ? a.clos : fz ? 'validé : ' + ((a.o.find(o => o[0] === st.c[a.k]) || [])[1] || '') : (stt === 'neuf' ? 'nouveau' : stt === 'revoir' ? 'à revoir · réponse de Claude' : 'déjà vu · commenté');
+      });
+      AXES.filter(a => !a.el.card.classList.contains('frozen')).concat(AXES.filter(a => a.el.card.classList.contains('frozen'))).forEach(a => ctl.appendChild(a.el.card));
+      ['theme-seg', 'fs-th'].forEach(id => document.querySelectorAll('#' + id + ' button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === st.theme))));
+      ['ba-seg', 'fs-ba'].forEach(id => document.querySelectorAll('#' + id + ' button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === st.view))));
+      render();
+    }
+    function render() {
+      K.rendu();
+      fsLab();
+      if (st.pt && st.ptNew) { st.ptNew = false; setTimeout(ptMarquer, 0); }
+      if (st.hl) { const k = st.hl; st.hl = null; setTimeout(() => hlMarquer(k), 0); }
+    }
+
+    /* ---------- encadré ---------- */
+    /* Défile le plus proche ancêtre qui défile, pour amener l'élément en vue. */
+    function amener(f, w) {
+      const L = f && K.liste && f.closest(K.liste);
+      if (L) { L.scrollTop = Math.max(0, f.getBoundingClientRect().top - L.getBoundingClientRect().top + L.scrollTop - L.clientHeight / 3); return; }
+      if (!f) return; let a = f.parentElement;
+      while (a && a !== w && !(a.scrollHeight > a.clientHeight + 4 && /auto|scroll/.test(getComputedStyle(a).overflowY))) a = a.parentElement;
+      if (a && a !== w) { const d = f.getBoundingClientRect().top - a.getBoundingClientRect().top; if (d < 0 || d > a.clientHeight - 40) a.scrollTop = Math.max(0, a.scrollTop + d - a.clientHeight / 4); }
+    }
+    /* Élément d'une carte (« sélecteur|texte » ; vide = toute la fenêtre) : contour qui clignote trois fois. */
+    function hlMarquer(k) {
+      const w = $('win'), q = (K.encadrer || {})[k];
+      const els = q ? [...w.querySelectorAll(q.split('|')[0])].filter(e => !q.split('|')[1] || e.textContent.includes(q.split('|')[1])).slice(0, 6) : [];
+      (els.length ? els : [w.querySelector(K.zoneDefaut) || w]).forEach(e => { e.classList.remove('ptx'); void e.offsetWidth; e.classList.add('ptx'); });
+      const f = els[0]; const L = f && K.liste && f.closest(K.liste); if (L) amener(f, w);
+    }
+
+    /* ---------- points à valider ---------- */
+    const PTS = () => K.points || [], PTAV = () => K.pointsAvant || new Set();
+    /* Un seul état : le choix de la carte du point (Proposé = oui, Aujourd'hui = non) décide de l'illustration. */
+    function ptvOf(n) { return PTAV().has(n) && st.c['pv' + n] === 'non' ? 'avant' : 'apres'; }
+    function ptOld(n) { return st.pt === n && ptvOf(n) === 'avant'; }
+    function ptMarquer() {
+      const P = PTS().find(x => x[0] === st.pt); document.body.dataset.pt = P ? P[0] : '';
+      if (!P || !P[4]) return; const w = $('win');
+      if (K.surMarquage) K.surMarquage(P[0], w);
+      const [q, txt] = P[4].split('|'); w.querySelectorAll(q).forEach((e, i) => { if (txt ? e.textContent.includes(txt) : i < 6) e.classList.add('ptx'); });
+      const L0 = K.listePreservee && w.querySelector(K.listePreservee);
+      if (st.ptScroll != null && L0) { L0.scrollTop = st.ptScroll; st.ptScroll = null; return; } st.ptScroll = null;
+      amener(w.querySelector('.ptx'), w);
+    }
+    /* Touche A sur un point : bascule le choix de sa carte, si elle n'est pas validée. */
+    function ptVue(v) { const n = st.pt, a = AXES.find(x => x.k === 'pv' + n); if (!a || !PTAV().has(n) || fige(a.k)) return; st.c[a.k] = v === 'avant' ? 'non' : 'oui'; persist(); ptAller(n, true); }
+    /* Ouvre un point : sa vue (celle de son Avant si la carte est sur Aujourd'hui), l'élément encadré.
+       calme : depuis la carte même, sans faire défiler la liste des cartes. */
+    function ptAller(n, calme) {
+      const P = PTS().find(x => x[0] === n); if (!P) return;
+      if (calme && st.pt === n) { const L = K.listePreservee && document.querySelector('#win ' + K.listePreservee); st.ptScroll = L ? L.scrollTop : null; }
+      st.cur = 'pv' + n; st.pt = n; st.ptNew = true; st.view = 'apres';
+      const o = P[3] || {}, av = ptvOf(n) === 'avant';
+      if (K.surPoint) K.surPoint(n, o, av);
+      if (o.set) Object.assign(st, o.set); if (av && o.setAvant) Object.assign(st, o.setAvant);
+      st.v2 = av && o.avant ? o.avant : P[2]; sync(); syncV();
+      if (K.apresPoint) K.apresPoint(n, o, av);
+      if (calme) return;
+      const C = $('controls'), cd = document.querySelector('.axis[data-k="pv' + n + '"]');
+      if (C && cd && C.scrollHeight > C.clientHeight) C.scrollTop = cd.offsetTop - C.offsetTop - 12;
+      const sg = $('stage'); if (sg && sg.scrollIntoView) sg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /* ---------- points ouverts, plein écran ---------- */
+    function ouverts() { return AXES.filter(a => !a.clos && !fige(a.k)); }
+    function allerCarte(a) {
+      if (!a) return; st.cur = a.k;
+      if (a.pv) ptAller(a.pv);
+      else { st.pt = null; st.hl = a.k; allerVue((K.vuesCarte[a.k] || [K.vueDefaut])[0]); if (K.surVoir) K.surVoir(a.k); syncV(); }
+      fsLab();
+    }
+    function fsPas(d) { const L = ouverts(); if (!L.length) return; let i = L.findIndex(a => a.k === st.cur); i = i < 0 ? (d > 0 ? 0 : L.length - 1) : (i + d + L.length) % L.length; allerCarte(L[i]); }
+    function fsLab() { const el = $('fs-lab'); if (!el) return; const L = ouverts(); const i = L.findIndex(a => a.k === st.cur); el.textContent = L.length ? (i < 0 ? L.length + ' points ouverts' : (i + 1) + '/' + L.length + ' · ' + L[i].t) : 'Tout est validé'; el.title = el.textContent; }
+    const fsOuvert = () => sc.classList.contains('fs');
+    function fsOpen() { sc.classList.add('fs'); try { const r = sc.requestFullscreen && sc.requestFullscreen(); if (r && r.catch) r.catch(() => {}); } catch (e) {} $('fs-close').focus(); }
+    function fsClose() { sc.classList.remove('fs'); try { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch (e) {} }
+
+    /* ---------- cartes ---------- */
+    function construireCartes() {
+      AXES.forEach(a => {
+        const card = document.createElement('section'); card.className = 'axis' + (a.pv ? ' pv' : ''); card.dataset.k = a.k;
+        const h = document.createElement('h2'); h.textContent = a.t;
+        const now = document.createElement('span'); now.className = 'now'; h.appendChild(now);
+        const frz = document.createElement('button'); frz.type = 'button'; frz.className = 'frz'; frz.addEventListener('click', () => toggleFrz(a.k)); h.appendChild(frz);
+        const p = document.createElement('p'); p.className = 'why'; p.textContent = a.why;
+        const seg = document.createElement('div'); seg.className = 'seg'; seg.setAttribute('role', 'group'); seg.setAttribute('aria-label', a.t);
+        a.o.forEach(([v, l]) => {
+          const b = document.createElement('button'); b.type = 'button'; b.textContent = l; b.dataset.v = v;
+          b.addEventListener('click', () => { st.c[a.k] = v; if (a.pv) { persist(); ptAller(a.pv, true); return; } st.pt = null; montrerCarte(a.k); persist(); sync(); });
+          seg.appendChild(b);
+        });
+        const ask = document.createElement('button'); ask.type = 'button'; ask.className = 'ask'; ask.textContent = 'Commenter ce point';
+        ask.addEventListener('click', () => setTag(a.k));
+        const cyc = document.createElement('button'); cyc.type = 'button'; cyc.className = 'cyc';
+        cyc.addEventListener('click', () => {
+          if (a.pv) { ptAller(a.pv); return; }
+          st.pt = null; st.hl = a.k; st.cur = a.k; if (K.surVoir) K.surVoir(a.k);
+          const vs = K.vuesCarte[a.k] || [K.vueDefaut]; const cur = vueCourante();
+          let i = vs.indexOf(cur); if (i < 0) i = vs.indexOf(st.v2);
+          allerVue(vs[(i + 1) % vs.length]); ongletCarte(a.k); syncV(); cyc.blur();
+        });
+        const foot = document.createElement('div'); foot.className = 'foot'; foot.append(ask, cyc);
+        card.append(h, p, seg, foot); ctl.appendChild(card); a.el = { seg, now, cyc, frz, card };
+      });
+    }
+
+    /* ---------- validations ---------- */
+    function saveFrzLocal() { try { localStorage.setItem(LS + '-frz', JSON.stringify(st.frz)); } catch (e) {} }
+    async function toggleFrz(k) {
+      if (fige(k)) { delete st.frz[k]; saveFrzLocal(); sync(); if (db) { try { await db.collection('valides').doc(k).delete(); } catch (e) {} } }
+      else { st.frz[k] = st.c[k]; saveFrzLocal(); sync(); if (db) { try { await db.collection('valides').doc(k).set({ choix: st.c[k], at: new Date().toISOString() }); } catch (e) { status.textContent = 'Validation gardée sur cet appareil seulement.'; } } }
+    }
+
+    /* ---------- fil de discussion (collection « fil ») ---------- */
+    function setTag(k) { tag = k; try { localStorage.setItem(LS + '-tag', k); } catch (e) {} const a = AXES.find(x => x.k === k); tagTxt.textContent = 'À propos de : ' + a.t; tagBox.hidden = false; gl.focus(); }
+    function fmt(iso) { try { return new Date(iso).toLocaleString('fr-FR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } }
+    function paint(docs) {
+      list.textContent = '';
+      if (!docs.length) { const e = document.createElement('p'); e.className = 'th-empty'; e.textContent = 'Pas encore de message. Choisis des options, puis écris ici ce que tu en penses.'; list.appendChild(e); return; }
+      docs.forEach(d => {
+        const m = document.createElement('div'); m.className = 'msg ' + (d.auteur === 'claude' ? 'cl' : 'me');
+        const who = document.createElement('div'); who.className = 'who';
+        const n = document.createElement('span'); n.textContent = d.auteur === 'claude' ? 'Claude' : 'Toi';
+        const t = document.createElement('span'); t.textContent = fmt(d.at); who.append(n, t); m.appendChild(who);
+        const ax = AXES.find(x => x.k === d.axe);
+        if (ax) { const s = document.createElement('span'); s.className = 'ax'; s.textContent = ax.t; m.appendChild(s); m.appendChild(document.createElement('br')); }
+        m.appendChild(document.createTextNode(String(d.texte || '')));
+        if (d.auteur === 'claude' && d.reglage && typeof d.reglage === 'object') {
+          const b = document.createElement('button'); b.type = 'button'; b.className = 'apply'; b.textContent = 'Appliquer ces réglages à l’aperçu';
+          b.addEventListener('click', () => { Object.entries(d.reglage).forEach(([k, v]) => { const a = AXES.find(x => x.k === k); if (a && a.o.some(o => o[0] === v)) st.c[k] = v; }); persist(); sync(); });
+          m.appendChild(b);
+        }
+        list.appendChild(m);
+      });
+      list.scrollTop = list.scrollHeight;
+    }
+    function fil() {
+      status = $('status'); gl = $('global'); list = $('thlist'); tagBox = $('thtag'); tagTxt = $('thtagtxt');
+      $('thtagx').addEventListener('click', () => { tag = null; tagBox.hidden = true; try { localStorage.removeItem(LS + '-tag'); } catch (e) {} });
+      try { const t = localStorage.getItem(LS + '-tag'); if (t && AXES.some(x => x.k === t)) { tag = t; tagTxt.textContent = 'À propos de : ' + AXES.find(x => x.k === t).t; tagBox.hidden = false; } } catch (e) {}
+      setTimeout(() => { if (gl.value.trim()) { status.className = 'status'; status.textContent = 'Brouillon non envoyé, retrouvé ci-dessous.'; } }, 0);
+      try { gl.value = localStorage.getItem(LS + '-g') || ''; } catch (e) {}
+      gl.addEventListener('input', () => { try { localStorage.setItem(LS + '-g', gl.value); } catch (e) {} });
+      gl.addEventListener('keydown', e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); $('thform').requestSubmit(); } });
+      paint([]);
+      $('thform').addEventListener('submit', async e => {
+        e.preventDefault();
+        const txt = gl.value.trim(); if (!txt) return;
+        if (!db) { status.className = 'status'; status.textContent = 'Fil indisponible ici : écris-moi dans la conversation.'; return; }
+        const choix = {}; AXES.forEach(a => { choix[a.k] = st.c[a.k]; });
+        status.className = 'status'; status.textContent = 'Envoi…';
+        try {
+          await db.collection('fil').add({ at: new Date().toISOString(), auteur: 'pierre', texte: txt, axe: tag || null, theme: st.theme, choix });
+          gl.value = ''; try { localStorage.removeItem(LS + '-g'); } catch (_) {}
+          tag = null; tagBox.hidden = true; try { localStorage.removeItem(LS + '-tag'); } catch (_) {}
+          status.className = 'status ok'; status.textContent = 'Envoyé.';
+        } catch (err) { status.textContent = 'Échec de l’envoi (' + (err && err.code || 'erreur') + '). Réessaie.'; }
+      });
+    }
+    async function base(REF) {
+      if (REF) return;
+      try { db = await (window.claude && window.claude.use && window.claude.use('db')); } catch (e) { db = null; }
+      if (!db) { status.textContent = 'Fil indisponible dans cette vue.'; return; }
+      try { db.collection('valides').onSnapshot(snap => { const f = {}; snap.docs.forEach(d => { const v = d.data(); if (v && v.choix !== undefined) f[d.id] = v.choix; }); st.frz = f; saveFrzLocal(); sync(); }, () => {}); } catch (e) {}
+      try {
+        db.collection('fil').orderBy('at').onSnapshot(snap => {
+          const ds = snap.docs.map(x => x.data()); const cm = {};
+          ds.forEach(d => { const ks = d.axe ? [d.axe] : (d.reglage && d.auteur === 'claude' ? Object.keys(d.reglage) : []); ks.forEach(k => { cm[k] = cm[k] || { pierre: '', claude: '' }; const who = d.auteur === 'claude' ? 'claude' : 'pierre'; if ((d.at || '') > cm[k][who]) cm[k][who] = d.at || ''; }); });
+          Object.keys(cm).forEach(k => { if (!cm[k].pierre) delete cm[k]; }); st.cmt = cm; sync(); paint(ds);
+        }, () => { status.textContent = 'Lecture du fil impossible.'; });
+      } catch (e) { status.textContent = 'Lecture du fil impossible.'; }
+    }
+
+    /* ---------- mode référence ---------- */
+    /* #ref&vue=…&theme=…&… n'affiche que la fenêtre de l'application, dans l'état validé (valides embarqués,
+       sans la base ni le stockage du navigateur). Les paramètres propres à l'application passent par K.ref(p). */
+    const lireRef = () => { const h = location.hash.replace(/^#/, ''); if (!/^ref(&|$)/.test(h)) return null; const p = {}; h.split('&').slice(1).forEach(kv => { const i = kv.indexOf('='); const k = decodeURIComponent(i < 0 ? kv : kv.slice(0, i)); p[k] = i < 0 ? '1' : decodeURIComponent(kv.slice(i + 1)); }); return p; };
+    function applyRef(p) {
+      document.body.classList.add('ref');
+      AXES.forEach(a => { st.c[a.k] = fige(a.k) ? st.frz[a.k] : a.prop; });
+      st.view = 'apres'; st.theme = p.theme === 'sombre' ? TH[1][0] : TH[0][0];
+      if (K.ref) K.ref(p);
+      const w = $('win'); w.style.setProperty('--refw', (+p.l || 1280) + 'px'); w.style.setProperty('--refh', (+p.h || 800) + 'px');
+      st.v2 = p.vue || K.vueDefaut; sync(); syncV();
+    }
+
+    /* ---------- lancement ---------- */
+    function lancer(k) {
+      K = Object.assign({ vueDefaut: (k.vues && k.vues[0] && k.vues[0][0]), zoneDefaut: '.w-body' }, k);
+      ctl = $('controls'); sc = $('scroller');
+      construireCartes();
+      ['theme-seg', 'fs-th'].forEach(id => { const box = $(id); if (!box) return; TH.forEach(([v, l]) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = l; b.dataset.v = v; b.addEventListener('click', () => { st.theme = v; persist(); sync(); }); box.appendChild(b); }); });
+      $('p-now').addEventListener('click', () => { AXES.forEach(a => { if (!fige(a.k) && !a.pv) st.c[a.k] = a.now; }); persist(); sync(); });
+      $('p-prop').addEventListener('click', () => { AXES.forEach(a => { if (!fige(a.k) && !a.pv) st.c[a.k] = a.prop; }); persist(); sync(); });
+      st.view = 'apres'; st.v2 = st.v2 || K.vueDefaut;
+      ['v-seg', 'fs-v'].forEach(id => { const box = $(id); K.vues.forEach(([v, l]) => { const b = document.createElement('button'); b.type = 'button'; b.dataset.v = v; b.textContent = l; b.addEventListener('click', () => { st.pt = null; if (K.surChoixVue) K.surChoixVue(v); st.v2 = v; syncV(); }); box.appendChild(b); }); });
+      const go = n => ptAller(n);
+      { const m = location.hash.match(/^#point=(\d+)/); if (m) setTimeout(() => go(+m[1]), 50); }
+      addEventListener('hashchange', () => { const m2 = location.hash.match(/^#point=(\d+)/); if (m2) go(+m2[1]); });
+      if (K.avantLancement) K.avantLancement();
+      syncV();
+      ['ba-seg', 'fs-ba'].forEach(id => document.querySelectorAll('#' + id + ' button').forEach(b => b.addEventListener('click', () => { st.view = b.dataset.v; st.pt = null; sync(); })));
+      $('fs-open').addEventListener('click', () => { fsOpen(); fsLab(); });
+      $('fs-prev').addEventListener('click', () => fsPas(-1));
+      $('fs-next').addEventListener('click', () => fsPas(1));
+      $('fs-close').addEventListener('click', fsClose);
+      document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) sc.classList.remove('fs'); });
+      document.addEventListener('keydown', e => {
+        const typing = /^(TEXTAREA|INPUT|SELECT)$/.test((e.target && e.target.tagName) || '');
+        if (K.touche && K.touche(e, typing, fsOuvert())) return;
+        if (e.key === 'Escape' && fsOuvert()) fsClose();
+        else if (!typing && fsOuvert() && (e.key === ']' || e.key === '[')) fsPas(e.key === ']' ? 1 : -1);
+        else if (!typing && (e.key === 'a' || e.key === 'A') && !e.metaKey && !e.ctrlKey) { if (st.pt) ptVue(ptvOf(st.pt) === 'avant' ? 'apres' : 'avant'); else { st.view = st.view === 'avant' ? 'apres' : 'avant'; sync(); } }
+      });
+      sync();
+      fil();
+      const REF = lireRef();
+      st.frz = Object.assign({}, K.valides || {});
+      if (!REF) try { const l = localStorage.getItem(LS + '-frz'); if (l) st.frz = JSON.parse(l); } catch (e) {}
+      if (REF) { applyRef(REF); addEventListener('hashchange', () => location.reload()); }
+      else sync();
+      base(REF);
+    }
+
+    return { st, AXES, persist, sync, syncV, render, montrerCarte, ptvOf, ptOld, ptAller, ptVue, hlMarquer, setTag, fsLab, fsPas, ouverts, fsOuvert, fsClose, vueCourante, allerVue, lancer };
+  }
+  return { creer };
+})();
+</script>
+<script>
+/* Jetons de la spécification (jetons.json), à plat. Généré par palettes.gen.js. */
+const JETONS={"catppuccin":{"clair":{"base":"#EFF1F5","mantle":"#E6E9EF","crust":"#DCE0E8","champ":"#DCE0E8","separateur":"#CCD0DA","segmentActif":"#EFF1F5","voile":"rgba(0,0,0,0.32)","texte":"#4C4F69","secondaire":"#5C5F77","accent":"#1E66F5","surAccent":"#EFF1F5","selection":"rgba(30,102,245,0.13)","teinte":"rgba(30,102,245,0.14)","vert":"#40A02B","jaune":"#DF8E1D","orange":"#FE640B","rouge":"#D20F39","g_blue":"#1E66F5","g_cyan":"#179299","g_teal":"#04A5E5","g_lavender":"#7287FD","g_purple":"#8839EF","g_slate":"#8C8FA1","ansi_noir":"#CCD0DA","ansi_rouge":"#D20F39","ansi_vert":"#40A02B","ansi_jaune":"#DF8E1D","ansi_bleu":"#1E66F5","ansi_magenta":"#8839EF","ansi_cyan":"#179299","ansi_blanc":"#5C5F77","ansi_noirVif":"#9498A9","ansi_blancVif":"#4C4F69"},"sombre":{"base":"#1E1E2E","mantle":"#181825","crust":"#11111B","champ":"#313244","separateur":"#313244","segmentActif":"#313244","voile":"rgba(0,0,0,0.5)","texte":"#CDD6F4","secondaire":"#A6ADC8","accent":"#89B4FA","surAccent":"#1E1E2E","selection":"rgba(137,180,250,0.2)","teinte":"rgba(137,180,250,0.18)","vert":"#A6E3A1","jaune":"#F9E2AF","orange":"#FAB387","rouge":"#F38BA8","g_blue":"#89B4FA","g_cyan":"#94E2D5","g_teal":"#89DCEB","g_lavender":"#B4BEFE","g_purple":"#CBA6F7","g_slate":"#7F849C","ansi_noir":"#313244","ansi_rouge":"#F38BA8","ansi_vert":"#A6E3A1","ansi_jaune":"#F9E2AF","ansi_bleu":"#89B4FA","ansi_magenta":"#CBA6F7","ansi_cyan":"#94E2D5","ansi_blanc":"#A6ADC8","ansi_noirVif":"#6C7086","ansi_blancVif":"#CDD6F4"}},"gruvbox":{"clair":{"base":"#FBF1C7","mantle":"#F2E5BC","crust":"#EBDBB2","champ":"#EBDBB2","separateur":"#EBDBB2","segmentActif":"#FBF1C7","voile":"rgba(0,0,0,0.32)","texte":"#3C3836","secondaire":"#7C6F64","accent":"#076678","surAccent":"#FBF1C7","selection":"rgba(7,102,120,0.13)","teinte":"rgba(7,102,120,0.14)","vert":"#79740E","jaune":"#B57614","orange":"#AF3A03","rouge":"#9D0006","g_blue":"#076678","g_cyan":"#427B58","g_teal":"#689D6A","g_lavender":"#458588","g_purple":"#8F3F71","g_slate":"#928374","ansi_noir":"#EBDBB2","ansi_rouge":"#9D0006","ansi_vert":"#79740E","ansi_jaune":"#B57614","ansi_bleu":"#076678","ansi_magenta":"#8F3F71","ansi_cyan":"#427B58","ansi_blanc":"#7C6F64","ansi_noirVif":"#B4A58B","ansi_blancVif":"#3C3836"},"sombre":{"base":"#282828","mantle":"#1D2021","crust":"#1D2021","champ":"#3C3836","separateur":"#3C3836","segmentActif":"#3C3836","voile":"rgba(0,0,0,0.5)","texte":"#EBDBB2","secondaire":"#A89984","accent":"#83A598","surAccent":"#282828","selection":"rgba(131,165,152,0.2)","teinte":"rgba(131,165,152,0.18)","vert":"#B8BB26","jaune":"#FABD2F","orange":"#FE8019","rouge":"#FB4934","g_blue":"#83A598","g_cyan":"#8EC07C","g_teal":"#689D6A","g_lavender":"#458588","g_purple":"#D3869B","g_slate":"#928374","ansi_noir":"#3C3836","ansi_rouge":"#FB4934","ansi_vert":"#B8BB26","ansi_jaune":"#FABD2F","ansi_bleu":"#83A598","ansi_magenta":"#D3869B","ansi_cyan":"#8EC07C","ansi_blanc":"#A89984","ansi_noirVif":"#72695D","ansi_blancVif":"#EBDBB2"}},"nord":{"clair":{"base":"#ECEFF4","mantle":"#E5E9F0","crust":"#D8DEE9","champ":"#D8DEE9","separateur":"#E5E9F0","segmentActif":"#ECEFF4","voile":"rgba(0,0,0,0.32)","texte":"#2E3440","secondaire":"#4C566A","accent":"#5E81AC","surAccent":"#ECEFF4","selection":"rgba(94,129,172,0.13)","teinte":"rgba(94,129,172,0.14)","vert":"#69894D","jaune":"#B88B2A","orange":"#C5714F","rouge":"#BF616A","g_blue":"#5E81AC","g_cyan":"#4C7F8F","g_teal":"#88C0D0","g_lavender":"#81A1C1","g_purple":"#9A5F96","g_slate":"#7B88A1","ansi_noir":"#E5E9F0","ansi_rouge":"#BF616A","ansi_vert":"#69894D","ansi_jaune":"#B88B2A","ansi_bleu":"#5E81AC","ansi_magenta":"#9A5F96","ansi_cyan":"#4C7F8F","ansi_blanc":"#4C566A","ansi_noirVif":"#99A0AD","ansi_blancVif":"#2E3440"},"sombre":{"base":"#2E3440","mantle":"#292E39","crust":"#2E3440","champ":"#3B4252","separateur":"#3B4252","segmentActif":"#3B4252","voile":"rgba(0,0,0,0.5)","texte":"#ECEFF4","secondaire":"#D8DEE9","accent":"#81A1C1","surAccent":"#2E3440","selection":"rgba(129,161,193,0.2)","teinte":"rgba(129,161,193,0.18)","vert":"#A3BE8C","jaune":"#EBCB8B","orange":"#D08770","rouge":"#BF616A","g_blue":"#81A1C1","g_cyan":"#88C0D0","g_teal":"#8FBCBB","g_lavender":"#5E81AC","g_purple":"#B48EAD","g_slate":"#616E88","ansi_noir":"#3B4252","ansi_rouge":"#BF616A","ansi_vert":"#A3BE8C","ansi_jaune":"#EBCB8B","ansi_bleu":"#81A1C1","ansi_magenta":"#B48EAD","ansi_cyan":"#88C0D0","ansi_blanc":"#D8DEE9","ansi_noirVif":"#8A909E","ansi_blancVif":"#ECEFF4"}},"solarized":{"clair":{"base":"#FDF6E3","mantle":"#EEE8D5","crust":"#E4DDC8","champ":"#E4DDC8","separateur":"#EEE8D5","segmentActif":"#FDF6E3","voile":"rgba(0,0,0,0.32)","texte":"#586E75","secondaire":"#657B83","accent":"#268BD2","surAccent":"#FDF6E3","selection":"rgba(38,139,210,0.13)","teinte":"rgba(38,139,210,0.14)","vert":"#859900","jaune":"#B58900","orange":"#CB4B16","rouge":"#DC322F","g_blue":"#268BD2","g_cyan":"#2AA198","g_teal":"#2AA198","g_lavender":"#6C71C4","g_purple":"#D33682","g_slate":"#93A1A1","ansi_noir":"#EEE8D5","ansi_rouge":"#DC322F","ansi_vert":"#859900","ansi_jaune":"#B58900","ansi_bleu":"#268BD2","ansi_magenta":"#D33682","ansi_cyan":"#2AA198","ansi_blanc":"#657B83","ansi_noirVif":"#AAB2AC","ansi_blancVif":"#586E75"},"sombre":{"base":"#002B36","mantle":"#00252F","crust":"#002B36","champ":"#073642","separateur":"#073642","segmentActif":"#073642","voile":"rgba(0,0,0,0.5)","texte":"#93A1A1","secondaire":"#839496","accent":"#268BD2","surAccent":"#002B36","selection":"rgba(38,139,210,0.2)","teinte":"rgba(38,139,210,0.18)","vert":"#859900","jaune":"#B58900","orange":"#CB4B16","rouge":"#DC322F","g_blue":"#268BD2","g_cyan":"#2AA198","g_teal":"#2AA198","g_lavender":"#6C71C4","g_purple":"#D33682","g_slate":"#586E75","ansi_noir":"#073642","ansi_rouge":"#DC322F","ansi_vert":"#859900","ansi_jaune":"#B58900","ansi_bleu":"#268BD2","ansi_magenta":"#D33682","ansi_cyan":"#2AA198","ansi_blanc":"#839496","ansi_noirVif":"#45656C","ansi_blancVif":"#93A1A1"}},"tokyonight":{"clair":{"base":"#E1E2E7","mantle":"#D5D6DB","crust":"#C8CAD3","champ":"#C8CAD3","separateur":"#C4C8DA","segmentActif":"#E1E2E7","voile":"rgba(0,0,0,0.32)","texte":"#3760BF","secondaire":"#6172B0","accent":"#2E7DE9","surAccent":"#E1E2E7","selection":"rgba(46,125,233,0.13)","teinte":"rgba(46,125,233,0.14)","vert":"#587539","jaune":"#8C6C3E","orange":"#B15C00","rouge":"#F52A65","g_blue":"#2E7DE9","g_cyan":"#007197","g_teal":"#118C74","g_lavender":"#7847BD","g_purple":"#9854F1","g_slate":"#848CB5","ansi_noir":"#C4C8DA","ansi_rouge":"#F52A65","ansi_vert":"#587539","ansi_jaune":"#8C6C3E","ansi_bleu":"#2E7DE9","ansi_magenta":"#9854F1","ansi_cyan":"#007197","ansi_blanc":"#6172B0","ansi_noirVif":"#939DC5","ansi_blancVif":"#3760BF"},"sombre":{"base":"#1A1B26","mantle":"#16161E","crust":"#16161E","champ":"#292E42","separateur":"#292E42","segmentActif":"#292E42","voile":"rgba(0,0,0,0.5)","texte":"#C0CAF5","secondaire":"#A9B1D6","accent":"#7AA2F7","surAccent":"#1A1B26","selection":"rgba(122,162,247,0.2)","teinte":"rgba(122,162,247,0.18)","vert":"#9ECE6A","jaune":"#E0AF68","orange":"#FF9E64","rouge":"#F7768E","g_blue":"#7AA2F7","g_cyan":"#7DCFFF","g_teal":"#73DACA","g_lavender":"#2AC3DE","g_purple":"#BB9AF7","g_slate":"#565F89","ansi_noir":"#292E42","ansi_rouge":"#F7768E","ansi_vert":"#9ECE6A","ansi_jaune":"#E0AF68","ansi_bleu":"#7AA2F7","ansi_magenta":"#BB9AF7","ansi_cyan":"#7DCFFF","ansi_blanc":"#A9B1D6","ansi_noirVif":"#69708C","ansi_blancVif":"#C0CAF5"}},"everforest":{"clair":{"base":"#FDF6E3","mantle":"#F4F0D9","crust":"#EFEBD4","champ":"#EFEBD4","separateur":"#E6E2CC","segmentActif":"#FDF6E3","voile":"rgba(0,0,0,0.32)","texte":"#5C6A72","secondaire":"#829181","accent":"#3A94C5","surAccent":"#FDF6E3","selection":"rgba(58,148,197,0.13)","teinte":"rgba(58,148,197,0.14)","vert":"#8DA101","jaune":"#DFA000","orange":"#F57D26","rouge":"#F85552","g_blue":"#3A94C5","g_cyan":"#35A77C","g_teal":"#35A77C","g_lavender":"#5A8FA8","g_purple":"#DF69BA","g_slate":"#939F91","ansi_noir":"#E6E2CC","ansi_rouge":"#F85552","ansi_vert":"#8DA101","ansi_jaune":"#DFA000","ansi_bleu":"#3A94C5","ansi_magenta":"#DF69BA","ansi_cyan":"#35A77C","ansi_blanc":"#829181","ansi_noirVif":"#B4BAA7","ansi_blancVif":"#5C6A72"},"sombre":{"base":"#2D353B","mantle":"#272E33","crust":"#232A2E","champ":"#3D484D","separateur":"#3D484D","segmentActif":"#3D484D","voile":"rgba(0,0,0,0.5)","texte":"#D3C6AA","secondaire":"#9DA9A0","accent":"#7FBBB3","surAccent":"#2D353B","selection":"rgba(127,187,179,0.2)","teinte":"rgba(127,187,179,0.18)","vert":"#A7C080","jaune":"#DBBC7F","orange":"#E69875","rouge":"#E67E80","g_blue":"#7FBBB3","g_cyan":"#83C092","g_teal":"#83C092","g_lavender":"#83A0B5","g_purple":"#D699B6","g_slate":"#859289","ansi_noir":"#3D484D","ansi_rouge":"#E67E80","ansi_vert":"#A7C080","ansi_jaune":"#DBBC7F","ansi_bleu":"#7FBBB3","ansi_magenta":"#D699B6","ansi_cyan":"#83C092","ansi_blanc":"#9DA9A0","ansi_noirVif":"#6D7977","ansi_blancVif":"#D3C6AA"}},"edge":{"clair":{"base":"#FAFAFA","mantle":"#EEF1F4","crust":"#DDE2E7","champ":"#DDE2E7","separateur":"#DDE2E7","segmentActif":"#FAFAFA","voile":"rgba(0,0,0,0.32)","texte":"#4B505B","secondaire":"#6C7483","accent":"#5079BE","surAccent":"#FAFAFA","selection":"rgba(80,121,190,0.13)","teinte":"rgba(80,121,190,0.14)","vert":"#608E32","jaune":"#BE7E05","orange":"#BE7E05","rouge":"#D05858","g_blue":"#5079BE","g_cyan":"#3A8B84","g_teal":"#3A8B84","g_lavender":"#7A5BC9","g_purple":"#B05CCC","g_slate":"#8790A0","ansi_noir":"#DDE2E7","ansi_rouge":"#D05858","ansi_vert":"#608E32","ansi_jaune":"#BE7E05","ansi_bleu":"#5079BE","ansi_magenta":"#B05CCC","ansi_cyan":"#3A8B84","ansi_blanc":"#6C7483","ansi_noirVif":"#A5ABB5","ansi_blancVif":"#4B505B"},"sombre":{"base":"#2C2E34","mantle":"#26282D","crust":"#222327","champ":"#3B3E48","separateur":"#3B3E48","segmentActif":"#3B3E48","voile":"rgba(0,0,0,0.5)","texte":"#C5CDD9","secondaire":"#A0A8B7","accent":"#6CB6EB","surAccent":"#2C2E34","selection":"rgba(108,182,235,0.2)","teinte":"rgba(108,182,235,0.18)","vert":"#A0C980","jaune":"#DEB974","orange":"#DEB974","rouge":"#EC7279","g_blue":"#6CB6EB","g_cyan":"#5DBBC1","g_teal":"#5DBBC1","g_lavender":"#8C9BEB","g_purple":"#D38AEA","g_slate":"#7F8490","ansi_noir":"#3B3E48","ansi_rouge":"#EC7279","ansi_vert":"#A0C980","ansi_jaune":"#DEB974","ansi_bleu":"#6CB6EB","ansi_magenta":"#D38AEA","ansi_cyan":"#5DBBC1","ansi_blanc":"#A0A8B7","ansi_noirVif":"#6E7380","ansi_blancVif":"#C5CDD9"}},"lucius":{"clair":{"base":"#EEEEEE","mantle":"#E4E4E4","crust":"#DADADA","champ":"#DADADA","separateur":"#DADADA","segmentActif":"#EEEEEE","voile":"rgba(0,0,0,0.32)","texte":"#444444","secondaire":"#585858","accent":"#005FAF","surAccent":"#EEEEEE","selection":"rgba(0,95,175,0.13)","teinte":"rgba(0,95,175,0.14)","vert":"#008700","jaune":"#AF8700","orange":"#AF5F00","rouge":"#AF0000","g_blue":"#005FAF","g_cyan":"#008787","g_teal":"#008787","g_lavender":"#5F5FAF","g_purple":"#870087","g_slate":"#808080","ansi_noir":"#DADADA","ansi_rouge":"#AF0000","ansi_vert":"#008700","ansi_jaune":"#AF8700","ansi_bleu":"#005FAF","ansi_magenta":"#870087","ansi_cyan":"#008787","ansi_blanc":"#585858","ansi_noirVif":"#999999","ansi_blancVif":"#444444"},"sombre":{"base":"#303030","mantle":"#2A2A2A","crust":"#262626","champ":"#444444","separateur":"#444444","segmentActif":"#444444","voile":"rgba(0,0,0,0.5)","texte":"#D7D7D7","secondaire":"#BCBCBC","accent":"#87AFD7","surAccent":"#303030","selection":"rgba(135,175,215,0.2)","teinte":"rgba(135,175,215,0.18)","vert":"#AFD787","jaune":"#D7D787","orange":"#D7AF87","rouge":"#D78787","g_blue":"#87AFD7","g_cyan":"#87D7D7","g_teal":"#87D7AF","g_lavender":"#8787D7","g_purple":"#D7AFD7","g_slate":"#808080","ansi_noir":"#444444","ansi_rouge":"#D78787","ansi_vert":"#AFD787","ansi_jaune":"#D7D787","ansi_bleu":"#87AFD7","ansi_magenta":"#D7AFD7","ansi_cyan":"#87D7D7","ansi_blanc":"#BCBCBC","ansi_noirVif":"#808080","ansi_blancVif":"#D7D7D7"}},"papercolor":{"clair":{"base":"#EEEEEE","mantle":"#E4E4E4","crust":"#DADADA","champ":"#DADADA","separateur":"#D0D0D0","segmentActif":"#EEEEEE","voile":"rgba(0,0,0,0.32)","texte":"#444444","secondaire":"#585858","accent":"#0087AF","surAccent":"#EEEEEE","selection":"rgba(0,135,175,0.13)","teinte":"rgba(0,135,175,0.14)","vert":"#008700","jaune":"#AF8700","orange":"#D75F00","rouge":"#AF0000","g_blue":"#0087AF","g_cyan":"#005F87","g_teal":"#008787","g_lavender":"#005F87","g_purple":"#8700AF","g_slate":"#878787","ansi_noir":"#D0D0D0","ansi_rouge":"#AF0000","ansi_vert":"#008700","ansi_jaune":"#AF8700","ansi_bleu":"#0087AF","ansi_magenta":"#8700AF","ansi_cyan":"#005F87","ansi_blanc":"#585858","ansi_noirVif":"#949494","ansi_blancVif":"#444444"},"sombre":{"base":"#1C1C1C","mantle":"#161616","crust":"#121212","champ":"#3A3A3A","separateur":"#3A3A3A","segmentActif":"#3A3A3A","voile":"rgba(0,0,0,0.5)","texte":"#D0D0D0","secondaire":"#BCBCBC","accent":"#5FAFD7","surAccent":"#1C1C1C","selection":"rgba(95,175,215,0.2)","teinte":"rgba(95,175,215,0.18)","vert":"#5FAF00","jaune":"#FFD75F","orange":"#FF8700","rouge":"#DF0000","g_blue":"#5FAFD7","g_cyan":"#00AFAF","g_teal":"#5FAFAF","g_lavender":"#87AFD7","g_purple":"#AF87D7","g_slate":"#808080","ansi_noir":"#3A3A3A","ansi_rouge":"#DF0000","ansi_vert":"#5FAF00","ansi_jaune":"#FFD75F","ansi_bleu":"#5FAFD7","ansi_magenta":"#AF87D7","ansi_cyan":"#00AFAF","ansi_blanc":"#BCBCBC","ansi_noirVif":"#7B7B7B","ansi_blancVif":"#D0D0D0"}},"pencil":{"clair":{"base":"#F1F1F1","mantle":"#E8E8E8","crust":"#DDDDDD","champ":"#DDDDDD","separateur":"#D9D9D9","segmentActif":"#F1F1F1","voile":"rgba(0,0,0,0.32)","texte":"#424242","secondaire":"#626262","accent":"#008EC4","surAccent":"#F1F1F1","selection":"rgba(0,142,196,0.13)","teinte":"rgba(0,142,196,0.14)","vert":"#10A778","jaune":"#A89C14","orange":"#A89C14","rouge":"#C30771","g_blue":"#008EC4","g_cyan":"#20A5BA","g_teal":"#20A5BA","g_lavender":"#6855DE","g_purple":"#523C79","g_slate":"#9E9E9E","ansi_noir":"#D9D9D9","ansi_rouge":"#C30771","ansi_vert":"#10A778","ansi_jaune":"#A89C14","ansi_bleu":"#008EC4","ansi_magenta":"#523C79","ansi_cyan":"#20A5BA","ansi_blanc":"#626262","ansi_noirVif":"#9E9E9E","ansi_blancVif":"#424242"},"sombre":{"base":"#212121","mantle":"#1C1C1C","crust":"#1C1C1C","champ":"#303030","separateur":"#303030","segmentActif":"#303030","voile":"rgba(0,0,0,0.5)","texte":"#F1F1F1","secondaire":"#B2B2B2","accent":"#20BBFC","surAccent":"#212121","selection":"rgba(32,187,252,0.2)","teinte":"rgba(32,187,252,0.18)","vert":"#5FD7AF","jaune":"#F3E430","orange":"#F3E430","rouge":"#E32791","g_blue":"#20BBFC","g_cyan":"#4FB8CC","g_teal":"#4FB8CC","g_lavender":"#7E6BE8","g_purple":"#6855DE","g_slate":"#6C6C6C","ansi_noir":"#303030","ansi_rouge":"#E32791","ansi_vert":"#5FD7AF","ansi_jaune":"#F3E430","ansi_bleu":"#20BBFC","ansi_magenta":"#6855DE","ansi_cyan":"#4FB8CC","ansi_blanc":"#B2B2B2","ansi_noirVif":"#717171","ansi_blancVif":"#F1F1F1"}},"xterm":{"clair":{"base":"#FFFFFF","mantle":"#F2F2F2","crust":"#E5E5E5","champ":"#E5E5E5","separateur":"#D0D0D0","segmentActif":"#FFFFFF","voile":"rgba(0,0,0,0.32)","texte":"#303030","secondaire":"#585858","accent":"#005FAF","surAccent":"#FFFFFF","selection":"rgba(0,95,175,0.13)","teinte":"rgba(0,95,175,0.14)","vert":"#008700","jaune":"#A6A600","orange":"#AF5F00","rouge":"#D70000","g_blue":"#005FAF","g_cyan":"#0087AF","g_teal":"#00AAAA","g_lavender":"#5C5CFF","g_purple":"#AF00AF","g_slate":"#8A8A8A","ansi_noir":"#D0D0D0","ansi_rouge":"#D70000","ansi_vert":"#008700","ansi_jaune":"#A6A600","ansi_bleu":"#005FAF","ansi_magenta":"#AF00AF","ansi_cyan":"#0087AF","ansi_blanc":"#585858","ansi_noirVif":"#949494","ansi_blancVif":"#303030"},"sombre":{"base":"#000000","mantle":"#0D0D0D","crust":"#121212","champ":"#3A3A3A","separateur":"#3A3A3A","segmentActif":"#3A3A3A","voile":"rgba(0,0,0,0.5)","texte":"#D0D0D0","secondaire":"#A8A8A8","accent":"#005FAF","surAccent":"#000000","selection":"rgba(0,95,175,0.2)","teinte":"rgba(0,95,175,0.18)","vert":"#5FD75F","jaune":"#FFFF00","orange":"#D7AF5F","rouge":"#FF5F5F","g_blue":"#005FAF","g_cyan":"#00AFD7","g_teal":"#00FFFF","g_lavender":"#7F7FFF","g_purple":"#D75FD7","g_slate":"#6C6C6C","ansi_noir":"#3A3A3A","ansi_rouge":"#FF5F5F","ansi_vert":"#5FD75F","ansi_jaune":"#FFFF00","ansi_bleu":"#005FAF","ansi_magenta":"#D75FD7","ansi_cyan":"#00AFD7","ansi_blanc":"#A8A8A8","ansi_noirVif":"#717171","ansi_blancVif":"#D0D0D0"}}};
+/* Atelier d'arbitrage des points ouverts du gabarit (GABARIT.md § 15).
+   Une carte par point ; la vue du point montre toutes ses options côte à côte, dessinées avec les jetons
+   du gabarit ; l'option choisie dans la carte est encadrée. Valider fige le choix (base de l'atelier). */
+(function(){
+const AXES=[
+ {k:'p1',t:'1 · Sourdine hors des mesures',why:'La sourdine (surfaces colorées atténuées, petites marques en pleine couleur) vaut pour les graphiques, les tuiles et les capsules de mesure. Faut-il l’étendre aux barres de mesure, micro-jauges et fonds de capsule ailleurs ? G § 3.5.',o:[['A','A · Mesures seulement (retenu)'],['B','B · Toute surface colorée']],now:'A',prop:'A'},
+ {k:'p2',t:'2 · Couleurs du bandeau de type',why:'Le jaune est réservé à « question » ; le bandeau de l’élément maître le prend quand même. G § 2.4.',o:[['A','A · Maître jaune (retenu)'],['B','B · Maître en accent'],['C','C · Fond neutre, mot coloré']],now:'A',prop:'A'},
+ {k:'p3',t:'3 · Couleur d’une demande en attente',why:'Trait et 🔒 d’une demande en attente (mot de passe…), dans la colonne et sur son panneau. G § 9.5.',o:[['A','A · Un seul cyan (retenu)'],['B','B · Quatre nuances'],['C','C · Jaune']],now:'A',prop:'A'},
+ {k:'p4',t:'4 · Teintes de groupe portées par des marques',why:'Sarcelle pour « distant » et le mode plan, lavande pour le mode édition : un élément d’un groupe sarcelle prend la même teinte que sa marque. G § 2.4.',o:[['A','A · Garder (retenu)'],['B','B · Teinte réservée aux marques'],['C','C · Marques en gris']],now:'A',prop:'A'},
+ {k:'p5',t:'5 · Pied « ↵ insérer · ⇥ compléter »',why:'Le sélecteur liste et aperçu (@@@) écrit ses touches en pied, contre le principe 6 (pas de rappel de touches écrit). C § 8.2.',o:[['A','A · Garder le pied (retenu)'],['B','B · Touches dans la bulle de l’en-tête']],now:'A',prop:'A'},
+ {k:'p6',t:'6 · Référence du graphique horaire',why:'Ligne du débit autorisé sur le graphique des 48 heures. G § 7.12.',o:[['A','A · Tirets gris (retenu)'],['B','B · Tirets accent']],now:'A',prop:'A'},
+ {k:'p7',t:'7 · Heure du relevé et « Actualiser »',why:'Ordre des deux mots à droite de l’en-tête d’une vue de mesures. G § 9.8.',o:[['A','A · relevé 01:08 · Actualiser (retenu)'],['B','B · Actualiser · 01:08']],now:'A',prop:'A'},
+ {k:'p8',t:'8 · Élément sur une machine injoignable',why:'Dans la colonne et dans le sélecteur ⌘P (où l’on va insérer son nom). G § 9.13.',o:[['A','A · Gris dans la colonne, orange dans ⌘P (retenu)'],['B','B · « hors ligne » orange partout'],['C','C · « injoignable » gris partout']],now:'A',prop:'A'},
+ {k:'p9',t:'9 · Annuler un arrêt programmé (⊗)',why:'En-tête d’une entité qui s’éteint dans quelques secondes. C § 1.10.',o:[['A','A · Au survol (retenu)'],['B','B · Toujours visible']],now:'A',prop:'A'},
+ {k:'p10',t:'10 · Pulsation d’une marque d’anomalie',why:'Quand « Animations de l’interface » est coupé, la marque qui pulse (◎ orange) continue-t-elle ? Seul « Réduire les animations » de macOS fige tout. G § 6.',o:[['A','A · Signal : elle pulse encore (retenu)'],['B','B · Transition : elle se fige']],now:'A',prop:'A'},
+ {k:'p11',t:'11 · Réglages de choix de design',why:'Régie a deux réglages qui ne règlent qu’un choix de design (modes affichés ; flèche ou anneau), contre le principe 10. G § 1.',o:[['A','A · Nouvelles applications sans (retenu)'],['B','B · Les retirer de Régie aussi'],['C','C · Exceptions nommées']],now:'A',prop:'A'},
+ {k:'p12',t:'12 · Réglages › Groupes : aperçu clair | sombre',why:'Le cahier des charges de Régie retire puis garde deux colonnes d’aperçu. G § 3.4.',o:[['A','A · Pas de colonnes, paires dans le menu (retenu)'],['B','B · Deux colonnes d’aperçu']],now:'A',prop:'A'},
+ {k:'p13',t:'13 · Tutoiement',why:'Les textes validés de Régie tutoient, sans que ce soit posé en règle. G § 2.3.',o:[['A','A · L’interface tutoie (retenu)'],['B','B · Tournures sans pronom']],now:'A',prop:'A'},
+ {k:'p14',t:'14 · Taille minimale et titre selon macOS',why:'1120 × 640, et sous macOS 14 le titre de l’application avec le nom de l’émulateur en sous-titre. G § 2.6.',o:[['A','A · Règle générale (retenu)'],['B','B · Propre à Régie']],now:'A',prop:'A'},
+ {k:'p15',t:'15 · Progression en tranches',why:'Barre d’une campagne (acceptés, en attente, refusés, reste), que le cahier des charges ne dessine pas. C § 7.1.',o:[['A','A · Segments séparés (retenu)'],['B','B · Barre continue et compte']],now:'A',prop:'A'},
+ {k:'p16',t:'16 · Catégorie coûteuse en orange',why:'Bande fine de la consommation par modèle : la catégorie coûteuse est orange sans être une anomalie. G § 7.12.',o:[['A','A · Exception générique (retenu)'],['B','B · Neutre, sauf anomalie']],now:'A',prop:'A'},
+ {k:'p17',t:'17 · Formes d’état vide',why:'État vide d’une vue entière et de la surface principale. C § 2.6, § 2.8.',o:[['A','A · Centré et carte (retenu)'],['B','B · Toujours la carte']],now:'A',prop:'A'},
+ {k:'p18',t:'18 · Voile de la liste des raccourcis',why:'Liste affichée en tenant ⌘ une seconde. G § 3.7.',o:[['A','A · Sans voile (retenu)'],['B','B · Voile à 18 %']],now:'A',prop:'A'},
+ {k:'p19',t:'19 · Armement de ⌫',why:'Un premier ⌫ arme la suppression d’une capture, le second l’envoie à la corbeille. C § 8.3.',o:[['A','A · Sans délai (retenu)'],['B','B · Désarmé après 1,5 s']],now:'A',prop:'A'},
+ {k:'p20',t:'20 · Composants propres à Claude Code',why:'Le catalogue décrit des composants qui n’existent que dans une application de pilotage de Claude Code (hooks, onglet Session). COMPOSANTS.md.',o:[['A','A · Composants génériques (retenu)'],['B','B · Exemples de Régie']],now:'A',prop:'A'},
+ {k:'p21',t:'21 · Message d’action',why:'Résultat d’une action en arrière-plan (« Collé dans ov-farm »). La maquette ne le dessine pas. C § 2.7.',o:[['A','A · En bas à gauche, reste (retenu)'],['B','B · En bas à droite, s’efface après 4 s']],now:'A',prop:'A'},
+ {k:'p22',t:'22 · Couleurs ANSI du terminal',why:'dotlib ne définit pas de couleurs ANSI. G § 2.1.',o:[['A','A · Tirées des jetons (retenu)'],['B','B · Thème officiel de la palette']],now:'A',prop:'A'}
+];
+/* Moteur : état, cartes, fil, validations. */
+const A=Atelier.creer({cle:'gabarit-points-ouverts-v1',cartes:AXES,etat:{palette:'catppuccin'}});
+const st=A.st;
+const VUES=[['p1','1'],['p2','2'],['p3','3'],['p4','4'],['p5','5'],['p6','6'],['p7','7'],['p8','8'],['p9','9'],['p10','10'],['p11','11'],['p12','12'],['p13','13'],['p14','14'],['p15','15'],['p16','16'],['p17','17'],['p18','18'],['p19','19'],['p20','20'],['p21','21'],['p22','22']];
+const WHERE={p1:['p1'],p2:['p2'],p3:['p3'],p4:['p4'],p5:['p5'],p6:['p6'],p7:['p7'],p8:['p8'],p9:['p9'],p10:['p10'],p11:['p11'],p12:['p12'],p13:['p13'],p14:['p14'],p15:['p15'],p16:['p16'],p17:['p17'],p18:['p18'],p19:['p19'],p20:['p20'],p21:['p21'],p22:['p22']};
+const HL=Object.fromEntries(AXES.map(a=>[a.k,'.opt.choix']));
+const VALIDES_FIGES=/*valides*/{}/*fin*/;
+
+const rgba=(hex,a)=>{const n=parseInt(hex.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';};
+const melange=(a,b)=>{const x=parseInt(a.slice(1),16),y=parseInt(b.slice(1),16);const c=s=>Math.round(((x>>s&255)+(y>>s&255))/2);return '#'+[16,8,0].map(s=>c(s).toString(16).padStart(2,'0')).join('');};
+const esc=s=>String(s).replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+
+/* Petits composants du gabarit, aux mesures de COMPOSANTS.md. */
+const fen=(titre,corps,h)=>`<div class="mw"${h?` style="height:${h}px"`:''}><div class="mwt"><i></i><i></i><i></i><span>${titre||''}</span></div><div class="mwb">${corps}</div></div>`;
+const trait=(col,h)=>`<b class="tr" style="background:${col};height:${h||12}px"></b>`;
+const ligne=(contenu,cls,style)=>`<div class="ln ${cls||''}" style="${style||''}">${contenu}</div>`;
+const cap=(txt,col,P)=>`<span class="cap" style="background:${rgba(col,P.sombre?.18:.14)};color:${col}">${txt}</span>`;
+const legende=t=>`<div class="lg">${t}</div>`;
+
+function illustrer(k,v,P){
+  const sub=P.secondaire,acc=P.accent;
+  switch(k){
+  case 'p1':{
+    const S=v==='B';
+    const barres=[40,55,92,70,30,25,88,97].map((h,i)=>{const col=h>=95?P.rouge:h>=85?P.orange:P.secondaire;const op=col===P.secondaire?.35:.6;return `<i style="height:${h*.5}px;background:${col};opacity:${op}"></i>`;}).join('');
+    const mj=(p,col)=>`<span class="mj"><i style="width:${p}%;background:${col};opacity:${S?.55:1}"></i></span>`;
+    return fen('Mesures',`<div class="bars">${barres}</div>`+legende('graphique : sourdine dans les deux cas')+
+      ligne(`<span class="pd" style="background:${P.vert}"></span><span class="nm">ov-farm</span>${mj(80,P.orange)}<span class="mt">80 %</span>`)+
+      ligne(`<span class="pd" style="background:${P.vert}"></span><span class="nm">indexer</span>${mj(94,P.rouge)}<span class="mt">94 %</span>`)+
+      `<div class="mbar"><i style="width:92%;background:${P.rouge};opacity:${S?.55:1}"></i></div>`+legende('micro-jauges et barre de mesure'),200);}
+  case 'p2':{
+    const T=v==='A'?[['Maître',P.jaune],['Écriture',P.orange],['Lecture seule',P.g_slate]]:v==='B'?[['Maître',acc],['Écriture',P.orange],['Lecture seule',P.g_slate]]:[['Maître',P.jaune],['Écriture',P.orange],['Lecture seule',P.g_slate]];
+    return fen('Terminal',T.map(([m,col])=>`<div class="bandeau" style="background:${v==='C'?P.champ:rgba(col,P.sombre?.18:.14)}"><b style="color:${col}">${m}</b><span>overview › ${m==='Maître'?'overview':m==='Écriture'?'refonte-ui':'audit'}</span></div>`).join('')+`<div class="term">❯ ▍</div>`,170);}
+  case 'p3':{
+    const N=v==='A'?[P.g_cyan,P.g_cyan,P.g_cyan]:v==='B'?[P.g_cyan,P.g_teal,melange(P.g_cyan,P.g_blue)]:[P.jaune,P.jaune,P.jaune];
+    return fen('Colonne',['creation','git-local','nas2-backup'].map((n,i)=>ligne(`<span class="pd" style="background:${P.vert}"></span><span class="nm">${n}</span><span style="margin-left:6px">🔒</span>`,'',`box-shadow:inset 2px 0 0 ${N[i]}`)).join('')+legende('trois demandes de mot de passe en attente'),170);}
+  case 'p4':{
+    const M=v==='A'?P.g_teal:v==='B'?melange(acc,sub):sub;
+    return fen('Colonne',`<div class="gh">${trait(P.g_teal)}<span>Infra partagée</span><span class="mt">2/3</span></div>`+
+      ligne(`<span class="pd" style="background:${P.vert}"></span><span class="mode" style="color:${M}">⏸</span><span class="nm">plans-nas</span>`)+
+      ligne(`<span class="pd" style="background:${P.vert}"></span><span class="mode" style="color:${v==='A'?P.g_lavender:M}">✎</span><span class="nm">refonte</span>`)+
+      ligne(`<span class="pd" style="background:${P.vert}"></span><span class="mode"></span><span class="nm">ovtest<sup style="color:${M};font-weight:600">⇄</sup></span>`,'',`background-image:repeating-linear-gradient(to bottom,${M} 0 3px,transparent 3px 6px);background-size:2px 100%;background-repeat:no-repeat`)+
+      legende(v==='B'?'marques : teinte réservée (exemple)':'groupe sarcelle ; marques : plan, édition, distant'),190);}
+  case 'p5':{
+    const pied=v==='A'?`<div class="pied">↵ insérer · ⇥ compléter</div>`:'';
+    const tete=`<div class="sel-h"><span>@@@</span><span style="margin-left:auto;color:${sub}" title="↵ insérer · ⇥ compléter">ⓘ</span>${v==='B'?`<span class="bul">↵ insérer · ⇥ compléter</span>`:''}</div>`;
+    return `<div class="pnl">${tete}<div class="sel-g"><div>${['ui','qa','plan'].map((x,i)=>`<div class="ln${i===0?' on':''}"><span class="nm">@@@${x}</span></div>`).join('')}</div><div class="sel-a"><b>@@@ui</b><div style="color:${sub};font-size:11px">Atelier d’interface</div></div></div>${pied}</div>`;}
+  case 'p6':{
+    const H=[.2,0,0,.3,0,0,0,.4,0,1.5,2.4,1.9,2.2,1.4],aut=.79,M=2.5,W=240,Hh=70,bw=W/H.length,y=x=>Hh-x/M*Hh;
+    const col=v==='A'?sub:acc;
+    let g=`<svg viewBox="0 0 ${W+24} ${Hh+14}" width="100%">`+[0,1,2].map(i=>`<line x1="0" x2="${W}" y1="${y(i)}" y2="${y(i)}" stroke="${P.separateur}" stroke-width=".6"/><text x="${W+5}" y="${y(i)+3}" font-size="8" fill="${sub}">${i}</text>`).join('');
+    H.forEach((x,i)=>{if(!x)return;const o=x>aut;g+=`<rect x="${i*bw+1.5}" y="${y(x)}" width="${bw-3}" height="${Hh-y(x)}" rx="1.5" fill="${o?P.orange:sub}" opacity="${o?.5:.35}"/>`;});
+    g+=`<line x1="0" x2="${W}" y1="${y(aut)}" y2="${y(aut)}" stroke="${col}" stroke-width="1" stroke-dasharray="3 3"/><text x="4" y="${y(aut)-3}" font-size="8.5" fill="${col}" stroke="${P.base}" stroke-width="3" paint-order="stroke">autorisé 0,79 pt/h</text></svg>`;
+    return fen('Les 48 dernières heures',g,150);}
+  case 'p7':return fen('Quota',`<div class="vh"><b>Quota 7 jours</b><span style="margin-left:auto"></span>${v==='A'?`<span style="color:${sub}">relevé 01:08</span><span style="color:${sub}">·</span><span style="color:${acc}">Actualiser</span>`:`<span style="color:${acc}">Actualiser</span><span style="color:${sub}">·</span><span style="color:${sub}">01:08</span>`}</div>`,90);
+  case 'p8':{
+    const col=v==='A'?[sub,'injoignable',P.orange,'hors ligne']:v==='B'?[P.orange,'hors ligne',P.orange,'hors ligne']:[sub,'injoignable',sub,'injoignable'];
+    return fen('Colonne',ligne(`<span class="pd" style="background:transparent;box-shadow:inset 0 0 0 1.5px ${sub}"></span><span class="nm">indexer<sup style="color:${P.g_teal}">⇄</sup></span><span class="mt" style="color:${col[0]}">${col[1]}</span>`),70)+
+      `<div class="pnl" style="margin-top:8px"><div class="pnf">ov-regie/<span style="color:${sub}">▍</span></div>${ligne(`<span class="nm"><span style="color:${sub}">ov-regie/</span>indexer <span style="color:${sub}">@nas1</span></span><span style="font-size:10.5px;color:${col[2]};margin-left:6px">${col[3]}</span>`,'on')}</div>`;}
+  case 'p9':{
+    const eh=(hov,x)=>`<div class="ent${hov?' hov':''}">${trait(P.g_blue)}<b>forge</b><span class="mt">1/4</span><span style="margin-left:auto;color:${P.orange}">extinction dans 11 s</span>${x?`<span class="x">⊗</span>`:''}</div>`;
+    return fen('Colonne',eh(false,v==='B')+legende('au repos')+eh(true,true)+legende('au survol'),150);}
+  case 'p10':{
+    const anime=v==='A';
+    return fen('Colonne',ligne(`<span class="pd" style="background:${P.vert}"></span><span class="nm">coordination</span><span class="${anime?'pulse':''}" style="color:${P.orange};margin-left:6px">◎</span><span style="color:${P.orange};font-size:11px;margin-left:4px">⚠</span>`)+legende('« Animations de l’interface » coupé : '+(anime?'la marque pulse encore':'la marque est figée')),100);}
+  case 'p11':{
+    const lignes=`<div class="gl"><span>Modes affichés</span><span class="sgs"><span class="on">Tous</span><span>Exceptions</span></span></div><div class="gl"><span>Version en retard</span><span class="sgs"><span class="on">Flèche</span><span>Anneau</span></span></div>`;
+    const pane=(t,avec,tag)=>`<div class="pane"><div class="pt">${t}</div>${avec?lignes+(tag?legende('exceptions nommées au principe 10'):''):`<div class="gl"><span>Largeur</span><span style="color:${sub}">290 px</span></div>`+legende('pas de réglage de design')}</div>`;
+    return `<div class="duo col">${pane('Régie',v!=='B',v==='C')}${pane('Nouvelle application',v==='C',v==='C')}</div>`;}
+  case 'p12':{
+    const R=[['Infra partagée',P.g_purple,'Violet'],['Outils',P.g_blue,'Bleu'],['Shell',P.g_teal,'Sarcelle']];
+    const liste=R.map(([n,c,cn],i)=>`<div class="pr${i===2?' open':''}">${trait(c)}<span>${n}</span><span style="margin-left:auto">${cn} ⌄</span></div>`).join('');
+    const menu=v==='A'?`<div class="menu">${R.map(([n,c,cn])=>`<div class="mi"><span class="paire"><i style="background:${c}"></i><i style="background:${melange(c,'#ffffff')}"></i></span>${cn}</div>`).join('')}</div>`:'';
+    const apercus=v==='B'?`<div class="duo">${['clair','sombre'].map(ap=>`<div class="minicol" style="background:${ap==='clair'?'#EFF1F5':'#1E1E2E'};color:${ap==='clair'?'#4C4F69':'#CDD6F4'}">${R.map(([n,c])=>`<div>${trait(c,10)} ${n}</div>`).join('')}</div>`).join('')}</div>`:'';
+    return fen('Réglages › Groupes',apercus+liste+menu,210);}
+  case 'p13':{
+    const T=v==='A'?['Choisis la session cible.','Tu as utilisé 99 % de ta semaine.','Recrée la clé d’abord.']:['Session cible à choisir.','99 % de la semaine utilisés.','Clé à recréer d’abord.'];
+    return fen('Textes',T.map(t=>`<div class="tx">${t}</div>`).join('')+legende('bulles et messages'),130);}
+  case 'p14':{
+    const app=(n,regle)=>`<div class="fenmin"><div class="mwt"><i></i><i></i><i></i><span>${regle?n+' — <span style="color:'+sub+'">Ghostty</span>':''}</span></div><div class="dim">${regle?'1120 × 640 au moins':'taille libre'}</div></div>`;
+    return `<div class="duo">${app('Régie',true)}${app('Notes',v==='A')}</div>`+legende('macOS 14 : titre et sous-titre ; macOS 15 et plus : pas de titre');}
+  case 'p15':{
+    const parts=[[3,P.texte],[2,sub],[1,P.rouge],[2,P.separateur]];
+    const barre=v==='A'?`<div class="seg-bar">${parts.map(([n,c])=>`<i style="flex:${n};background:${c}"></i>`).join('')}</div>`:`<div class="cont-bar">${parts.map(([n,c])=>`<i style="flex:${n};background:${c}"></i>`).join('')}</div><div style="font-size:11px;color:${sub};margin-top:4px"><b style="color:${P.texte}">3</b>/8 acceptés · 1 refusé</div>`;
+    return fen('Campagne',`<div class="fsec">Campagne</div>${barre}<div style="font-size:11px;color:${sub};margin-top:6px">tranche 2 sur 2</div>`,120);}
+  case 'p16':{
+    const parts=[[55,P.texte,.85],[30,P.texte,.55],[15,v==='A'?P.orange:sub,v==='A'?1:.85]];
+    return fen('Modèles · 5 h',`<div class="mbar" style="display:flex;gap:2px;background:none">${parts.map(([w,c,o])=>`<i style="width:${w}%;background:${c};opacity:${o};position:static;border-radius:3px"></i>`).join('')}</div><div style="display:flex;gap:12px;font-size:11px;color:${sub};margin-top:5px"><span>opus 55 %</span><span>sonnet 30 %</span><span ${v==='A'?`style="color:${P.orange}"`:''}>fable 15 %</span></div>`,100);}
+  case 'p17':{
+    const carte=`<div class="carte-etat"><b>Aucune session vivante</b><span style="color:${sub}">reno-cabanne · 3 sessions passées</span><span class="fbtn prim">Nouvelle session</span></div>`;
+    const centre=`<div class="centre-etat"><b>Aucun projet</b><span style="color:${sub}">Les projets du manifeste apparaissent ici.</span></div>`;
+    return `<div class="duo">${fen('Vue entière',v==='A'?centre:carte,170)}${fen('Surface principale',carte,170)}</div>`;}
+  case 'p18':return fen('Régie',`<div class="fond-app">${[1,2,3,4].map(()=>`<div class="faux"></div>`).join('')}</div>${v==='B'?`<div class="voile" style="background:rgba(0,0,0,.18)"></div>`:''}<div class="pnl racc"><div class="fsec">Voir et insérer</div><div class="kr"><span class="key">P</span>Projet/session</div><div class="kr"><span class="key">L</span>Raccourcis @@@</div><div class="kr"><span class="key">K</span>Fiche du projet</div></div>`,190);
+  case 'p19':{
+    const vg=i=>`<div class="vig${i===1?' arm':''}"><div class="img"></div>${i===1?`<span class="del">⌫</span>${v==='B'?`<span class="decompte"></span>`:''}`:''}<span class="h">11:4${i}</span></div>`;
+    return fen('Captures',`<div class="bande">${[0,1,2].map(vg).join('')}</div>`+legende(v==='A'?'armée jusqu’au second ⌫ ou à un changement de choix':'désarmée seule après 1,5 s'),150);}
+  case 'p20':{
+    const gen=['4.7 Liens par famille','4.8 Hooks','4.12 Dépliant d’explication','4.13 Onglet Session'];
+    return fen('COMPOSANTS.md',v==='A'?`<div class="fsec">4. Fiche</div>${gen.map(x=>`<div class="toc">${x}</div>`).join('')}`:`<div class="fsec">4. Fiche</div>${[gen[0],gen[2]].map(x=>`<div class="toc">${x}</div>`).join('')}<div class="fsec" style="margin-top:8px">Exemples de Régie</div>${[gen[1],gen[3]].map(x=>`<div class="toc" style="color:${sub}">${x}</div>`).join('')}`,170);}
+  case 'p21':return fen('Régie',`<div class="term" style="height:96px">❯ ▍</div><div class="msg-act${v==='B'?' droite efface':''}">Collé dans ov-farm</div>`,150);
+  case 'p22':{
+    const off=st.palette==='catppuccin'?(P.sombre?{noir:'#45475A',noirVif:'#585B70',blanc:'#BAC2DE',blancVif:'#A6ADC8'}:{noir:'#5C5F77',noirVif:'#6C6F85',blanc:'#ACB0BE',blancVif:'#BCC0CC'}):null;
+    const C=v==='A'||!off?{noir:P.ansi_noir,noirVif:P.ansi_noirVif,blanc:P.ansi_blanc,blancVif:P.ansi_blancVif}:off;
+    const sw=(n,c)=>`<span class="sw"><i style="background:${c}"></i>${n}</span>`;
+    return fen('Terminal',`<div class="term"><div><span style="color:${P.ansi_bleu}">src/</span>  <span style="color:${P.ansi_vert}">build.sh</span>  <span style="color:${C.noirVif}"># commentaire</span></div><div><span style="background:${C.noir};color:${C.blancVif};padding:0 4px">noir</span> <span style="color:${C.blanc}">blanc</span> <span style="color:${P.ansi_rouge}">erreur</span> <span style="color:${P.ansi_jaune}">attention</span></div></div><div class="sws">${sw('noir',C.noir)}${sw('noir vif',C.noirVif)}${sw('blanc',C.blanc)}${sw('blanc vif',C.blancVif)}</div>`+(v==='B'&&!off?legende('valeurs officielles : catppuccin seulement dans cette maquette'):''),170);}
+  }
+  return '';
+}
+
+/* Rendu : la vue d'un point montre toutes ses options ; l'option de la carte est encadrée. */
+function dessiner(){
+  const NOW={};AXES.forEach(a=>NOW[a.k]=a.now);
+  const c=st.view==='avant'?NOW:st.c;
+  const P=Object.assign({sombre:st.theme==='sombre'},JETONS[st.palette][st.theme]);
+  const w=document.getElementById('win');
+  Object.entries(P).forEach(([k,v])=>{if(typeof v==='string')w.style.setProperty('--w-'+k,v);});
+  const k=st.v2,a=AXES.find(x=>x.k===k);
+  const choix={p1:c.p1,p2:c.p2,p3:c.p3,p4:c.p4,p5:c.p5,p6:c.p6,p7:c.p7,p8:c.p8,p9:c.p9,p10:c.p10,p11:c.p11,p12:c.p12,p13:c.p13,p14:c.p14,p15:c.p15,p16:c.p16,p17:c.p17,p18:c.p18,p19:c.p19,p20:c.p20,p21:c.p21,p22:c.p22}[k];
+  const fige=st.frz&&st.frz[k]!==undefined;
+  w.innerHTML=`<div class="ar-h"><b>${esc(a.t)}</b><span>${esc(a.why)}</span></div><div class="ar-g n${a.o.length}">`+a.o.map(([v,l])=>`<div class="opt${v===choix?' choix':''}"><div class="opt-l">${esc(l)}${v===choix?`<span class="opt-c">${fige?'validé':'choisi'}</span>`:''}</div><div class="opt-i">${illustrer(k,v,P)}</div></div>`).join('')+`</div>`;
+  document.getElementById('legend').innerHTML='<span>Jetons de la spécification (jetons.json), palette '+esc(st.palette)+'.</span>';
+}
+function render(){A.render();}
+document.getElementById('palette').addEventListener('change',e=>{st.palette=e.target.value;try{localStorage.setItem('gabarit-points-ouverts-v1-palette',st.palette)}catch(_){}render();});
+try{const p=localStorage.getItem('gabarit-points-ouverts-v1-palette');if(p&&JETONS[p]){st.palette=p;document.getElementById('palette').value=p;}}catch(_){}
+A.lancer({vues:VUES,vuesCarte:WHERE,encadrer:HL,valides:VALIDES_FIGES,rendu:dessiner,vueDefaut:'p1',
+  ref:p=>{st.palette=p.palette||'catppuccin';document.getElementById('palette').value=st.palette;}});
+})();
+</script>
