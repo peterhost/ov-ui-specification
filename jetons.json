@@ -1,6 +1,6 @@
 {
  "source": "atelier/regie-lisibilite.html (THEMES, DOTLIB, envPal, namedColors) ; valeurs dotlib : sources/palettes-dotlib.md",
- "regle": "Les jetons viennent des rôles dotlib quand ils existent (num, date, text, key, path, bad, note, ok, surface, text_on_surface, crust) ; les fonds (base, mantle) et les teintes absentes de dotlib (jaune, sarcelle, lavande) viennent de la palette d'origine. teinte : la couleur d'une marque à 14 % (clair) / 18 % (sombre), donnée ici pour l'accent. terminal.ansi : les 16 couleurs ANSI tirées des jetons (dotlib ne définit pas de couleurs ANSI) : noir = separateur, blanc = secondaire, noir vif = mélange à parts égales de separateur et secondaire, blanc vif = texte, couleurs vives = couleurs normales.",
+ "regle": "Les jetons viennent des rôles dotlib quand ils existent (num, date, text, key, path, bad, note, ok, surface, text_on_surface, crust) ; les fonds (base, mantle) et les teintes absentes de dotlib (jaune, seconde teinte bleue) viennent de la palette d'origine. groupes : douze couleurs de royaume (23 oct.), les mêmes noms dans chaque palette ; un rôle dotlib de la même famille pris tel quel quand sa teinte est à 20° de la cible, sinon une teinte composée en OKLCH (clarté et chroma médians des accents, chroma 0,06 au moins, 0,035 pour slate), contraste 3 sur base et mantle, puis écartement à ΔE 2000 ≥ 10 des couleurs qui ne sont pas un rôle dotlib (fonction douzeRoyaumes de la maquette ; banc : atelier/nuancier-12.html). teinte : la couleur d'une marque à 14 % (clair) / 18 % (sombre), donnée ici pour l'accent. terminal.ansi : les 16 couleurs ANSI tirées des jetons (dotlib ne définit pas de couleurs ANSI) : noir = separateur, blanc = secondaire, noir vif = mélange à parts égales de separateur et secondaire, blanc vif = texte, couleurs vives = couleurs normales.",
  "palettes": {
   "catppuccin": {
    "clair": {
@@ -31,11 +31,17 @@
     },
     "groupes": {
      "blue": "#1E66F5",
-     "cyan": "#179299",
-     "teal": "#04A5E5",
-     "lavender": "#7287FD",
+     "indigo": "#2B83EA",
+     "lavender": "#8978CB",
      "purple": "#8839EF",
-     "slate": "#8C8FA1"
+     "magenta": "#C45EBD",
+     "pink": "#C75F8B",
+     "brown": "#B27948",
+     "olive": "#8B8800",
+     "mint": "#149569",
+     "teal": "#179299",
+     "cyan": "#0A7296",
+     "slate": "#59688A"
     },
     "pastilles": {
      "finDeTour": {
@@ -112,11 +118,17 @@
     },
     "groupes": {
      "blue": "#89B4FA",
-     "cyan": "#94E2D5",
-     "teal": "#89DCEB",
-     "lavender": "#B4BEFE",
+     "indigo": "#8484C1",
+     "lavender": "#E4DAFE",
      "purple": "#CBA6F7",
-     "slate": "#7F849C"
+     "magenta": "#C792C2",
+     "pink": "#FFD3DA",
+     "brown": "#BFA17D",
+     "olive": "#C7C790",
+     "mint": "#7DB693",
+     "teal": "#94E2D5",
+     "cyan": "#89DCEB",
+     "slate": "#B4C5DA"
     },
     "pastilles": {
      "finDeTour": {
@@ -194,12 +206,18 @@
      "rouge": "#9D0006"
     },
     "groupes": {
-     "blue": "#076678",
-     "cyan": "#427B58",
-     "teal": "#689D6A",
-     "lavender": "#458588",
-     "purple": "#8F3F71",
-     "slate": "#928374"
+     "blue": "#39628C",
+     "indigo": "#5A588C",
+     "lavender": "#7C80A7",
+     "purple": "#744F7C",
+     "magenta": "#9874A4",
+     "pink": "#99697B",
+     "brown": "#947155",
+     "olive": "#7C7C4E",
+     "mint": "#406B4B",
+     "teal": "#3D8783",
+     "cyan": "#3B839E",
+     "slate": "#6F8193"
     },
     "pastilles": {
      "finDeTour": {
@@ -275,12 +293,18 @@
      "rouge": "#FB4934"
     },
     "groupes": {
-     "blue": "#83A598",
-     "cyan": "#8EC07C",
-     "teal": "#689D6A",
-     "lavender": "#458588",
-     "purple": "#D3869B",
-     "slate": "#928374"
+     "blue": "#5385B7",
+     "indigo": "#A3B5F5",
+     "lavender": "#797DA8",
+     "purple": "#C3AAEB",
+     "magenta": "#9D6DA1",
+     "pink": "#C2899E",
+     "brown": "#B89477",
+     "olive": "#A0A069",
+     "mint": "#5C8F68",
+     "teal": "#56ADA8",
+     "cyan": "#54A8C8",
+     "slate": "#8E9EB2"
     },
     "pastilles": {
      "finDeTour": {
@@ -359,11 +383,17 @@
     },
     "groupes": {
      "blue": "#5E81AC",
+     "indigo": "#3B5072",
+     "lavender": "#57476B",
+     "purple": "#867CA5",
+     "magenta": "#875F77",
+     "pink": "#A67989",
+     "brown": "#9E7B5F",
+     "olive": "#736940",
+     "mint": "#4B745B",
+     "teal": "#578F8B",
      "cyan": "#4C7F8F",
-     "teal": "#88C0D0",
-     "lavender": "#81A1C1",
-     "purple": "#9A5F96",
-     "slate": "#7B88A1"
+     "slate": "#77849C"
     },
     "pastilles": {
      "finDeTour": {
@@ -440,11 +470,17 @@
     },
     "groupes": {
      "blue": "#81A1C1",
+     "indigo": "#ABB8E2",
+     "lavender": "#867BA2",
+     "purple": "#C4AFD9",
+     "magenta": "#9D748D",
+     "pink": "#CF9EA6",
+     "brown": "#BA9578",
+     "olive": "#A0A175",
+     "mint": "#688D70",
+     "teal": "#71AAA5",
      "cyan": "#88C0D0",
-     "teal": "#8FBCBB",
-     "lavender": "#5E81AC",
-     "purple": "#B48EAD",
-     "slate": "#616E88"
+     "slate": "#72809A"
     },
     "pastilles": {
      "finDeTour": {
@@ -523,11 +559,17 @@
     },
     "groupes": {
      "blue": "#268BD2",
-     "cyan": "#2AA198",
-     "teal": "#2AA198",
-     "lavender": "#6C71C4",
-     "purple": "#D33682",
-     "slate": "#93A1A1"
+     "indigo": "#415CA8",
+     "lavender": "#755D93",
+     "purple": "#8D74C9",
+     "magenta": "#9E4D83",
+     "pink": "#B96E8C",
+     "brown": "#A47B59",
+     "olive": "#726710",
+     "mint": "#35946D",
+     "teal": "#0F938A",
+     "cyan": "#007289",
+     "slate": "#74869D"
     },
     "pastilles": {
      "finDeTour": {
@@ -604,11 +646,17 @@
     },
     "groupes": {
      "blue": "#268BD2",
-     "cyan": "#2AA198",
+     "indigo": "#516EBC",
+     "lavender": "#9B98D5",
+     "purple": "#815FB0",
+     "magenta": "#C684CC",
+     "pink": "#B46A88",
+     "brown": "#A47B5A",
+     "olive": "#757322",
+     "mint": "#3A9972",
      "teal": "#2AA198",
-     "lavender": "#6C71C4",
-     "purple": "#D33682",
-     "slate": "#586E75"
+     "cyan": "#0A7C8F",
+     "slate": "#74869E"
     },
     "pastilles": {
      "finDeTour": {
@@ -686,12 +734,18 @@
      "rouge": "#F52A65"
     },
     "groupes": {
-     "blue": "#2E7DE9",
+     "blue": "#2374DF",
+     "indigo": "#3256C5",
+     "lavender": "#6D2293",
+     "purple": "#944FEC",
+     "magenta": "#B34CAD",
+     "pink": "#BA5380",
+     "brown": "#894B28",
+     "olive": "#7F7C10",
+     "mint": "#006B3F",
+     "teal": "#038770",
      "cyan": "#007197",
-     "teal": "#118C74",
-     "lavender": "#7847BD",
-     "purple": "#9854F1",
-     "slate": "#848CB5"
+     "slate": "#69789C"
     },
     "pastilles": {
      "finDeTour": {
@@ -768,11 +822,17 @@
     },
     "groupes": {
      "blue": "#7AA2F7",
-     "cyan": "#7DCFFF",
-     "teal": "#73DACA",
-     "lavender": "#2AC3DE",
+     "indigo": "#B5CBFE",
+     "lavender": "#898EC8",
      "purple": "#BB9AF7",
-     "slate": "#565F89"
+     "magenta": "#DB91D5",
+     "pink": "#E295B2",
+     "brown": "#B7876F",
+     "olive": "#B5B467",
+     "mint": "#56A779",
+     "teal": "#73DACA",
+     "cyan": "#7DCFFF",
+     "slate": "#5E6892"
     },
     "pastilles": {
      "finDeTour": {
@@ -850,12 +910,18 @@
      "rouge": "#F85552"
     },
     "groupes": {
-     "blue": "#3A94C5",
-     "cyan": "#35A77C",
-     "teal": "#35A77C",
-     "lavender": "#5A8FA8",
-     "purple": "#DF69BA",
-     "slate": "#939F91"
+     "blue": "#2C70B0",
+     "indigo": "#6A65B5",
+     "lavender": "#8186BF",
+     "purple": "#90589D",
+     "magenta": "#AC74BD",
+     "pink": "#BA728F",
+     "brown": "#AA8263",
+     "olive": "#8D8C42",
+     "mint": "#3D9671",
+     "teal": "#119690",
+     "cyan": "#1795BA",
+     "slate": "#738B9E"
     },
     "pastilles": {
      "finDeTour": {
@@ -931,12 +997,18 @@
      "rouge": "#E67E80"
     },
     "groupes": {
-     "blue": "#7FBBB3",
-     "cyan": "#83C092",
-     "teal": "#83C092",
-     "lavender": "#83A0B5",
-     "purple": "#D699B6",
-     "slate": "#859289"
+     "blue": "#6B96C3",
+     "indigo": "#B3CAFE",
+     "lavender": "#8B8FB7",
+     "purple": "#D4BEF8",
+     "magenta": "#AB81AF",
+     "pink": "#D09DB0",
+     "brown": "#AA8D6A",
+     "olive": "#969666",
+     "mint": "#6E9F81",
+     "teal": "#74BDB8",
+     "cyan": "#72B9D5",
+     "slate": "#A0B0C4"
     },
     "pastilles": {
      "finDeTour": {
@@ -1015,11 +1087,17 @@
     },
     "groupes": {
      "blue": "#5079BE",
-     "cyan": "#3A8B84",
-     "teal": "#3A8B84",
-     "lavender": "#7A5BC9",
+     "indigo": "#7A5BC9",
+     "lavender": "#7D73A8",
      "purple": "#B05CCC",
-     "slate": "#8790A0"
+     "magenta": "#814887",
+     "pink": "#A7647E",
+     "brown": "#987355",
+     "olive": "#818039",
+     "mint": "#3A8E6B",
+     "teal": "#3A8B84",
+     "cyan": "#0888AC",
+     "slate": "#566278"
     },
     "pastilles": {
      "finDeTour": {
@@ -1095,12 +1173,18 @@
      "rouge": "#EC7279"
     },
     "groupes": {
-     "blue": "#6CB6EB",
-     "cyan": "#5DBBC1",
-     "teal": "#5DBBC1",
-     "lavender": "#8C9BEB",
+     "blue": "#9ACBFE",
+     "indigo": "#6085CD",
+     "lavender": "#AAA2D6",
      "purple": "#D38AEA",
-     "slate": "#7F8490"
+     "magenta": "#B774A7",
+     "pink": "#D694AD",
+     "brown": "#C7A284",
+     "olive": "#AFAE6E",
+     "mint": "#72BC9A",
+     "teal": "#5DBBC1",
+     "cyan": "#53B8DC",
+     "slate": "#9BACC0"
     },
     "pastilles": {
      "finDeTour": {
@@ -1179,11 +1263,17 @@
     },
     "groupes": {
      "blue": "#005FAF",
-     "cyan": "#008787",
+     "indigo": "#4E4290",
+     "lavender": "#7E7BB5",
+     "purple": "#7A4187",
+     "magenta": "#A969AE",
+     "pink": "#A35C79",
+     "brown": "#946C4C",
+     "olive": "#7C7A2C",
+     "mint": "#2A8964",
      "teal": "#008787",
-     "lavender": "#5F5FAF",
-     "purple": "#870087",
-     "slate": "#808080"
+     "cyan": "#1382A3",
+     "slate": "#66778E"
     },
     "pastilles": {
      "finDeTour": {
@@ -1260,11 +1350,17 @@
     },
     "groupes": {
      "blue": "#87AFD7",
-     "cyan": "#87D7D7",
-     "teal": "#87D7AF",
-     "lavender": "#8787D7",
+     "indigo": "#8787D7",
+     "lavender": "#DBD5FF",
      "purple": "#D7AFD7",
-     "slate": "#808080"
+     "magenta": "#A57599",
+     "pink": "#FDCDD5",
+     "brown": "#FED0BA",
+     "olive": "#A1A77A",
+     "mint": "#97CCB2",
+     "teal": "#87D7D7",
+     "cyan": "#85CAE5",
+     "slate": "#CADEF2"
     },
     "pastilles": {
      "finDeTour": {
@@ -1342,12 +1438,18 @@
      "rouge": "#AF0000"
     },
     "groupes": {
-     "blue": "#0087AF",
-     "cyan": "#005F87",
-     "teal": "#008787",
-     "lavender": "#005F87",
+     "blue": "#5084B9",
+     "indigo": "#495793",
+     "lavender": "#766E9B",
      "purple": "#8700AF",
-     "slate": "#878787"
+     "magenta": "#77477B",
+     "pink": "#9B6278",
+     "brown": "#906E52",
+     "olive": "#7A7940",
+     "mint": "#428567",
+     "teal": "#008787",
+     "cyan": "#005F87",
+     "slate": "#68778B"
     },
     "pastilles": {
      "finDeTour": {
@@ -1423,12 +1525,18 @@
      "rouge": "#DF0000"
     },
     "groupes": {
-     "blue": "#5FAFD7",
-     "cyan": "#00AFAF",
-     "teal": "#5FAFAF",
-     "lavender": "#87AFD7",
+     "blue": "#5488BD",
+     "indigo": "#9EBAFB",
+     "lavender": "#C0B3E3",
      "purple": "#AF87D7",
-     "slate": "#808080"
+     "magenta": "#A56EA0",
+     "pink": "#C78BA2",
+     "brown": "#BC977A",
+     "olive": "#A4A469",
+     "mint": "#6DB091",
+     "teal": "#00AFAF",
+     "cyan": "#53ACCD",
+     "slate": "#91A1B5"
     },
     "pastilles": {
      "finDeTour": {
@@ -1506,12 +1614,18 @@
      "rouge": "#C30771"
     },
     "groupes": {
-     "blue": "#008EC4",
-     "cyan": "#20A5BA",
-     "teal": "#20A5BA",
-     "lavender": "#6855DE",
+     "blue": "#346FA8",
+     "indigo": "#6855DE",
+     "lavender": "#877EB1",
      "purple": "#523C79",
-     "slate": "#9E9E9E"
+     "magenta": "#8F538A",
+     "pink": "#B07089",
+     "brown": "#A27E61",
+     "olive": "#878644",
+     "mint": "#3A764B",
+     "teal": "#097772",
+     "cyan": "#0E91A5",
+     "slate": "#738397"
     },
     "pastilles": {
      "finDeTour": {
@@ -1587,12 +1701,18 @@
      "rouge": "#E32791"
     },
     "groupes": {
-     "blue": "#20BBFC",
+     "blue": "#3790E2",
+     "indigo": "#7E6BE8",
+     "lavender": "#C5B9FF",
+     "purple": "#B98FF5",
+     "magenta": "#DB82D4",
+     "pink": "#E287AB",
+     "brown": "#CE9B72",
+     "olive": "#AFAD4C",
+     "mint": "#48A163",
+     "teal": "#00C0B9",
      "cyan": "#4FB8CC",
-     "teal": "#4FB8CC",
-     "lavender": "#7E6BE8",
-     "purple": "#6855DE",
-     "slate": "#6C6C6C"
+     "slate": "#93AAC7"
     },
     "pastilles": {
      "finDeTour": {
@@ -1671,11 +1791,17 @@
     },
     "groupes": {
      "blue": "#005FAF",
+     "indigo": "#5C5CFF",
+     "lavender": "#5D5799",
+     "purple": "#9677DB",
+     "magenta": "#AA56A4",
+     "pink": "#B05B7E",
+     "brown": "#9E6F48",
+     "olive": "#827F16",
+     "mint": "#009165",
+     "teal": "#009B9B",
      "cyan": "#0087AF",
-     "teal": "#00AAAA",
-     "lavender": "#5C5CFF",
-     "purple": "#AF00AF",
-     "slate": "#8A8A8A"
+     "slate": "#687D98"
     },
     "pastilles": {
      "finDeTour": {
@@ -1752,11 +1878,17 @@
     },
     "groupes": {
      "blue": "#005FAF",
-     "cyan": "#00AFD7",
-     "teal": "#00FFFF",
-     "lavender": "#7F7FFF",
+     "indigo": "#7D5AD9",
+     "lavender": "#998BD5",
      "purple": "#D75FD7",
-     "slate": "#6C6C6C"
+     "magenta": "#B75196",
+     "pink": "#D2759B",
+     "brown": "#BE8B61",
+     "olive": "#9F9D35",
+     "mint": "#30B080",
+     "teal": "#00FFFF",
+     "cyan": "#00AFD7",
+     "slate": "#8399B7"
     },
     "pastilles": {
      "finDeTour": {
