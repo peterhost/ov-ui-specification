@@ -1,6 +1,6 @@
 // Tests génériques d'un atelier @@@ui (jsdom, sans navigateur), CDC-ATELIER-UI § 8 :
 // - la page est l'assemblage exact des sources ; les choix validés embarqués = <fige> ;
-// - contrat des cartes (§ 4.6) ;
+// - contrat des cartes (§ 4.6) ; thème d'UI nommé et, s'il est copié, complet (§ 1.1) ;
 // - la page se charge sans erreur ; cartes validées figées, y compris après les préréglages ;
 // - chaque vue s'affiche dans chaque thème (et chaque valeur des listes déclarées) ;
 // - chaque option de chaque carte s'applique sans erreur ; chaque point ouvre sa vue et encadre son élément ;
@@ -15,6 +15,7 @@ const os = require('os');
 const { JSDOM } = require('jsdom');
 const { lireConfig, assembler } = require('./assembler.js');
 const contrat = require('./contrat.js');
+const theme = require('./theme.js');
 
 const cfg = lireConfig(process.argv[2]);
 const T = Object.assign({ ongletsVue: {}, listes: [], pointsInteractifs: [] }, cfg.tests || {});
@@ -30,6 +31,7 @@ const fige = fs.existsSync(R(cfg.fige)) ? JSON.parse(fs.readFileSync(R(cfg.fige)
 const embarque = JSON.parse((html.match(/\/\*valides\*\/([\s\S]*?)\/\*fin\*\//) || [, 'null'])[1]);
 ok(JSON.stringify(embarque) === JSON.stringify(fige), 'choix validés embarqués différents de ' + cfg.fige + ' (lancer le registre)');
 contrat(html, { ongletsVue: T.ongletsVue }).forEach(e => ok(false, e));
+theme.verifier(cfg).forEach(e => ok(false, e)); n += 1;
 n += contrat.compter(html);
 
 const AXES = new Function('return [' + html.match(/const AXES=\[([\s\S]*?)\n\];/)[1] + '];')();

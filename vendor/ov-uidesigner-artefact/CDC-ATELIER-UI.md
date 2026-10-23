@@ -2,19 +2,31 @@
 
 Cahier des charges du mode `@@@ui` : dans une session Claude Code locale, Pierre tape `@@@ui` pour revoir l'interface d'une application avec Claude dans un **atelier interactif** publié en artifact. Ce document fixe le modèle de l'atelier et les règles que la session suit, du premier relevé au cahier des charges final.
 
-Ce dépôt (`ov-uidesigner-artefact`) porte le modèle : le **moteur** commun à tous les ateliers (`moteur/`), les **outils** (`outils/` : assemblage, registre, tests, audit) et un **atelier d'exemple** (`exemple/`). La spécification d'interface que les ateliers appliquent (`GABARIT.md`, `COMPOSANTS.md`, `jetons.json`) est dans le dépôt `ov-ui-specification`. Une application garde dans son propre dépôt une copie de chacun (`vendor/ov-uidesigner-artefact/`, `vendor/ov-ui-specification/`) et n'écrit que ce qui lui est propre : cartes, vues, données d'exemple, rendu (§ 10). Premier atelier construit ainsi : Régie (dépôt `ov-regie-refactorUI`), qui sert de grand exemple.
+Ce dépôt (`ov-uidesigner-artefact`) porte le modèle : le **moteur** commun à tous les ateliers (`moteur/`), les **outils** (`outils/` : assemblage, registre, tests, audit) et un **atelier d'exemple** (`exemple/`). Le modèle ne fixe pas de style : il prend en entrée un **thème d'UI**, la spécification d'interface que l'atelier applique (`GABARIT.md`, `COMPOSANTS.md`, `jetons.json`), tenue dans son propre dépôt (§ 1.1). Premier thème : `ov-ui-specification`. Une application garde dans son propre dépôt une copie du modèle et de son thème (`vendor/ov-uidesigner-artefact/`, `vendor/<thème>/`) et n'écrit que ce qui lui est propre : cartes, vues, données d'exemple, rendu (§ 10). Premier atelier construit ainsi : Régie (dépôt `ov-regie-refactorUI`), qui sert de grand exemple.
 
 ---
 
 ## 1. Déclenchement et entrées
 
-- `@@@ui` dans une session Claude Code ouverte dans le projet de l'application.
+- `@@@ui [<thème>]` dans une session Claude Code ouverte dans le projet de l'application. L'argument nomme le thème d'UI (§ 1.1) ; sans argument, la session pose la question avant toute autre chose.
 - La session rassemble avant de construire l'atelier :
   1. l'**inventaire des états graphiques** de l'application (un document du type `etats-graphiques.md` : chaque élément, sa fonction, son fichier source, ses états avec leurs couleurs et mesures) ; s'il n'existe pas, elle le rédige d'abord en lisant le code ;
   2. les **captures** que Pierre envoie ; chacune est enregistrée dans `sources/captures/NN-description.ext`, numérotée dans l'ordre d'envoi, et indexée dans `sources/captures/INDEX.md` avec le message de Pierre qui l'accompagnait ;
-  3. la **spécification d'interface** (dépôt `ov-ui-specification` : `GABARIT.md`, `COMPOSANTS.md`, `jetons.json`, copiée dans `vendor/ov-ui-specification/`) : l'atelier part de ses choix, il ne les rediscute que si l'application l'exige ;
-  4. les règles générales de Pierre (thème dotlib, polices, langue : GABARIT § 2).
+  3. le **thème d'UI** choisi (§ 1.1), copié dans `vendor/<thème>/` : l'atelier part de ses choix, il ne les rediscute que si l'application l'exige ;
+  4. les règles générales de Pierre, écrites dans le thème (palettes, polices, langue : § 2 du `GABARIT.md` du thème).
 - Tant que Pierre envoie des captures en annonçant une suite (« ne fais rien, la suite arrive »), la session les enregistre et attend son signal.
+
+### 1.1 Thème d'UI
+
+- Un **thème d'UI** est un dépôt de spécification d'interface. Contrat : à la racine, `GABARIT.md` (principes, règles, couleurs, typographie, géométrie, mouvement, structure de fenêtre, textes, comportements, conformité), `COMPOSANTS.md` (chaque composant, ses mesures, ses jetons, ses états) et `jetons.json` (`palettes` → une entrée par palette → `clair` et `sombre`). Un `README.md` le présente. `outils/theme.js` vérifie ce contrat.
+- Le catalogue des thèmes connus est `themes.json` (nom, dépôt, description d'une ligne). Premier thème : `ov-ui-specification` (dépôt `peterhost/ov-ui-specification`), le style de la refonte de Régie.
+- **Choix du thème, à la réception de `@@@ui`** :
+  1. `@@@ui <thème>` : le thème nommé, s'il est au catalogue ; sinon la session le dit et pose la question.
+  2. `@@@ui` seul, dans un projet qui a déjà un atelier : la session propose le thème inscrit dans son `atelier.config.json` (clé `theme`) et demande confirmation.
+  3. `@@@ui` seul, sans atelier : la session pose la question, en proposant les thèmes du catalogue (nom et description), le premier en tête, et « Nouveau thème ».
+  4. « Nouveau thème » : la session demande son nom et le thème de départ ; elle crée le dépôt du nouveau thème en copiant le thème de départ, l'ajoute à `themes.json` (ici), puis l'atelier le fait évoluer (§ 7.3).
+- Le thème choisi est inscrit dans `atelier.config.json` : `"theme": { "nom": "<thème>", "copie": "vendor/<thème>" }`. `npm test` vérifie qu'il est au catalogue et que sa copie respecte le contrat.
+- Un atelier n'applique qu'un thème. Changer de thème en cours de route se fait à la demande de Pierre : nouvelle copie, puis revue des cartes qui en dépendent.
 
 ## 2. Dépôt de travail
 
@@ -25,8 +37,8 @@ Un dépôt git dédié (par exemple `<app>-refactorUI`), qui contient au moins :
 | `atelier/<app>.html` | L'atelier (une seule page, sans dépendance externe, ouvrable hors ligne), **assemblé** par `npm run construire` ; ne pas l'éditer à la main. |
 | `atelier/source/` | Ce qui est propre à l'application : `<app>.js` (cartes, vues, points, rendu, gestes), `<app>.css` (aperçu), fragments HTML des contrôles au-dessus de l'aperçu, `tete.html` (polices). |
 | `atelier.config.json` | Où sont le moteur, les sources, la page, la base exportée ; options des tests et de l'audit (§ 10.3). |
-| `vendor/ov-uidesigner-artefact/` | Copie du modèle (moteur, outils, ce document) et `VERSION` (commit copié) ; mise à jour par `npm run maj-moteur`. |
-| `vendor/ov-ui-specification/` | Copie de la spécification d'interface (`GABARIT.md`, `COMPOSANTS.md`, `jetons.json`) et `VERSION` ; mise à jour par le même script. |
+| `vendor/ov-uidesigner-artefact/` | Copie du modèle (moteur, outils, ce document, `themes.json`) et `VERSION` (commit copié) ; mise à jour par `npm run maj-moteur`. |
+| `vendor/<thème>/` | Copie du thème d'UI (`GABARIT.md`, `COMPOSANTS.md`, `jetons.json`) et `VERSION` ; mise à jour par le même script. |
 | `atelier/donnees/fil/`, `atelier/donnees/valides/` | Export de la base de l'atelier (un JSON par document, l'identifiant est le nom du fichier). |
 | `atelier/valides-fige.json` | Choix validés, générés. |
 | `atelier/REFERENCE.md`, `references/` | Mode référence et images de référence (§ 9). |
@@ -35,7 +47,7 @@ Un dépôt git dédié (par exemple `<app>-refactorUI`), qui contient au moins :
 | `cdc/<app>/` | Cahier des charges final. |
 | `sources/` | Inventaire, captures, documents de Pierre. |
 | `CONTEXTE.md`, `REPRISE.md`, `README.md` | Ce que Pierre a expliqué ; comment reprendre ; plan du dépôt. |
-| `outils/` | Ce qui est propre à l'application : `references.js` (liste des états à capturer), `tests/test.js` (tests de ses interactions), `jetons.js` si le gabarit évolue, `maj-moteur.sh`. |
+| `outils/` | Ce qui est propre à l'application : `references.js` (liste des états à capturer), `tests/test.js` (tests de ses interactions), `jetons.js` si le thème évolue, `maj-moteur.sh` (appelle `outils/maj-copies.js` du modèle, puis `npm test`). |
 | `package.json` | `npm run construire`, `npm test`, `npm run audit`, `npm run registre`, `npm run references`, `npm run maj-moteur`. |
 
 Commits signés de l'identité exigée par le dépôt, poussés à chaque étape significative.
@@ -130,7 +142,7 @@ Ce qui n'est pas dans ce contrat n'est pas permis. `npm test` en vérifie la par
 
 1. **Lire** : `ArtifactData query` sur `fil`, `auteur == pierre`, `at >` dernier message lu ; et `valides` modifiées depuis.
 2. **Comprendre chaque remarque**, y compris les captures envoyées dans la conversation (enregistrées et indexées, § 1).
-3. **Modifier l'atelier** dans `atelier/source/` (jamais la page assemblée), puis `npm run construire` : options, aperçu, interactions. Une proposition ne contient pas de phrase d'explication dans l'interface montrée (GABARIT § 1, principe 6) ; la carte et le fil expliquent, l'aperçu montre. Style neutre partout, atelier compris : ni tutoiement ni vouvoiement, infinitif pour une action, nom ou participe pour un état (GABARIT § 1, principe 15).
+3. **Modifier l'atelier** dans `atelier/source/` (jamais la page assemblée), puis `npm run construire` : options, aperçu, interactions. Une proposition ne contient pas de phrase d'explication dans l'interface montrée (principe 6 du `GABARIT.md` du thème `ov-ui-specification`) ; la carte et le fil expliquent, l'aperçu montre. Style neutre partout, atelier compris : ni tutoiement ni vouvoiement, infinitif pour une action, nom ou participe pour un état (principe 15 du même `GABARIT.md`).
 4. **Tester** : `npm test` (§ 8), puis contrôle visuel des vues touchées (navigateur sans écran, captures d'écran lues).
 5. **Répondre dans le fil**, une réponse par axe, avec `reglage` si un clic doit appliquer la proposition ; heure réelle.
 6. **Exporter** la base dans `atelier/donnees/`, lancer `npm run registre` (registre, choix figés, copie `VALIDES_FIGES` dans la source, réassemblage de la page).
@@ -150,7 +162,7 @@ Règles de conduite :
 
 - Toutes les vues dans les 11 palettes, en clair et en sombre.
 - Avant / Après : « Avant » montre l'état actuel de toutes les cartes.
-- Infobulles, bulles de détail, copie au clic, sélection de texte, renommage, replis animés : comme le gabarit les définit, si l'application les a.
+- Infobulles, bulles de détail, copie au clic, sélection de texte, renommage, replis animés : comme le thème les définit, si l'application les a.
 - Données d'exemple tirées des captures (noms réels, situations réelles), pour que Pierre reconnaisse son application.
 
 ## 7. Fin de la phase atelier
@@ -162,11 +174,11 @@ Quand toutes les cartes sont validées :
    - linéaire, sans historique de décision ni connaissance préalable autre que les documents du dépôt et les choix de Pierre ;
    - titres de section aux noms d'éléments de l'inventaire ;
    - pour chaque élément : l'état cible, ce qui est à retirer, les captures d'origine (« capture NN ») et les images de référence ;
-   - table de correspondance des termes du gabarit vers ceux de l'application, en tête ;
+   - table de correspondance des termes du thème (`GABARIT.md`) vers ceux de l'application, en tête ;
    - réglages ajoutés, modifiés et retirés en JSON ;
    - procédure de réception (§ 9) ;
    - points tranchés pendant la rédaction dans un fichier séparé, à valider, avec un lien `#point=N` par point ; ces points deviennent des cartes « Point à valider » dans l'atelier (§ 4.4).
-3. Si l'atelier a fait évoluer des choix génériques, mettre à jour la spécification (dépôt `ov-ui-specification`) et le dire à Pierre.
+3. Si l'atelier a fait évoluer des choix génériques, mettre à jour le thème d'UI (son dépôt) et le dire à Pierre.
 
 ## 8. Tests de l'atelier
 
@@ -242,6 +254,7 @@ Une entrée de `PTS` : `[n, titre, vue, options, sélecteur à encadrer, indicat
 
 ```json
 { "application": "<App>", "page": "atelier/<app>.html", "moteur": "vendor/ov-uidesigner-artefact/moteur",
+  "theme": { "nom": "<thème>", "copie": "vendor/<thème>" },
   "source": { "titre": "…", "intro": "…", "nomVues": "Vue de <App>", "tete": "…", "css": ["…"], "js": ["…"],
               "outilsTheme": "…", "outils": "…", "outilsFsTheme": "…" },
   "donnees": "atelier/donnees", "registre": "cdc/registre-des-choix.md", "fige": "atelier/valides-fige.json",
@@ -251,7 +264,7 @@ Une entrée de `PTS` : `[n, titre, vue, options, sélecteur à encadrer, indicat
 
 ### 10.4 Faire évoluer le modèle
 
-- Une amélioration générique (moteur, outils, gabarit, ce document) se fait **ici**, avec l'atelier d'exemple à jour et `npm test` et `npm run audit` verts ; chaque application la reprend par `npm run maj-moteur` (copie et `VERSION`), puis repasse ses tests et son audit.
+- Une amélioration générique (moteur, outils, ce document, catalogue des thèmes) se fait **ici** ; une évolution du style se fait dans le dépôt du thème. Le modèle évolue avec l'atelier d'exemple à jour et `npm test` et `npm run audit` verts ; chaque application la reprend par `npm run maj-moteur` (copie et `VERSION`), puis repasse ses tests et son audit.
 - Une application ne modifie jamais sa copie `vendor/ov-uidesigner-artefact/` : un besoin nouveau devient une accroche du moteur.
-- Nouvel atelier : copier `exemple/` dans le dépôt de l'application (`atelier/source/`, `atelier.config.json`), copier le modèle dans `vendor/ov-uidesigner-artefact/` et la spécification dans `vendor/ov-ui-specification/`, puis remplacer les cartes, les vues et le rendu.
+- Nouvel atelier : copier `exemple/` dans le dépôt de l'application (`atelier/source/`, `atelier.config.json`), inscrire le thème dans `atelier.config.json` (`theme`, § 1.1), lancer `node ../ov-uidesigner-artefact/outils/maj-copies.js` (copie du modèle dans `vendor/ov-uidesigner-artefact/` et du thème dans `vendor/<thème>/`), puis remplacer les cartes, les vues et le rendu.
 

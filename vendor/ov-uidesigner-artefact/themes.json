@@ -1,0 +1,7 @@
+[
+  {
+    "nom": "ov-ui-specification",
+    "depot": "peterhost/ov-ui-specification",
+    "description": "Style de la refonte de Régie : application macOS, palettes dotlib en clair et en sombre, couleur portée par un trait de 2 px, couleur seulement pour l'anormal, style neutre."
+  }
+]

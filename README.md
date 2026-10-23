@@ -2,6 +2,8 @@
 
 Spécification du design d'interface des applications de Pierre : tout ce qu'une nouvelle application macOS suit pour avoir exactement le style graphique de la refonte de Régie.
 
+C'est le premier **thème d'UI** du modèle d'atelier `@@@ui` (`peterhost/ov-uidesigner-artefact`, catalogue `themes.json`) : `@@@ui ov-ui-specification` le choisit. Un thème respecte un contrat fixe : `GABARIT.md`, `COMPOSANTS.md` et `jetons.json` à la racine (CDC-ATELIER-UI § 1.1).
+
 | Fichier | Contenu |
 |---|---|
 | `GABARIT.md` | À lire d'abord : principes, règles générales de Pierre, couleurs, opacités et teintes, ombres et voiles, typographie, géométrie, mouvement, structure de fenêtre, panneaux et fenêtres modales, graphiques, textes de l'interface, comportements, accessibilité, liste de conformité, méthode de travail, à ne pas faire, écarts connus de la maquette de Régie (§ 14), points ouverts (§ 15). |
@@ -14,7 +16,7 @@ Référence visuelle : la maquette de Régie (`atelier/regie-lisibilite.html` du
 
 ## Utiliser la spécification dans une application
 
-Le dépôt de l'application en garde une copie dans `vendor/ov-ui-specification/` (`GABARIT.md`, `COMPOSANTS.md`, `jetons.json`) et la met à jour depuis une copie locale de ce dépôt. Son cahier des charges cite « G § n » (GABARIT) et « C § n » (COMPOSANTS) ; les numéros de section ne changent pas.
+Le dépôt de l'application inscrit le thème dans `atelier.config.json` (`"theme": { "nom": "ov-ui-specification", "copie": "vendor/ov-ui-specification" }`), en garde une copie dans `vendor/ov-ui-specification/` (`GABARIT.md`, `COMPOSANTS.md`, `jetons.json`) et la met à jour depuis une copie locale de ce dépôt (`outils/maj-copies.js` du modèle). Son cahier des charges cite « G § n » (GABARIT) et « C § n » (COMPOSANTS) ; les numéros de section ne changent pas.
 
 ## Commandes
 

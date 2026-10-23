@@ -2,6 +2,10 @@
   "application": "Gabarit",
   "page": "points-ouverts.html",
   "moteur": "../../vendor/ov-uidesigner-artefact/moteur",
+  "theme": {
+    "nom": "ov-ui-specification",
+    "copie": "../.."
+  },
   "source": {
     "titrePage": "Points ouverts du gabarit",
     "titre": "Points ouverts du gabarit",
