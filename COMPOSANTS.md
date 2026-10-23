@@ -43,7 +43,7 @@ Vue : Sessions.
 - Un clic sur le titre replie ou déplie la zone ; chevron en `secondaire` devant le titre (› repliée, ⌄ dépliée).
 - Résumé à droite (`margin-left: auto`), 11 px, 400, `secondaire`, sans capitales (Régie : « 3 royaumes », « 34 vivantes », « 1 chantier allumé »).
 
-**Sous-zone** (Régie : « Locales 27 », « Distantes 2 », « T'attendent »)
+**Sous-zone** (Régie : « Locales 27 », « Distantes 2 », « En attente »)
 
 - Sous-titre 11 px `secondaire`, marge 6 × 4 × 2 px, compte à droite ; chevron ; repliable. Dans la vue « À traiter », 6 px au-dessus de chaque sous-zone.
 
@@ -212,7 +212,7 @@ Vue : Sessions à liseré ; Forge (onglet d'un rôle, « Taper »).
 
 - Pour un élément d'un type particulier qui doit se voir en permanence (Régie : maîtresse, écriture, lecture seule, homonyme, démonstration) : un bandeau d'une ligne sous la barre d'onglets, marge 4 × 14 px, 11,5 px.
 - Fond : `teinte` de la couleur du type. Texte : le mot du type en 600 dans sa couleur, « · », puis ce que le type implique, en `texte` (« Lecture seule · Régie observe, rien n'est envoyé »).
-- Couleur du type : chaude si le type appelle la vigilance (élément maître `jaune`, écriture `orange`, doublon `orange`, démonstration `orange`), `slate` pour un type passif (lecture seule).
+- Couleur du type : `orange` si le type appelle la vigilance (écriture, doublon, démonstration) ; `accent` pour l'élément maître (`jaune` reste à la question) ; `slate` pour un type passif (lecture seule).
 - Types cumulés : les mots se suivent dans le même bandeau (« ◎ maître · lecture seule · … »).
 - Un élément distant n'a pas de bandeau : sa marque suffit (§ 1.8).
 - Un panneau secondaire (Régie : partage de démonstration) porte le même bandeau, avec ✕ à droite.
@@ -658,6 +658,7 @@ Vue : Réglages ; points 1, 15, 16, 22, 25, 36, 39.
 - Message d'état (autorisation macOS à donner, erreur) : une ligne, icône `orange` ou `rouge`.
 - Un réglage qui ne prend effet qu'au prochain démarrage le dit dans sa bulle. Une erreur liée à une entité s'affiche dans la page de l'entité (§ 7.6), pas sous le réglage qui l'a provoquée.
 - **Page Groupes** (Régie : Royaumes) : une ligne par groupe, marge 5 × 8 px, rayon 6, fond `champ`, écart 8 px : trait du groupe (2 × 12 px), nom, « hors <registre> » en 10,5 px `secondaire` s'il est absent du registre de référence (menu grisé), menu de couleur à droite : nom français suivi du nom stocké en `secondaire` (« Lavande (purple) ⌃⌄ »). Ligne ouverte : contour 2 px `accent` décalé de −2 px. Dernière ligne « + Nouveau groupe · proposée : Bleu » : bordure 1 px pointillée `separateur`, fond transparent, + et « proposée : » en `secondaire`, trait de la couleur proposée, son nom en `texte` ; la raison de la proposition en bulle.
+- **Aperçus clair et sombre** (page Groupes, sous la liste) : titre de section « Aperçu » ; deux cartes côte à côte, écart 8 px, chacune rayon 8, marge 6 × 8 px, fond `mantle` et filet `separateur` du thème qu'elle montre (clair à gauche, sombre à droite), quelle que soit l'apparence en service. Dans chaque carte : titre de zone en petites capitales 10 px `secondaire` (« PROJETS »), « clair » ou « sombre » à droite en 400 ; une ligne de 18 px par groupe (trait 2 × 12 px de sa couleur résolue dans ce thème, nom en 11 px `texte`). Mise à jour à chaque changement de couleur.
 - **Menu de couleur** : menu (§ 3.5), 250 px. En-tête : nom de la palette en service, 10,5 px `secondaire`. Une ligne par couleur de groupe : paire de pastilles de 12 × 12 px (clair | sombre), coins arrondis à 5 px, filet `separateur` ; nom français ; nom stocké en 10,5 px `secondaire` à droite ; la couleur choisie sur fond `selection` avec ✓ `accent`. Après un filet, « Réservées aux statuts » (10,5 px `secondaire`) : vert, jaune, orange, rouge, grisées (opacité 0,45), non sélectionnables, leur usage en bulle.
 - **Page Clavier** : le clavier dessiné (§ 8.10) ; interrupteur « Liste des raccourcis » (aide « 1 s ») ; puis une ligne par raccourci, rangées en Voir et insérer · Agir · Fenêtre, chacune avec sa touche (§ 7.9) et, en aide, l'autre accès (« aussi double Maj ») ; le raccourci d'une fonction désactivée est grisé, la raison en bulle.
 - **Page Plugins › <nom>** : « installé · 1.4 » en `secondaire` et « Désinstaller » (non installé : « Installer… ») ; interrupteur « Activer ». Sans plugin installé, la section reste visible : « Aucun plugin installé ».
@@ -676,7 +677,7 @@ Vue : Barre des menus.
 
 - Icône monochrome de la couleur de la barre : glyphe de 14 × 12 px au trait de 1,3 px ; nombre d'éléments à traiter à côté, 11 px 600 ; anneau de jauge de 14 px, trait 2 px, piste de la couleur de la barre à 35 %, arc de la couleur de la barre, qui ne prend la couleur du statut qu'en alerte.
 - Menu natif de macOS (matériau, flou, rayon et ombre du système ; la maquette le simule : 330 px, 12 px). En-têtes de section 10,5 px 600 à 60 % d'opacité, marge 4 × 8 × 2 px ; éléments 12 px, marge 4 × 8 px, rayon 5, écart 8 px ; filets de 1 px à 25 %, marge 4 × 8 px.
-- Contenu, de haut en bas : les éléments qui attendent l'utilisateur (Régie : « T'attendent » ; une ligne par élément : pastille, nom, raison en `secondaire`) ; la mesure principale (barres de 6 px, rayon 3, et ligne d'état) ; la répartition (trois premiers) ; l'alerte éventuelle ; puis « Ouvrir <app> », les modes utiles avec leur raccourci, la fenêtre qui descend du bord (F12), « Réglages… », « Quitter ».
+- Contenu, de haut en bas : les éléments qui attendent l'utilisateur (Régie : « En attente » ; une ligne par élément : pastille, nom, raison en `secondaire`) ; la mesure principale (barres de 6 px, rayon 3, et ligne d'état) ; la répartition (trois premiers) ; l'alerte éventuelle ; puis « Ouvrir <app> », les modes utiles avec leur raccourci, la fenêtre qui descend du bord (F12), « Réglages… », « Quitter ».
 
 ### 7.5 Fenêtre qui descend du bord
 

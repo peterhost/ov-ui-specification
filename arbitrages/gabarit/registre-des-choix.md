@@ -4,12 +4,12 @@ Généré par `registre.js` à partir de `points-ouverts.html` et de `donnees/`.
 
 Validé = figé par Pierre dans l'atelier ; c'est l'état de référence. Ouvert = encore en discussion.
 
-19 cartes validées sur 22.
+22 cartes validées sur 22.
 
 | Carte | Clé | État | Choix |
 |---|---|---|---|
 | 1 · Sourdine hors des mesures | `p1` | validé | A · Mesures seulement (retenu) |
-| 2 · Couleur du bandeau de l’élément maître | `p2` | ouvert | proposé : A · Maître en jaune (retenu) |
+| 2 · Couleur du bandeau de l’élément maître | `p2` | validé | B · Maître en accent (retenu) |
 | 3 · Couleur d’une demande en attente | `p3` | validé | A · Un seul cyan (retenu) |
 | 4 · Teintes de groupe portées par des marques | `p4` | validé | A · Garder (retenu) |
 | 5 · Pied « ↵ insérer · ⇥ compléter » | `p5` | validé | A · Garder le pied (retenu) |
@@ -19,9 +19,9 @@ Validé = figé par Pierre dans l'atelier ; c'est l'état de référence. Ouvert
 | 9 · Annuler un arrêt programmé (⊗) | `p9` | validé | A · Au survol (retenu) |
 | 10 · Pulsation d’une marque d’anomalie | `p10` | validé | A · Signal : elle pulse encore (retenu) |
 | 11 · Réglages de choix de design | `p11` | validé | A · Nouvelles applications sans (retenu) |
-| 12 · Réglages › Groupes : voir une couleur en clair et en sombre | `p12` | ouvert | proposé : A · Deux pastilles par teinte, dans le menu (retenu) |
+| 12 · Réglages › Groupes : voir une couleur en clair et en sombre | `p12` | validé | B · Deux aperçus de la colonne, clair et sombre (retenu) |
 | 13 · Style des textes | `p13` | validé | B · Style neutre (décidé) |
-| 14 · Taille minimale et barre de titre | `p14` | ouvert | proposé : A · Règle pour toute application (retenu) |
+| 14 · Taille minimale et barre de titre | `p14` | validé | A · Règle pour toute application (retenu) |
 | 15 · Progression en tranches | `p15` | validé | A · Segments séparés (retenu) |
 | 16 · Catégorie coûteuse en orange | `p16` | validé | A · Exception générique (retenu) |
 | 17 · Formes d’état vide | `p17` | validé | A · Centré et carte (retenu) |
@@ -41,9 +41,9 @@ La sourdine (surfaces colorées atténuées, petites marques en pleine couleur) 
 
 ## 2 · Couleur du bandeau de l’élément maître (`p2`)
 
-- État : **ouvert** — proposition : A · Maître en jaune (retenu) (`A`)
-- Actuel dans Gabarit : A · Maître en jaune (retenu) (`A`)
-- Options : A · Maître en jaune (retenu) (`A`) · B · Maître en accent (`B`) · C · Fond neutre, mot coloré (`C`)
+- État : **validé** — B · Maître en accent (retenu) (`B`), le 2026-10-23 10:50
+- Actuel dans Gabarit : B · Maître en accent (retenu) (`B`)
+- Options : A · Maître en jaune (`A`) · B · Maître en accent (retenu) (`B`) · C · Fond neutre, mot coloré (`C`)
 
 Vert, jaune, orange, rouge ne servent qu’aux statuts. Jaune = « une question attend une réponse » (point jaune de la pastille). Le bandeau de l’élément maître est jaune lui aussi : à côté d’une pastille jaune, il peut se lire comme une question. G § 2.4.
 
@@ -128,9 +128,9 @@ Régie a deux réglages qui ne règlent qu’un choix de design (modes affichés
 
 ## 12 · Réglages › Groupes : voir une couleur en clair et en sombre (`p12`)
 
-- État : **ouvert** — proposition : A · Deux pastilles par teinte, dans le menu (retenu) (`A`)
-- Actuel dans Gabarit : A · Deux pastilles par teinte, dans le menu (retenu) (`A`)
-- Options : A · Deux pastilles par teinte, dans le menu (retenu) (`A`) · B · Deux aperçus de la colonne, clair et sombre (`B`)
+- État : **validé** — B · Deux aperçus de la colonne, clair et sombre (retenu) (`B`), le 2026-10-23 10:50
+- Actuel dans Gabarit : B · Deux aperçus de la colonne, clair et sombre (retenu) (`B`)
+- Options : A · Deux pastilles par teinte, dans le menu (`A`) · B · Deux aperçus de la colonne, clair et sombre (retenu) (`B`)
 
 Une couleur de groupe change entre le thème clair et le thème sombre. Pour la choisir, la voir dans les deux thèmes : où ? G § 3.4.
 
@@ -158,7 +158,7 @@ Ni tutoiement ni vouvoiement : infinitif pour une action, nom ou participe pour 
 
 ## 14 · Taille minimale et barre de titre (`p14`)
 
-- État : **ouvert** — proposition : A · Règle pour toute application (retenu) (`A`)
+- État : **validé** — A · Règle pour toute application (retenu) (`A`), le 2026-10-23 10:51
 - Actuel dans Gabarit : A · Règle pour toute application (retenu) (`A`)
 - Options : A · Règle pour toute application (retenu) (`A`) · B · Propre à Régie (`B`)
 

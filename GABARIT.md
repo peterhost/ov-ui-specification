@@ -123,7 +123,7 @@ Ils priment sur tout le reste. Quand un cas n'est pas prévu, on le résout en l
 ### 2.4 Couleurs réservées
 
 - **Vert, jaune, orange, rouge** sont réservés aux statuts. Aucun groupe, aucune décoration ne les utilise.
-- Exception nommée : le bandeau de type (C § 2.3) prend une couleur chaude quand le type appelle la vigilance (élément maître `jaune`, écriture `orange`, doublon `orange`). Un type passif prend une teinte froide (lecture seule : `slate`) (§ 15).
+- Exception nommée : le bandeau de type (C § 2.3) prend `orange` quand le type appelle la vigilance (écriture, doublon). L'élément maître prend `accent` : `jaune` reste à la question. Un type passif prend une teinte froide (lecture seule : `slate`).
 - Les groupes prennent des teintes froides : `blue`, `cyan`, `teal`, `lavender`, `purple`, `slate` (§ 3.4).
 - Une teinte froide peut aussi porter un attribut fixe d'un élément, à condition que ce soit une marque (glyphe, pointillé, trait de bord de ligne) et jamais le trait plein de 2 × 12 px réservé au groupe : élément distant `teal` (C § 1.8), mode sûr `teal` ou `lavender` (C § 1.6), demande en attente `cyan` (§ 9.5). Un élément d'un groupe de même teinte que sa marque (groupe `teal` sur un élément distant) reste lisible : la forme distingue la marque (pointillé, glyphe) du trait plein du groupe. Sur une ligne, le pointillé occupe le bord gauche ; le trait d'accent plein le remplace quand la ligne est sélectionnée, « ⇄ » reste.
 - Pas de rose ni de magenta : la plupart des palettes ne les distinguent pas du violet des groupes. Quand deux statuts doivent se distinguer, on change la forme (losange), pas la teinte.
@@ -136,7 +136,7 @@ Ils priment sur tout le reste. Quand un cas n'est pas prévu, on le résout en l
 ### 2.6 Application macOS
 
 - Cible : application macOS en SwiftUI (AppKit quand SwiftUI ne suffit pas : NSVisualEffectView, fenêtres non opaques).
-- Fenêtre principale : fenêtre native (feux, ombre et coins de macOS). Barre de titre sans titre sous macOS 15 et plus (les capsules suffisent) ; sous macOS 14, nom de l'application et sous-titre. Taille minimale : fixée par chaque application (Régie : 1120 × 640) (§ 15).
+- Fenêtre principale : fenêtre native (feux, ombre et coins de macOS). Barre de titre sans titre sous macOS 15 et plus (les capsules suffisent) ; sous macOS 14, nom de l'application et sous-titre. Taille minimale : fixée par chaque application selon son contenu (Régie : 1120 × 640).
 - Toutes les préférences dans `UserDefaults`, sous le préfixe de l'application (`regie.…` pour Régie).
 - Toute refonte livre la liste des clés `UserDefaults` ajoutées, modifiées et retirées, avec leurs défauts (`reglages.json` à côté du cahier des charges). Une clé renommée est migrée au premier lancement ; une clé retirée est effacée.
 - Données de travail de l'application (journaux, sauvegardes, dossiers temporaires) : `~/.<app>/`, dans le dossier personnel, sans espace dans le chemin. Pas `~/Library/Application Support/`, qui gêne les scripts shell.
@@ -202,7 +202,7 @@ Seuils : deux paliers par défaut (surveillance → `orange`, critique → `roug
 - Nouveau groupe : la couleur proposée par défaut est celle des six qui est la plus éloignée de celles déjà prises (distance perceptuelle dans la palette en service). But : maximiser le contraste entre groupes.
 - Un groupe sans couleur : `secondaire`.
 - Rendu : **trait vertical de 2 × 12 px**, rayon 1 px, devant le nom du groupe ; même trait devant chaque élément du groupe dans les tableaux, la carte, les sélecteurs, la statusline, les réglages ; **2 × 16 px** en tête de fiche et de vue d'entité. Jamais un point, jamais un trait plus épais, jamais un fond teinté ; jamais un trait horizontal, sauf dans le rail (10 × 2 px sous l'icône, faute de place, C § 1.11). Seule exception de couleur : une bande de répartition (consommation par élément) où chaque part prend la couleur de son groupe (C § 5.3).
-- Réglages › Groupes : une ligne de réglage par groupe (trait de groupe, nom, menu de couleur). Le menu nomme la couleur en français suivie du nom stocké (« Lavande (purple) »), montre les six teintes résolues dans la palette en service, clair et sombre côte à côte, puis, grisées et non sélectionnables, « Réservées aux statuts » (vert, jaune, orange, rouge), leur usage en bulle. Ligne « + Nouveau groupe · proposée : Bleu », la raison de la proposition en bulle. « Défaut » apparaît quand une couleur a été choisie à la main. Un groupe absent du registre de référence : « hors <registre> » en `secondaire`, menu grisé. Pas de colonnes d'aperçu (§ 15).
+- Réglages › Groupes : une ligne de réglage par groupe (trait de groupe, nom, menu de couleur). Le menu nomme la couleur en français suivie du nom stocké (« Lavande (purple) »), montre les six teintes résolues dans la palette en service, clair et sombre côte à côte, puis, grisées et non sélectionnables, « Réservées aux statuts » (vert, jaune, orange, rouge), leur usage en bulle. Ligne « + Nouveau groupe · proposée : Bleu », la raison de la proposition en bulle. « Défaut » apparaît quand une couleur a été choisie à la main. Un groupe absent du registre de référence : « hors <registre> » en `secondaire`, menu grisé. Sous la liste, section « Aperçu » : deux aperçus en direct de la colonne (titre de zone, un groupe par ligne avec son trait), l'un en thème clair, l'autre en sombre, dans la palette en service ; ils suivent chaque changement de couleur.
 
 ### 3.5 Opacités et teintes
 
@@ -788,36 +788,36 @@ Couleurs, teintes et opacités :
 |---|---|---|---|
 | Pastilles colorées de la statusline (élément maître, entité, dépôt sale, quota) | fond de la couleur à 16 % (clair) / 22 % (sombre) | fond `champ` ; marque en texte d'`accent`, valeur anormale en texte de statut (§ 7.8) | JS:809-817 |
 | Glyphe ▸▸ du mode, statusline | `#F2C740` en dur | `secondaire` | JS:818 |
-| Tuile « Attendu » | `#8E8E93` en dur | `secondaire` | JS:1362 |
+| Tuile « Attendu » | `#8E8E93` en dur | `secondaire` | JS:1365 |
 | Capsule « scripts » (capsule d'attribut) | `orange` à 16 % | `teinte` (14 % / 18 %) | JS:949 |
-| Capsule « Bloqué » (capsule d'état) | `rouge` à 14 % en sombre aussi | `teinte` (18 % en sombre) | JS:1375 |
+| Capsule « Bloqué » (capsule d'état) | `rouge` à 14 % en sombre aussi | `teinte` (18 % en sombre) | JS:1378 |
 | Touches de l'application, clavier dessiné | `accent` à 16 % | `teinte` | JS:357 |
 | Touches libres ; touches de macOS | opacité 0,9 ; 0,55 | opacité 1 ; 0,45 | JS:357 |
 | Couleur choisie, menu des couleurs | `accent` à 18 % | `selection` | JS:1226 |
 | Couleurs réservées, menu des couleurs | opacité 0,55 | 0,45 | JS:1226-1230 |
 | Bulles de la barre d'outils (tâches, pont) | fond `base`, rayon 12, ombre modale | `mantle`, rayon 10, ombre « flottant » (C § 3.8, 3.9) | JS:881-882 |
-| Largeur des fenêtres modales | 460, 520, 540, 560 px selon la fenêtre | 540 px (C § 8.5) | JS:562, JS:1250 |
+| Largeur des fenêtres modales | 460, 520, 540, 560 px selon la fenêtre | 540 px (C § 8.5) | JS:562, JS:1253 |
 | Bouton principal désactivé | `accent` à 45 % ; à 40 % (fenêtre de composition) | opacité 0,45 du bouton entier | JS:565, JS:605 |
 | Champ de filtre actif | bordure 1 px `accent` | aucun changement hors du jeton | JS:746 |
 | Jeton de filtre | compte « 27/34 » dans le jeton | compte dans la bulle du jeton | JS:746 |
-| Micro-jauge du tableau dense et des entités | remplissage toujours `secondaire` | paliers de couleur (C § 1.9) | JS:1307, JS:988 |
+| Micro-jauge du tableau dense et des entités | remplissage toujours `secondaire` | paliers de couleur (C § 1.9) | JS:1310, JS:988 |
 | Sous-groupe vivant, colonne de la carte | ▣ en `vert` | neutre (principe 3) | JS:906 |
-| Encadré de réparation | fond `champ`, rayon 8 | sans fond | JS:1106, JS:1412 |
+| Encadré de réparation | fond `champ`, rayon 8 | sans fond | JS:1106, JS:1415 |
 | Ligne de Réglages › Groupes | fond `champ`, rayon 6 | ligne de réglage, sans fond | CSS:259, JS:1213 |
-| Verre de la fenêtre qui descend du bord | `mantle` à 45 % (clair) / 50 % (sombre) | `mantle` à 48 % | JS:1441 |
-| Dégradé de la même fenêtre | 0,5 à 55 % de la hauteur | 0,525 | JS:1447 |
-| Halo du texte, même fenêtre | `0 0 5px` `base` à 70 %, actif | désactivé | JS:1447 |
+| Verre de la fenêtre qui descend du bord | `mantle` à 45 % (clair) / 50 % (sombre) | `mantle` à 48 % | JS:1444 |
+| Dégradé de la même fenêtre | 0,5 à 55 % de la hauteur | 0,525 | JS:1450 |
+| Halo du texte, même fenêtre | `0 0 5px` `base` à 70 %, actif | désactivé | JS:1450 |
 | Poignée, même fenêtre | `rgba(127,127,127,.6)` | `secondaire` à 60 % | CSS:154 |
 
 Graisses :
 
 | Objet | Maquette | Spécification | Où |
 |---|---|---|---|
-| Gras sans style : mot du bandeau de type, titre de la bulle de détail, titre d'une règle imposée, titre d'une clause, libellé d'interrupteur, titre d'état vide, N de la boîte de carte, titre de la carte, titre de la bulle de contexte | 700 | 600 | JS:852, JS:1310, JS:1025, JS:1030, CSS:102 et JS:1051, CSS:160, JS:955, CSS:237-238, JS:1396 |
-| Tokens ≥ 100k (tableau dense) | 700 | 600 | JS:1309 |
+| Gras sans style : mot du bandeau de type, titre de la bulle de détail, titre d'une règle imposée, titre d'une clause, libellé d'interrupteur, titre d'état vide, N de la boîte de carte, titre de la carte, titre de la bulle de contexte | 700 | 600 | JS:852, JS:1313, JS:1025, JS:1030, CSS:102 et JS:1051, CSS:160, JS:955, CSS:237-238, JS:1399 |
+| Tokens ≥ 100k (tableau dense) | 700 | 600 | JS:1312 |
 | Étiquette de coût au plus haut | `orange` 700 | `orange` 600 | JS:959-962 |
 | Numéro et marques des vignettes | 700 | 600 | CSS:193-197 |
-| Nombre de l'icône de la barre des menus | 700 | 600 | JS:1261 |
+| Nombre de l'icône de la barre des menus | 700 | 600 | JS:1264 |
 | « ⇄ » d'un élément distant | 10 px 700 | 10 px 600 | JS:365 |
 | Titre de famille de liens | 650 | 600 | CSS:88 |
 | En-tête du tableau de réglages | 600 | 400 | CSS:248-250 |
@@ -826,7 +826,7 @@ Tailles, interlignes, petites capitales :
 
 | Objet | Maquette | Spécification | Où |
 |---|---|---|---|
-| Titres des bulles de barre d'outils (contexte, budget, tâches, consommation) | 13 px | 14 px | JS:1396, JS:1407, JS:1415, JS:1420 |
+| Titres des bulles de barre d'outils (contexte, budget, tâches, consommation) | 13 px | 14 px | JS:1399, JS:1410, JS:1418, JS:1423 |
 | Titres du panneau de procédure (en-tête, verdict, fin) | 15 px | 16 px | JS:347, JS:341, JS:344 |
 | Titre de la fenêtre de composition | 15 px | 16 px | JS:594 |
 | Titre du diagnostic | 14 px | 16 px | JS:1182 |
@@ -834,7 +834,7 @@ Tailles, interlignes, petites capitales :
 | Corps des fenêtres modales, libellés de champ | 12,5 px | 12 px | JS:562, JS:563 |
 | Nom d'une machine (en-tête d'entité) | 11 px 400 `secondaire` | 12 px 600 `texte`, comme une autre entité | JS:737 |
 | Tableau des rôles d'une entité | 12 px | 11,5 px | CSS:73-74 |
-| Tuiles du quota : libellé ; ligne secondaire ; valeur | 10 px majuscules 0,03 em ; 10 px ; 14 px 700 | 11 px `secondaire` ; 11 px ; 17 px 600 (C § 5.1) | JS:1361, CSS:263, CSS:264 |
+| Tuiles du quota : libellé ; ligne secondaire ; valeur | 10 px majuscules 0,03 em ; 10 px ; 14 px 700 | 11 px `secondaire` ; 11 px ; 17 px 600 (C § 5.1) | JS:1364, CSS:263, CSS:264 |
 | Petites capitales : titre de zone ; famille de liens ; groupe des réglages | 0,04 em ; 0,06 em ; 0,07 em | 0,05 em | CSS:13, CSS:88, CSS:219 |
 | Interligne : bulle « fiche » ; règle imposée ; bulle de détail ; aperçu du sélecteur | 1,4 ; 1,4 ; 1,5 ; 1,5 | 1,45 | CSS:226, CSS:92, CSS:211, JS:535 |
 
@@ -847,24 +847,24 @@ Géométrie :
 | « Ouvrir avec… » | rayon 8 | 9 | CSS:161-162 |
 | Menu des couleurs | rayon 8, 11,5 px | rayon 9, 12 px | JS:1226-1230 |
 | Fenêtres modales | rayon 10 | 12 | JS:562 |
-| Fenêtre de création d'un élément | 520 px | 540 px | JS:1250 |
+| Fenêtre de création d'un élément | 520 px | 540 px | JS:1253 |
 | Diagnostic | fenêtre modale, fond `base` | feuille de macOS, fond `mantle` | JS:1182 |
 | Anneau de la mesure (barre d'outils) | 15 px | 16 px | JS:878 |
 | Champs de saisie | 30 px | 28 px | CSS:185, JS:1138 |
 | Recherche de la carte | environ 24 px (marge 4 × 10) | 28 px | CSS:239 |
-| Boutons de la fenêtre de création | marge 5 × 14 px | `fbtn` (3 × 9 px) | JS:1253 |
-| Segments de la fenêtre de création | 3 × 14 px, 12 px | 2 × 9 px, 11,5 px | JS:1247 |
+| Boutons de la fenêtre de création | marge 5 × 14 px | `fbtn` (3 × 9 px) | JS:1256 |
+| Segments de la fenêtre de création | 3 × 14 px, 12 px | 2 × 9 px, 11,5 px | JS:1250 |
 | Segment de la fiche (Effort) | 2 × 12 px | 2 × 9 px | CSS:20 |
 | Segment actif, colonne et fiche | sans relief | relief (§ 3.7) | CSS:19 |
 | Segment actif, autres segments | `base` en sombre aussi, ombre à 12 % | `segmentActif`, relief à 15 % | CSS:147 |
 | Boutons de l'encadré de réparation | capsules (11 px, 1 × 8 px, rayon 9) | `fbtn` | JS:1108, CSS:247 |
-| « facultatif », fenêtre de création | capsule | mot `secondaire` | JS:1245 |
+| « facultatif », fenêtre de création | capsule | mot `secondaire` | JS:1248 |
 | Menu local : palette ; police | `fbtn` « ⌄ » ; texte nu « ⌃⌄ » | `fbtn` « ⌃⌄ » | JS:1131, JS:1132 |
 | Point dans un onglet de fiche | 6 px | 8 px (point d'état) | CSS:62 |
 | Groupe dans Réglages › Groupes | point de 10 px | trait 2 × 12 px | JS:1213 |
 | Trait de groupe : boîte de carte ; colonne de la carte ; méta d'« À traiter » ; rail | 2 × 13 ; 3 × 13 ; 2 × 10 ; 10 × 2 horizontal | 2 × 12 vertical | JS:943, JS:904, JS:732, JS:777 |
 | Trait de groupe, pastille d'élément de la statusline | bord de 4 px | 2 px | JS:814 |
-| Barres : menu de la barre des menus ; progression segmentée ; liste « qui consomme » | 5 px ; 5 px ; 4 px | 6 px | JS:1265, JS:991, JS:1420 |
+| Barres : menu de la barre des menus ; progression segmentée ; liste « qui consomme » | 5 px ; 5 px ; 4 px | 6 px | JS:1268, JS:991, JS:1423 |
 | Survol d'une ligne d'historique | rayon 4 | 5 | CSS:87 |
 | Survol d'un lien de fiche | aucun fond | fond `champ` | CSS:77 |
 | Tuiles du quota | fond `champ`, rayon 8, écart 6 px | sans fond, écart 16 px (C § 5.1) | CSS:262-263 |
@@ -875,7 +875,7 @@ Ombres et voiles :
 
 | Objet | Maquette | Spécification | Où |
 |---|---|---|---|
-| Bulle « fiche » d'une pastille | `0 6px 20px rgba(0,0,0,.25)` | flottant | JS:1472 |
+| Bulle « fiche » d'une pastille | `0 6px 20px rgba(0,0,0,.25)` | flottant | JS:1475 |
 | Menu déroulant, « Ouvrir avec… », menu des couleurs | `rgba(0,0,0,.30)` | flottant (`.28`) | CSS:224, CSS:161, JS:1226 |
 | Diagnostic | `0 14px 40px rgba(0,0,0,.3)` | ombre de feuille de macOS | JS:1182 |
 | Panneau de procédure | `0 20px 50px rgba(0,0,0,.35)` | modale | JS:344-347 |
@@ -887,25 +887,10 @@ Ombres et voiles :
 | Voile de l'aperçu d'une vignette | 45 % | `voile` | CSS:198 |
 | Voile de la liste des raccourcis | 18 % | aucun | JS:361 |
 
-Simulations de la maquette, qui ne sont pas des écarts : feux de fenêtre (`JS:879`), ombre de la fenêtre (`moteur/atelier.css:102`), matériau du menu de la barre des menus (`JS:1262-1264`), fenêtre des réglages dessinée par-dessus la fenêtre principale avec un voile (`CSS:251-252`) ; l'application emploie les rendus natifs de macOS, et la fenêtre des réglages est une fenêtre à part, sans voile.
+Simulations de la maquette, qui ne sont pas des écarts : feux de fenêtre (`JS:879`), ombre de la fenêtre (`moteur/atelier.css:102`), matériau du menu de la barre des menus (`JS:1265-1267`), fenêtre des réglages dessinée par-dessus la fenêtre principale avec un voile (`CSS:251-252`) ; l'application emploie les rendus natifs de macOS, et la fenêtre des réglages est une fenêtre à part, sans voile.
 
 ---
 
 ## 15. Points ouverts
 
-Sujets que Pierre n'a pas tranchés. Le texte du gabarit applique la position « retenue » ; elle change si Pierre en décide autrement. Les numéros sont ceux de l'atelier d'arbitrage (`arbitrages/gabarit/`) ; les autres points y ont été tranchés le 23 oct. et sont reportés dans le texte.
-
-**Point 2. Couleur du bandeau de l'élément maître.**
-- Contexte. Vert, jaune, orange et rouge ne servent qu'aux statuts, et chacun y a un sens (§ 3.3) : `jaune` signifie « l'élément pose une question et attend une réponse » (point jaune de la pastille). Le bandeau de type (C § 2.3) colore pourtant en `jaune` celui de l'élément maître. Quand les deux sont visibles ensemble, le jaune du bandeau peut se lire comme « une question attend ».
-- Retenu : A.
-- Options : A, garder le bandeau de l'élément maître en `jaune` (exception nommée, § 2.4) ; B, le passer en `accent`, le jaune ne disant plus que « question » ; C, fond neutre pour tous les bandeaux de type, seul le mot coloré.
-
-**Point 12. Réglages › Groupes : voir une couleur de groupe en clair et en sombre.**
-- Contexte. Une couleur de groupe se résout différemment en thème clair et en thème sombre. Pour la choisir, il faut la voir dans les deux thèmes sans changer le thème de macOS. Les deux options y répondent ; elles diffèrent par l'endroit où se voit l'aperçu.
-- Retenu : A.
-- Options : A, dans le menu de couleur, chaque teinte montrée en deux pastilles côte à côte, claire et sombre, et rien d'autre dans la page ; B, à côté de la liste des groupes, deux aperçus en direct de la colonne de l'application, l'un en thème clair, l'autre en sombre, mis à jour à chaque changement de couleur.
-
-**Point 14. Taille minimale de la fenêtre et barre de titre (§ 2.6).**
-- Contexte. Deux détails de la fenêtre principale de Régie. Taille minimale : 1120 × 640 ; en dessous, la fenêtre ne se réduit plus. Barre de titre : sous macOS 15 et plus, aucun titre écrit (la barre d'outils et ses capsules occupent la barre de titre) ; sous macOS 14, le nom de l'application écrit en titre, avec un sous-titre (Régie : le nom de l'émulateur). La question : la spécification en fait-elle une règle pour toute application, ou les laisse-t-elle à chaque application ?
-- Retenu : A.
-- Options : A, règle générale : chaque application fixe sa taille minimale (selon son contenu) et suit le même traitement de la barre de titre selon la version de macOS ; B, propre à Régie : la spécification ne dit rien de la taille minimale ni du titre.
+Aucun. Les 22 points relevés à l'extraction de la spécification ont été tranchés par Pierre le 23 oct. dans l'atelier d'arbitrage (`arbitrages/gabarit/`, registre `arbitrages/gabarit/registre-des-choix.md`) et sont reportés dans le texte. Un sujet non tranché qui apparaît s'ajoute ici, avec la position retenue et les options.
