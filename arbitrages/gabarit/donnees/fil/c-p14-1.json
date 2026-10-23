@@ -1,0 +1,6 @@
+{
+  "at": "2026-10-23T10:47:57.000Z",
+  "auteur": "claude",
+  "axe": "p14",
+  "texte": "Reformulé. Deux détails de la fenêtre principale de Régie : 1) taille minimale 1120 × 640 (en dessous, la fenêtre ne se réduit plus) ; 2) barre de titre : sous macOS 15 et plus, aucun titre écrit (la barre d'outils occupe la barre de titre), sous macOS 14, le nom de l'application avec un sous-titre (Régie : le nom de l'émulateur). Question : est-ce une règle de la spécification pour toute application (A : chacune fixe sa taille minimale et suit le même traitement du titre), ou un détail propre à Régie que la spécification ne règle pas (B) ?"
+}

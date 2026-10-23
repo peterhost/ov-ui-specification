@@ -209,7 +209,7 @@ body.ref #win{position:fixed;left:0;top:0;z-index:1000;width:var(--refw,1280px);
 <div class="page">
   <header class="top">
     <h1>Points ouverts du gabarit</h1>
-    <p>Chaque carte est un point du § 15 de GABARIT.md. La vue du point montre toutes ses options, dessinées avec les jetons du gabarit ; choisis, puis valide.</p>
+    <p>Chaque carte est un point du § 15 de GABARIT.md. La vue du point montre toutes ses options, dessinées avec les jetons du gabarit.</p>
     <div class="presets">
       <button class="btn" id="p-now" type="button">Tout comme aujourd'hui</button>
       <button class="btn" id="p-prop" type="button">Tout proposé</button>
@@ -246,8 +246,8 @@ body.ref #win{position:fixed;left:0;top:0;z-index:1000;width:var(--refw,1280px);
         <div class="th-list" id="thlist" tabindex="0" aria-live="polite"></div>
         <form class="th-form" id="thform">
           <div class="th-tag" id="thtag" hidden><span id="thtagtxt"></span><button type="button" id="thtagx" aria-label="Retirer le point visé">×</button></div>
-          <label for="global" class="sr">Ton message</label>
-          <textarea id="global" placeholder="Réagis ici. Tes choix en cours sont joints au message."></textarea>
+          <label for="global" class="sr">Message</label>
+          <textarea id="global" placeholder="Message · choix en cours joints"></textarea>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
             <button class="btn primary" id="save" type="submit">Envoyer</button>
             <span class="hint">⌘↵ pour envoyer · ensuite, dis « lis le fil » dans la conversation</span>
@@ -445,11 +445,11 @@ window.Atelier = (function () {
     function fmt(iso) { try { return new Date(iso).toLocaleString('fr-FR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } }
     function paint(docs) {
       list.textContent = '';
-      if (!docs.length) { const e = document.createElement('p'); e.className = 'th-empty'; e.textContent = 'Pas encore de message. Choisis des options, puis écris ici ce que tu en penses.'; list.appendChild(e); return; }
+      if (!docs.length) { const e = document.createElement('p'); e.className = 'th-empty'; e.textContent = 'Aucun message.'; list.appendChild(e); return; }
       docs.forEach(d => {
         const m = document.createElement('div'); m.className = 'msg ' + (d.auteur === 'claude' ? 'cl' : 'me');
         const who = document.createElement('div'); who.className = 'who';
-        const n = document.createElement('span'); n.textContent = d.auteur === 'claude' ? 'Claude' : 'Toi';
+        const n = document.createElement('span'); n.textContent = d.auteur === 'claude' ? 'Claude' : 'Pierre';
         const t = document.createElement('span'); t.textContent = fmt(d.at); who.append(n, t); m.appendChild(who);
         const ax = AXES.find(x => x.k === d.axe);
         if (ax) { const s = document.createElement('span'); s.className = 'ax'; s.textContent = ax.t; m.appendChild(s); m.appendChild(document.createElement('br')); }
@@ -475,7 +475,7 @@ window.Atelier = (function () {
       $('thform').addEventListener('submit', async e => {
         e.preventDefault();
         const txt = gl.value.trim(); if (!txt) return;
-        if (!db) { status.className = 'status'; status.textContent = 'Fil indisponible ici : écris-moi dans la conversation.'; return; }
+        if (!db) { status.className = 'status'; status.textContent = 'Fil indisponible ici : passer par la conversation.'; return; }
         const choix = {}; AXES.forEach(a => { choix[a.k] = st.c[a.k]; });
         status.className = 'status'; status.textContent = 'Envoi…';
         try {
@@ -565,7 +565,7 @@ const JETONS={"catppuccin":{"clair":{"base":"#EFF1F5","mantle":"#E6E9EF","crust"
 (function(){
 const AXES=[
  {k:'p1',t:'1 · Sourdine hors des mesures',why:'La sourdine (surfaces colorées atténuées, petites marques en pleine couleur) vaut pour les graphiques, les tuiles et les capsules de mesure. Faut-il l’étendre aux barres de mesure, micro-jauges et fonds de capsule ailleurs ? G § 3.5.',o:[['A','A · Mesures seulement (retenu)'],['B','B · Toute surface colorée']],now:'A',prop:'A'},
- {k:'p2',t:'2 · Couleurs du bandeau de type',why:'Le jaune est réservé à « question » ; le bandeau de l’élément maître le prend quand même. G § 2.4.',o:[['A','A · Maître jaune (retenu)'],['B','B · Maître en accent'],['C','C · Fond neutre, mot coloré']],now:'A',prop:'A'},
+ {k:'p2',t:'2 · Couleur du bandeau de l’élément maître',why:'Vert, jaune, orange, rouge ne servent qu’aux statuts. Jaune = « une question attend une réponse » (point jaune de la pastille). Le bandeau de l’élément maître est jaune lui aussi : à côté d’une pastille jaune, il peut se lire comme une question. G § 2.4.',o:[['A','A · Maître en jaune (retenu)'],['B','B · Maître en accent'],['C','C · Fond neutre, mot coloré']],now:'A',prop:'A'},
  {k:'p3',t:'3 · Couleur d’une demande en attente',why:'Trait et 🔒 d’une demande en attente (mot de passe…), dans la colonne et sur son panneau. G § 9.5.',o:[['A','A · Un seul cyan (retenu)'],['B','B · Quatre nuances'],['C','C · Jaune']],now:'A',prop:'A'},
  {k:'p4',t:'4 · Teintes de groupe portées par des marques',why:'Sarcelle pour « distant » et le mode plan, lavande pour le mode édition : un élément d’un groupe sarcelle prend la même teinte que sa marque. G § 2.4.',o:[['A','A · Garder (retenu)'],['B','B · Teinte réservée aux marques'],['C','C · Marques en gris']],now:'A',prop:'A'},
  {k:'p5',t:'5 · Pied « ↵ insérer · ⇥ compléter »',why:'Le sélecteur liste et aperçu (@@@) écrit ses touches en pied, contre le principe 6 (pas de rappel de touches écrit). C § 8.2.',o:[['A','A · Garder le pied (retenu)'],['B','B · Touches dans la bulle de l’en-tête']],now:'A',prop:'A'},
@@ -575,16 +575,16 @@ const AXES=[
  {k:'p9',t:'9 · Annuler un arrêt programmé (⊗)',why:'En-tête d’une entité qui s’éteint dans quelques secondes. C § 1.10.',o:[['A','A · Au survol (retenu)'],['B','B · Toujours visible']],now:'A',prop:'A'},
  {k:'p10',t:'10 · Pulsation d’une marque d’anomalie',why:'Quand « Animations de l’interface » est coupé, la marque qui pulse (◎ orange) continue-t-elle ? Seul « Réduire les animations » de macOS fige tout. G § 6.',o:[['A','A · Signal : elle pulse encore (retenu)'],['B','B · Transition : elle se fige']],now:'A',prop:'A'},
  {k:'p11',t:'11 · Réglages de choix de design',why:'Régie a deux réglages qui ne règlent qu’un choix de design (modes affichés ; flèche ou anneau), contre le principe 10. G § 1.',o:[['A','A · Nouvelles applications sans (retenu)'],['B','B · Les retirer de Régie aussi'],['C','C · Exceptions nommées']],now:'A',prop:'A'},
- {k:'p12',t:'12 · Réglages › Groupes : aperçu clair | sombre',why:'Le cahier des charges de Régie retire puis garde deux colonnes d’aperçu. G § 3.4.',o:[['A','A · Pas de colonnes, paires dans le menu (retenu)'],['B','B · Deux colonnes d’aperçu']],now:'A',prop:'A'},
- {k:'p13',t:'13 · Tutoiement',why:'Les textes validés de Régie tutoient, sans que ce soit posé en règle. G § 2.3.',o:[['A','A · L’interface tutoie (retenu)'],['B','B · Tournures sans pronom']],now:'A',prop:'A'},
- {k:'p14',t:'14 · Taille minimale et titre selon macOS',why:'1120 × 640, et sous macOS 14 le titre de l’application avec le nom de l’émulateur en sous-titre. G § 2.6.',o:[['A','A · Règle générale (retenu)'],['B','B · Propre à Régie']],now:'A',prop:'A'},
+ {k:'p12',t:'12 · Réglages › Groupes : voir une couleur en clair et en sombre',why:'Une couleur de groupe change entre le thème clair et le thème sombre. Pour la choisir, la voir dans les deux thèmes : où ? G § 3.4.',o:[['A','A · Deux pastilles par teinte, dans le menu (retenu)'],['B','B · Deux aperçus de la colonne, clair et sombre']],now:'A',prop:'A'},
+ {k:'p13',t:'13 · Style des textes',why:'Ni tutoiement ni vouvoiement : infinitif pour une action, nom ou participe pour un état. Décidé par Pierre, règle générale. G § 1 (principe 15), § 2.3.',o:[['A','A · L’interface tutoie'],['B','B · Style neutre (décidé)']],now:'B',prop:'B'},
+ {k:'p14',t:'14 · Taille minimale et barre de titre',why:'Deux détails de la fenêtre de Régie : taille minimale 1120 × 640 ; aucun titre écrit sous macOS 15 et plus, nom de l’application et sous-titre sous macOS 14. Règle pour toute application, ou détail propre à Régie ? G § 2.6.',o:[['A','A · Règle pour toute application (retenu)'],['B','B · Propre à Régie']],now:'A',prop:'A'},
  {k:'p15',t:'15 · Progression en tranches',why:'Barre d’une campagne (acceptés, en attente, refusés, reste), que le cahier des charges ne dessine pas. C § 7.1.',o:[['A','A · Segments séparés (retenu)'],['B','B · Barre continue et compte']],now:'A',prop:'A'},
  {k:'p16',t:'16 · Catégorie coûteuse en orange',why:'Bande fine de la consommation par modèle : la catégorie coûteuse est orange sans être une anomalie. G § 7.12.',o:[['A','A · Exception générique (retenu)'],['B','B · Neutre, sauf anomalie']],now:'A',prop:'A'},
  {k:'p17',t:'17 · Formes d’état vide',why:'État vide d’une vue entière et de la surface principale. C § 2.6, § 2.8.',o:[['A','A · Centré et carte (retenu)'],['B','B · Toujours la carte']],now:'A',prop:'A'},
  {k:'p18',t:'18 · Voile de la liste des raccourcis',why:'Liste affichée en tenant ⌘ une seconde. G § 3.7.',o:[['A','A · Sans voile (retenu)'],['B','B · Voile à 18 %']],now:'A',prop:'A'},
  {k:'p19',t:'19 · Armement de ⌫',why:'Un premier ⌫ arme la suppression d’une capture, le second l’envoie à la corbeille. C § 8.3.',o:[['A','A · Sans délai (retenu)'],['B','B · Désarmé après 1,5 s']],now:'A',prop:'A'},
  {k:'p20',t:'20 · Composants propres à Claude Code',why:'Le catalogue décrit des composants qui n’existent que dans une application de pilotage de Claude Code (hooks, onglet Session). COMPOSANTS.md.',o:[['A','A · Composants génériques (retenu)'],['B','B · Exemples de Régie']],now:'A',prop:'A'},
- {k:'p21',t:'21 · Message d’action',why:'Résultat d’une action en arrière-plan (« Collé dans ov-farm »). La maquette ne le dessine pas. C § 2.7.',o:[['A','A · En bas à gauche, reste (retenu)'],['B','B · En bas à droite, s’efface après 4 s']],now:'A',prop:'A'},
+ {k:'p21',t:'21 · Message d’action',why:'Résultat d’une action en arrière-plan (« Collé dans ov-farm »). La maquette ne le dessine pas. C § 2.7.',o:[['A','A · En bas à gauche, reste'],['B','B · En bas à droite, s’efface après 4 s (retenu)']],now:'B',prop:'B'},
  {k:'p22',t:'22 · Couleurs ANSI du terminal',why:'dotlib ne définit pas de couleurs ANSI. G § 2.1.',o:[['A','A · Tirées des jetons (retenu)'],['B','B · Thème officiel de la palette']],now:'A',prop:'A'}
 ];
 /* Moteur : état, cartes, fil, validations. */
@@ -593,7 +593,7 @@ const st=A.st;
 const VUES=[['p1','1'],['p2','2'],['p3','3'],['p4','4'],['p5','5'],['p6','6'],['p7','7'],['p8','8'],['p9','9'],['p10','10'],['p11','11'],['p12','12'],['p13','13'],['p14','14'],['p15','15'],['p16','16'],['p17','17'],['p18','18'],['p19','19'],['p20','20'],['p21','21'],['p22','22']];
 const WHERE={p1:['p1'],p2:['p2'],p3:['p3'],p4:['p4'],p5:['p5'],p6:['p6'],p7:['p7'],p8:['p8'],p9:['p9'],p10:['p10'],p11:['p11'],p12:['p12'],p13:['p13'],p14:['p14'],p15:['p15'],p16:['p16'],p17:['p17'],p18:['p18'],p19:['p19'],p20:['p20'],p21:['p21'],p22:['p22']};
 const HL=Object.fromEntries(AXES.map(a=>[a.k,'.opt.choix']));
-const VALIDES_FIGES=/*valides*/{}/*fin*/;
+const VALIDES_FIGES=/*valides*/{"p1":"A","p10":"A","p11":"A","p13":"B","p15":"A","p16":"A","p17":"A","p18":"A","p19":"A","p20":"A","p21":"B","p22":"A","p3":"A","p4":"A","p5":"A","p6":"A","p7":"A","p8":"A","p9":"A"}/*fin*/;
 
 const rgba=(hex,a)=>{const n=parseInt(hex.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';};
 const melange=(a,b)=>{const x=parseInt(a.slice(1),16),y=parseInt(b.slice(1),16);const c=s=>Math.round(((x>>s&255)+(y>>s&255))/2);return '#'+[16,8,0].map(s=>c(s).toString(16).padStart(2,'0')).join('');};
@@ -618,8 +618,11 @@ function illustrer(k,v,P){
       ligne(`<span class="pd" style="background:${P.vert}"></span><span class="nm">indexer</span>${mj(94,P.rouge)}<span class="mt">94 %</span>`)+
       `<div class="mbar"><i style="width:92%;background:${P.rouge};opacity:${S?.55:1}"></i></div>`+legende('micro-jauges et barre de mesure'),200);}
   case 'p2':{
-    const T=v==='A'?[['Maître',P.jaune],['Écriture',P.orange],['Lecture seule',P.g_slate]]:v==='B'?[['Maître',acc],['Écriture',P.orange],['Lecture seule',P.g_slate]]:[['Maître',P.jaune],['Écriture',P.orange],['Lecture seule',P.g_slate]];
-    return fen('Terminal',T.map(([m,col])=>`<div class="bandeau" style="background:${v==='C'?P.champ:rgba(col,P.sombre?.18:.14)}"><b style="color:${col}">${m}</b><span>overview › ${m==='Maître'?'overview':m==='Écriture'?'refonte-ui':'audit'}</span></div>`).join('')+`<div class="term">❯ ▍</div>`,170);}
+    const M=v==='B'?acc:P.jaune;
+    const T=[['Maître',M,'overview'],['Écriture',P.orange,'refonte-ui'],['Lecture seule',P.g_slate,'audit']];
+    return fen('Régie',ligne(`<span class="pd" style="background:${P.jaune}"></span><span class="nm">indexer</span><span class="mt" style="color:${P.jaune}">question</span>`)+
+      ligne(`<span class="pd" style="background:${P.vert}"></span><span class="nm">overview</span>`)+
+      T.map(([m,col,n])=>`<div class="bandeau" style="background:${v==='C'?P.champ:rgba(col,P.sombre?.18:.14)}"><b style="color:${col}">${m}</b><span>overview › ${n}</span></div>`).join('')+legende('pastille jaune : question en attente'),200);}
   case 'p3':{
     const N=v==='A'?[P.g_cyan,P.g_cyan,P.g_cyan]:v==='B'?[P.g_cyan,P.g_teal,melange(P.g_cyan,P.g_blue)]:[P.jaune,P.jaune,P.jaune];
     return fen('Colonne',['creation','git-local','nas2-backup'].map((n,i)=>ligne(`<span class="pd" style="background:${P.vert}"></span><span class="nm">${n}</span><span style="margin-left:6px">🔒</span>`,'',`box-shadow:inset 2px 0 0 ${N[i]}`)).join('')+legende('trois demandes de mot de passe en attente'),170);}
@@ -657,17 +660,22 @@ function illustrer(k,v,P){
     const pane=(t,avec,tag)=>`<div class="pane"><div class="pt">${t}</div>${avec?lignes+(tag?legende('exceptions nommées au principe 10'):''):`<div class="gl"><span>Largeur</span><span style="color:${sub}">290 px</span></div>`+legende('pas de réglage de design')}</div>`;
     return `<div class="duo col">${pane('Régie',v!=='B',v==='C')}${pane('Nouvelle application',v==='C',v==='C')}</div>`;}
   case 'p12':{
-    const R=[['Infra partagée',P.g_purple,'Violet'],['Outils',P.g_blue,'Bleu'],['Shell',P.g_teal,'Sarcelle']];
-    const liste=R.map(([n,c,cn],i)=>`<div class="pr${i===2?' open':''}">${trait(c)}<span>${n}</span><span style="margin-left:auto">${cn} ⌄</span></div>`).join('');
-    const menu=v==='A'?`<div class="menu">${R.map(([n,c,cn])=>`<div class="mi"><span class="paire"><i style="background:${c}"></i><i style="background:${melange(c,'#ffffff')}"></i></span>${cn}</div>`).join('')}</div>`:'';
-    const apercus=v==='B'?`<div class="duo">${['clair','sombre'].map(ap=>`<div class="minicol" style="background:${ap==='clair'?'#EFF1F5':'#1E1E2E'};color:${ap==='clair'?'#4C4F69':'#CDD6F4'}">${R.map(([n,c])=>`<div>${trait(c,10)} ${n}</div>`).join('')}</div>`).join('')}</div>`:'';
-    return fen('Réglages › Groupes',apercus+liste+menu,210);}
+    const JC=JETONS[st.palette].clair,JS=JETONS[st.palette].sombre;
+    const R=[['Infra partagée','g_purple','Violet'],['Outils','g_blue','Bleu'],['Shell','g_teal','Sarcelle']];
+    const liste=R.map(([n,g,cn])=>`<div class="pr">${trait(P[g])}<span>${n}</span><span style="margin-left:auto">${cn} ⌄</span></div>`).join('');
+    const menu=v==='A'?`<div class="menu">${R.map(([n,g,cn])=>`<div class="mi"><span class="paire"><i style="background:${JC[g]}"></i><i style="background:${JS[g]}"></i></span>${cn}</div>`).join('')}</div>`:'';
+    const apercus=v==='B'?`<div class="duo">${[JC,JS].map(T=>`<div class="minicol" style="background:${T.mantle};color:${T.texte};box-shadow:0 0 0 1px ${T.separateur}">${R.map(([n,g])=>`<div>${trait(T[g],10)} ${n}</div>`).join('')}</div>`).join('')}</div>`:'';
+    return fen('Réglages › Groupes',liste+menu+apercus+legende(v==='A'?'menu ouvert : clair | sombre':'colonne en clair | en sombre, en direct'),v==='A'?250:220);}
   case 'p13':{
     const T=v==='A'?['Choisis la session cible.','Tu as utilisé 99 % de ta semaine.','Recrée la clé d’abord.']:['Session cible à choisir.','99 % de la semaine utilisés.','Clé à recréer d’abord.'];
     return fen('Textes',T.map(t=>`<div class="tx">${t}</div>`).join('')+legende('bulles et messages'),130);}
   case 'p14':{
-    const app=(n,regle)=>`<div class="fenmin"><div class="mwt"><i></i><i></i><i></i><span>${regle?n+' — <span style="color:'+sub+'">Ghostty</span>':''}</span></div><div class="dim">${regle?'1120 × 640 au moins':'taille libre'}</div></div>`;
-    return `<div class="duo">${app('Régie',true)}${app('Notes',v==='A')}</div>`+legende('macOS 14 : titre et sous-titre ; macOS 15 et plus : pas de titre');}
+    const et=t=>`<div style="font-size:10px;color:${sub};padding:4px 8px 2px">${t}</div>`;
+    const barre=(titre)=>`<div class="mwt"><i></i><i></i><i></i><span>${titre}</span></div>`;
+    const app=(n,sous,min,regle)=>`<div class="fenmin"><div style="font-size:11px;font-weight:600;padding:6px 8px 0">${n}</div>`+
+      (regle?et('macOS 15 et plus')+barre('')+et('macOS 14')+barre(n+'&nbsp;&nbsp;<span style="color:'+sub+'">'+sous+'</span>')+`<div class="dim" style="height:44px">au moins ${min}</div>`
+            :`<div class="dim" style="height:96px">au choix de l’application</div>`)+`</div>`;
+    return `<div class="duo">${app('Régie','Ghostty','1120 × 640',true)}${app('Notes','dossier','900 × 560',v==='A')}</div>`;}
   case 'p15':{
     const parts=[[3,P.texte],[2,sub],[1,P.rouge],[2,P.separateur]];
     const barre=v==='A'?`<div class="seg-bar">${parts.map(([n,c])=>`<i style="flex:${n};background:${c}"></i>`).join('')}</div>`:`<div class="cont-bar">${parts.map(([n,c])=>`<i style="flex:${n};background:${c}"></i>`).join('')}</div><div style="font-size:11px;color:${sub};margin-top:4px"><b style="color:${P.texte}">3</b>/8 acceptés · 1 refusé</div>`;

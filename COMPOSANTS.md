@@ -221,7 +221,7 @@ Vue : Sessions à liseré ; Forge (onglet d'un rôle, « Taper »).
 **Lecture seule par défaut, écriture sur demande**
 
 - Une surface que l'application observe sans la piloter s'ouvre en lecture seule, avec un bandeau neutre : marge 6 × 16 px, 11,5 px `secondaire`, filet bas `separateur`, écart 8 px ; icône en `secondaire` ; « Lecture seule : <app> observe <élément> », le nom de l'élément en 600 `texte` ; à droite, boutons « Taper » et « Ouvrir… » (§ 7.8).
-- « Taper » passe en écriture : le bandeau devient « ⌨ » `orange` · « Écriture » en 600 `texte` · « ce que tu tapes va à <élément> », et le bouton « Revenir en lecture seule » ; le bandeau de type « écriture » s'ajoute.
+- « Taper » passe en écriture : le bandeau devient « ⌨ » `orange` · « Écriture » en 600 `texte` · « saisie envoyée à <élément> », et le bouton « Revenir en lecture seule » ; le bandeau de type « écriture » s'ajoute.
 
 ### 2.4 Statusline
 
@@ -256,7 +256,7 @@ Vue : Forge (chantier éteint).
 
 Vue : non dessiné dans la maquette.
 
-- En bas du centre, une seule ligne : le dernier message, 11,5 px `secondaire`. Résultat d'une action de fond, au passé, en quelques mots (« Ordre déposé ») ; échec : ⚠ `orange` puis le fait (« ⚠ Envoi impossible »).
+- En bas à droite du centre, aligné à droite, une seule ligne : le dernier message, 11,5 px `secondaire`. Il reste 4 s, puis s'efface (fondu 0,2 s) ; un nouveau message remplace le précédent. L'échec reste marqué sur l'entité en cause (G § 9.12). Résultat d'une action de fond, au passé, en quelques mots (« Ordre déposé ») ; échec : ⚠ `orange` puis le fait (« ⚠ Envoi impossible »).
 - Pas pour une copie (bulle « Copié », § 3.3), pas pour un succès ordinaire.
 
 ### 2.8 Carte d'état de la surface
@@ -729,7 +729,7 @@ Vue : Réglages, Panneaux, Nouvelle session. Boutons : § 7.8 ; interrupteur : �
 - **Case à cocher** : 13 × 13 px, rayon 3, bordure 1,5 px `secondaire` ; cochée : ☑ en `accent` ; libellé à droite, écart 8 px. Décochée par défaut quand le choix ne doit pas être imposé.
 - **Curseur** : piste de 110 × 4 px, rayon 2, `separateur`, remplissage `accent`, sans bouton ; valeur à droite dans une colonne de 44 px, alignée à droite, `secondaire` (« 0,35 s », « 290 px »).
 - **Menu local** (choisir une valeur) : bouton `fbtn` avec la valeur et « ⌃⌄ » (« dotlib (catppuccin) ⌃⌄ », « 2 h ⌃⌄ »). Une police se montre dans sa propre fonte.
-- **Touche de raccourci** : bouton `fbtn` en chasse fixe, 54 px au moins, texte centré (« ⌘P », « ⇧⌘R ») ; pendant l'enregistrement : « Tape la combinaison… (⎋ annule) ».
+- **Touche de raccourci** : bouton `fbtn` en chasse fixe, 54 px au moins, texte centré (« ⌘P », « ⇧⌘R ») ; pendant l'enregistrement : « Combinaison attendue… (⎋ annule) ».
 - **Champ de chemin** : champ de saisie en chasse fixe 11,5 px. Chemin local : le chemin en `secondaire` et « Choisir… » (`fbtn`). Chemin valable sur des machines distantes : champ texte sans « Choisir… », précédé dans le champ d'une icône d'ordinateur de 14 × 12 px au trait de 1,2 px.
 
 ---
@@ -784,7 +784,7 @@ Vue : Panneaux › sudo (1, 2, 3 ou 5 demandes) ; Sessions, point 7.
 - Ce qui est demandé, en chasse fixe 11 px `secondaire`, sur une ligne tronquée (complet en bulle), marge 6 × 0 × 8 px.
 - Champ de saisie (§ 7.9) avec l'anneau `accent`, 10 px au-dessous.
 - Pied : à gauche, l'âge de la demande (« il y a 5 s »), 11 px `secondaire` ; à droite « Refuser » (`fbtn`) et « Valider » (principal).
-- Nuance de la demande : `cyan`, la même sur le panneau et sur la ligne de l'élément dans la colonne (§ 1.6 ; G § 15).
+- Nuance de la demande : `cyan`, la même sur le panneau et sur la ligne de l'élément dans la colonne (§ 1.6).
 - **Pile** : plusieurs demandes, une pile, jamais des panneaux côte à côte. La plus récente devant, avec l'anneau `accent`. Derrière, deux bords au plus, quel que soit le nombre : même largeur, décalés de 9 px vers le haut, réduits de 4 % et moins opaques de 18 % chacun, ombre mini + filet. ⌃⇥ passe à la suivante ; « Valider » ou « Refuser » fait avancer la suivante ; un raccourci ramène la pile au premier plan (Régie : ⌘S).
 
 ### 8.5 Fenêtre modale et voile

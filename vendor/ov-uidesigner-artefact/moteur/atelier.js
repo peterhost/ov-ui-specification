@@ -184,11 +184,11 @@ window.Atelier = (function () {
     function fmt(iso) { try { return new Date(iso).toLocaleString('fr-FR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } }
     function paint(docs) {
       list.textContent = '';
-      if (!docs.length) { const e = document.createElement('p'); e.className = 'th-empty'; e.textContent = 'Pas encore de message. Choisis des options, puis écris ici ce que tu en penses.'; list.appendChild(e); return; }
+      if (!docs.length) { const e = document.createElement('p'); e.className = 'th-empty'; e.textContent = 'Aucun message.'; list.appendChild(e); return; }
       docs.forEach(d => {
         const m = document.createElement('div'); m.className = 'msg ' + (d.auteur === 'claude' ? 'cl' : 'me');
         const who = document.createElement('div'); who.className = 'who';
-        const n = document.createElement('span'); n.textContent = d.auteur === 'claude' ? 'Claude' : 'Toi';
+        const n = document.createElement('span'); n.textContent = d.auteur === 'claude' ? 'Claude' : 'Pierre';
         const t = document.createElement('span'); t.textContent = fmt(d.at); who.append(n, t); m.appendChild(who);
         const ax = AXES.find(x => x.k === d.axe);
         if (ax) { const s = document.createElement('span'); s.className = 'ax'; s.textContent = ax.t; m.appendChild(s); m.appendChild(document.createElement('br')); }
@@ -214,7 +214,7 @@ window.Atelier = (function () {
       $('thform').addEventListener('submit', async e => {
         e.preventDefault();
         const txt = gl.value.trim(); if (!txt) return;
-        if (!db) { status.className = 'status'; status.textContent = 'Fil indisponible ici : écris-moi dans la conversation.'; return; }
+        if (!db) { status.className = 'status'; status.textContent = 'Fil indisponible ici : passer par la conversation.'; return; }
         const choix = {}; AXES.forEach(a => { choix[a.k] = st.c[a.k]; });
         status.className = 'status'; status.textContent = 'Envoi…';
         try {

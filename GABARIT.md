@@ -38,7 +38,7 @@ Exemple : la table de Régie, l'application dont ce gabarit est tiré. Elle sert
 | fiche | fiche projet (onglets Aperçu, Mandat, Liens, Câblage, Session) |
 | bandeau de type | sessions à liseré (maîtresse, écriture, lecture seule, homonyme) |
 | carte d'état de la surface | cartes « hors tmux », « terminée », « Aucune session vivante », « introuvable » |
-| message d'action | message d'action en bas du centre |
+| message d'action | message d'action en bas à droite du centre |
 | sonde | relevé du Moniteur (fichiers, ssh, agents, conso) |
 | barre de budget | budget du contexte injecté par Overview |
 | bande de répartition | « Qui consomme · 5 h » |
@@ -72,15 +72,16 @@ Ils priment sur tout le reste. Quand un cas n'est pas prévu, on le résout en l
 3. **Couleur si anormal.** Un état normal est neutre (texte, gris). La couleur n'apparaît que lorsqu'il y a quelque chose à voir : seuil dépassé, attente, erreur. Un écran où tout va bien est presque monochrome. Exceptions nommées : la couleur d'identité d'un groupe (§ 3.4), le point `vert` d'une entité allumée (C § 1.10), la catégorie coûteuse d'une bande fine de répartition (§ 7.12).
 4. **Hiérarchie par la typographie et l'espace.** Taille, graisse, petites capitales et espacement organisent l'écran. Pas de boîtes imbriquées, pas de séparateurs superflus.
 5. **Actions secondaires au survol.** Les boutons d'une ligne (ouvrir, ajouter, reprendre, ⌖) n'apparaissent qu'au survol de la ligne. L'action principale d'une vue reste visible.
-6. **Lean & clean : pas de phrase d'explication.** Aucune légende explicative, note, mode d'emploi ou rappel de raccourci dans l'interface. Un libellé court suffit. Le détail (définition, chemin complet, unité, source d'une valeur) passe dans une bulle au survol. Le raccourci d'une commande s'écrit dans son infobulle (§ 9.3), jamais à côté d'elle. Deux exceptions, seulement elles : la synthèse « En clair » d'une mesure (C § 5.9), qui est du contenu et pas une aide ; le pied d'un sélecteur liste et aperçu, qui rappelle ses deux touches propres (« ↵ insérer · ⇥ compléter », § 15).
+6. **Lean & clean : pas de phrase d'explication.** Aucune légende explicative, note, mode d'emploi ou rappel de raccourci dans l'interface. Un libellé court suffit. Le détail (définition, chemin complet, unité, source d'une valeur) passe dans une bulle au survol. Le raccourci d'une commande s'écrit dans son infobulle (§ 9.3), jamais à côté d'elle. Deux exceptions, seulement elles : la synthèse « En clair » d'une mesure (C § 5.9), qui est du contenu et pas une aide ; le pied d'un sélecteur liste et aperçu, qui rappelle ses deux touches propres (« ↵ insérer · ⇥ compléter », C § 8.2).
 7. **Un signe par information.** Une information n'est dite qu'une fois. On ne cumule pas couleur, forme, mot et animation pour le même état, sauf l'anneau animé des pastilles (C § 1.7) et l'anomalie d'un élément maître (C § 1.8), qui cumulent couleur et mouvement pour ne pas passer inaperçus.
 8. **Une seule grammaire.** Un même type d'objet a le même rendu partout : un en-tête de groupe, de chantier ou de machine distante suit la même anatomie (trait, nom, N/M, état écrit, action au survol). Un attribut d'élément (maître, distant, doublon, en attente) a une seule marque, la même partout où l'élément apparaît : colonne, onglets, en-tête de la surface, fiche, carte, tableaux, sélecteurs, panneaux. La règle qui va avec l'attribut ne s'écrit qu'une fois, dans la bulle de sa marque.
 9. **Le système d'abord.** Comportements standard de macOS chaque fois qu'ils existent (renommer comme le Finder, réglages comme les Réglages Système, barre d'outils macOS, raccourcis usuels).
-10. **Choix tranchés.** Pas d'option de réglage pour un choix de design ; un réglage n'existe que pour une préférence réelle de l'utilisateur (taille de police, rythme de rafraîchissement). Cas de Régie : § 15.
+10. **Choix tranchés.** Pas d'option de réglage pour un choix de design ; un réglage n'existe que pour une préférence réelle de l'utilisateur (taille de police, rythme de rafraîchissement). Une nouvelle application n'a aucun réglage de ce genre ; les deux de Régie (modes affichés ou seules exceptions ; flèche ou anneau d'une version en retard) restent propres à Régie.
 11. **Impossible = grisé, raison en bulle.** Une action qu'on ne peut pas faire maintenant reste à sa place, grisée (§ 3.5) ; sa bulle dit pourquoi (« Aucun élément sélectionné »). On ne la cache pas, on n'ouvre pas une vue vide, on n'affiche pas de message d'erreur à l'avance.
 12. **On ne parle que des problèmes.** Pas de message de réussite (« Nom disponible. »), pas de message d'erreur avant que l'utilisateur ait tenté quelque chose. Une erreur apparaît après la tentative, à l'endroit où elle se corrige.
 13. **Lisible sans apprendre.** Un signe d'attribut rare se comprend au premier regard : glyphe et mot court (une seringue dessinée au trait suivie de « scripts »), pas une petite icône seule et ésotérique. Le reste (où, combien, pourquoi) va dans sa bulle.
 14. **Ce qui ne s'affiche pas ne se demande pas.** Une donnée que l'interface ne montre pas n'a pas de champ de saisie ; elle garde dans les données sa valeur par défaut.
+15. **Style neutre.** L'interface ne s'adresse à personne : ni tutoiement ni vouvoiement, ni impératif. Infinitif pour une action, nom ou participe pour un état (§ 2.3).
 
 ---
 
@@ -94,7 +95,7 @@ Ils priment sur tout le reste. Quand un cas n'est pas prévu, on le résout en l
 - Les valeurs exactes des palettes sont dans `~/.dotlib/share/palettes.tsv` (source de vérité, lecture seule). Copie mise en forme : `sources/palettes-dotlib.md` du dépôt `ov-regie-refactorUI`.
 - **Palettes autorisées, et seulement elles** : catppuccin, gruvbox, nord, solarized, tokyonight, everforest, edge, lucius, papercolor, pencil, xterm. Chacune en clair et en sombre.
 - Toute application lit ce réglage et peint toute son interface avec la palette en service : fonds, textes, accent, statuts, couleurs de groupe, terminal intégré. Elle n'a **aucune couleur propre** en dehors des jetons et des couleurs fixes de § 3.1.
-- Terminal intégré : fond `base`, texte `texte` ; ses 16 couleurs ANSI suivent la palette dotlib en service, jamais des couleurs ANSI fixes. dotlib ne définit pas de couleurs ANSI : elles se tirent des jetons (`jetons.json`, `terminal.ansi`) : rouge, vert, jaune, bleu, magenta, cyan = les couleurs de la palette ; noir = `separateur` ; blanc = `secondaire` ; noir vif = mélange à parts égales de `separateur` et `secondaire` ; blanc vif = `texte` ; couleurs vives = couleurs normales (§ 15).
+- Terminal intégré : fond `base`, texte `texte` ; ses 16 couleurs ANSI suivent la palette dotlib en service, jamais des couleurs ANSI fixes. dotlib ne définit pas de couleurs ANSI : elles se tirent des jetons (`jetons.json`, `terminal.ansi`) : rouge, vert, jaune, bleu, magenta, cyan = les couleurs de la palette ; noir = `separateur` ; blanc = `secondaire` ; noir vif = mélange à parts égales de `separateur` et `secondaire` ; blanc vif = `texte` ; couleurs vives = couleurs normales.
 - tmux : le fond posé par l'application sur ses sessions est `mantle` de la palette en service, jamais une valeur en dur. Dans l'application qui descend du bord (§ 7.9), `window-style` et `window-active-style` passent à `bg=default`.
 - Réglage de l'application (Réglages › Général › Apparence) :
   - **Palette** : menu local, « dotlib (catppuccin) » par défaut (suit `DOTLIB_PALETTE`), puis les 11 palettes pour forcer l'une d'elles ;
@@ -113,7 +114,7 @@ Ils priment sur tout le reste. Quand un cas n'est pas prévu, on le résout en l
 ### 2.3 Langue et typographie
 
 - Interface en français. Typographie française : espace insécable avant `:` `;` `!` `?` et à l'intérieur des guillemets « » ; apostrophe typographique ’ ; points de suspension … ; tiret demi-cadratin pour les intervalles (10–14).
-- L'interface tutoie l'utilisateur (« ce que tu tapes… », « attend ton accord ») (§ 15).
+- **Style neutre, partout.** Ni tutoiement ni vouvoiement, nulle part : interface, bulles, messages, atelier. Une action s'écrit à l'infinitif (« Choisir la session cible », « Saisir un nom »), un état par un nom ou un participe (« accord attendu », « 99 % de la semaine utilisés », « texte saisi »). Pas de « tu », « ton », « vous », « votre », ni d'impératif (« Choisis », « Choisissez »).
 - Nombres à la française : `39 901`, `0,44 $`, `2,6 Mo`, `12 %` (espace insécable avant l'unité et le %). Chiffres tabulaires dans les colonnes et compteurs.
 - Dates : heure seule pour aujourd'hui (`23:58`), « Hier 23:58 » pour la veille, puis `22 oct. 23:58` ; jour de la semaine pour une échéance proche (`jeu. 13 h`). Ancienneté : `il y a 5 s`, `il y a 3 min`, `vu il y a 3 min`. Heure d'un relevé ou d'une lecture : `lu à 23:32`, `relevé 01:08`. Durées : `1 h 29`, `28 min`, `11 s`.
 - Un libellé d'action qui ouvre une fenêtre ou demande une confirmation finit par « … » (« Révoquer… », « Diagnostiquer… »), comme dans macOS. Un état en cours aussi, en `secondaire` (« lecture… », « actualisation… »).
@@ -124,7 +125,7 @@ Ils priment sur tout le reste. Quand un cas n'est pas prévu, on le résout en l
 - **Vert, jaune, orange, rouge** sont réservés aux statuts. Aucun groupe, aucune décoration ne les utilise.
 - Exception nommée : le bandeau de type (C § 2.3) prend une couleur chaude quand le type appelle la vigilance (élément maître `jaune`, écriture `orange`, doublon `orange`). Un type passif prend une teinte froide (lecture seule : `slate`) (§ 15).
 - Les groupes prennent des teintes froides : `blue`, `cyan`, `teal`, `lavender`, `purple`, `slate` (§ 3.4).
-- Une teinte froide peut aussi porter un attribut fixe d'un élément, à condition que ce soit une marque (glyphe, pointillé, trait de bord de ligne) et jamais le trait plein de 2 × 12 px réservé au groupe : élément distant `teal` (C § 1.8), mode sûr `teal` ou `lavender` (C § 1.6), demande en attente `cyan` (§ 9.5). Collision avec la couleur d'un groupe : § 15.
+- Une teinte froide peut aussi porter un attribut fixe d'un élément, à condition que ce soit une marque (glyphe, pointillé, trait de bord de ligne) et jamais le trait plein de 2 × 12 px réservé au groupe : élément distant `teal` (C § 1.8), mode sûr `teal` ou `lavender` (C § 1.6), demande en attente `cyan` (§ 9.5). Un élément d'un groupe de même teinte que sa marque (groupe `teal` sur un élément distant) reste lisible : la forme distingue la marque (pointillé, glyphe) du trait plein du groupe. Sur une ligne, le pointillé occupe le bord gauche ; le trait d'accent plein le remplace quand la ligne est sélectionnée, « ⇄ » reste.
 - Pas de rose ni de magenta : la plupart des palettes ne les distinguent pas du violet des groupes. Quand deux statuts doivent se distinguer, on change la forme (losange), pas la teinte.
 
 ### 2.5 Barre des menus de macOS
@@ -231,7 +232,7 @@ Opacités conseillées : une application qui s'en tient à cette liste garde le 
 | 32 % / 50 % (`voile`) | noir | voile sous une fenêtre modale (clair / sombre) |
 
 - **Désactivé** : le contrôle entier (fond, texte, icône) passe à 45 % d'opacité ; sa bulle dit pourquoi (principe 11). Pas d'autre rendu du désactivé.
-- **Sourdine**, pour les graphiques, les tuiles et les capsules d'une mesure : une petite marque (texte, point, trait fin) prend la pleine couleur d'état ; une surface (barre, aplat, fond de capsule) la prend à 50–60 %, ou en `teinte` sous un texte coloré. L'extension de cette règle au reste de l'interface (barres de mesure, micro-jauges, fonds de capsule hors mesures) n'est pas décidée par Pierre : ailleurs, la pleine couleur reste la règle (§ 15).
+- **Sourdine**, pour les graphiques, les tuiles et les capsules d'une mesure : une petite marque (texte, point, trait fin) prend la pleine couleur d'état ; une surface (barre, aplat, fond de capsule) la prend à 50–60 %, ou en `teinte` sous un texte coloré. Hors des mesures (barres de mesure, micro-jauges, fonds de capsule), la pleine couleur reste la règle.
 - Opacités propres à la fenêtre qui descend du bord (verre, dégradé, fond opaque) : § 7.9.
 
 ### 3.6 États d'une donnée lue
@@ -266,7 +267,7 @@ Une ombre n'existe que pour ce qui flotte. Valeurs conseillées : quatre ombres,
 - Sans ombre : boîte de carte, carte d'état de la surface, choix de paire (filet `separateur` seul).
 - Fenêtre principale et fenêtre des réglages : ombre native de macOS.
 - Marque blanche posée sur une image : ombre de texte `0 0 3px rgba(0,0,0,.6)`.
-- **Voile** (`voile`) : noir à 32 % en clair, 50 % en sombre, sur toute la fenêtre, sous toute fenêtre modale, et sous le panneau d'une procédure lourde. Pas de voile sous l'aperçu d'un média (posé dans la surface, au-dessus de la bande, C § 8.3), sous un panneau non modal, sous la liste des raccourcis (§ 15), ni sous une feuille de macOS (diagnostic).
+- **Voile** (`voile`) : noir à 32 % en clair, 50 % en sombre, sur toute la fenêtre, sous toute fenêtre modale, et sous le panneau d'une procédure lourde. Pas de voile sous l'aperçu d'un média (posé dans la surface, au-dessus de la bande, C § 8.3), sous un panneau non modal, sous la liste des raccourcis, ni sous une feuille de macOS (diagnostic).
 
 ---
 
@@ -390,11 +391,12 @@ Une ombre n'existe que pour ce qui flotte. Valeurs conseillées : quatre ombres,
 | Fiche : ouverture, fermeture | glissement depuis le bord droit, 0,22 s, même courbe |
 | Fiche : « ⇥ Réduire », dépli | largeur 460 ↔ 34 px, 0,22 s, même courbe |
 | Fenêtre d'action réussie | se ferme seule après 1,2 s ; le résultat passe dans le message d'action |
+| Message d'action | reste 4 s, puis s'efface en fondu de 0,2 s ; un nouveau message remplace le précédent |
 | Fenêtre qui descend du bord | apparition et disparition 0,18 s (glisser, fondu, ou les deux, au réglage) ; passage au fond opaque 0,18 s ; retour au verre 0,4 s, 3 s après la dernière activité (§ 7.9) |
 
 - Rien d'autre ne bouge. Pas d'animation décorative, pas de rebond.
 - Réglage **Réglages › Général › Animations › « Animations de l'interface »** (activé par défaut ; aide d'une ligne : « repli des volets, fiche, bulles »). Désactivé, les volets, la fiche, les bulles, « Copié » et la fenêtre qui descend du bord changent d'état instantanément.
-- Les signaux (anneaux de pastille, vibration, halo d'un élément nouveau, mise en exergue, pulsation d'une marque d'anomalie) ne relèvent pas de ce réglage : ce sont des signaux, pas des transitions (§ 15).
+- Les signaux (anneaux de pastille, vibration, halo d'un élément nouveau, mise en exergue, pulsation d'une marque d'anomalie) ne relèvent pas de ce réglage : ce sont des signaux, pas des transitions.
 - « Réduire les animations » (macOS) coupe tout : les transitions comme avec le réglage ; les signaux se figent (la pastille, le halo et la marque restent, immobiles ; la mise en exergue devient un anneau fixe de 1,5 s).
 
 ---
@@ -409,13 +411,13 @@ Une ombre n'existe que pour ce qui flotte. Valeurs conseillées : quatre ombres,
 │  filtre          │  barre d'onglets 34 px : onglets · ↻ ⇲ │ A− 12 A+ │                     │
 │  PROJETS  3 …    │  contenu (terminal, carte, moniteur)              │                     │
 │  SESSIONS 34 …   │  statusline (si terminal)                         │                     │
-│                  │  message d'action                                 │                     │
+│                  │                                  message d'action │                     │
 └──────────────────┴───────────────────────────────────────────────────┴─────────────────────┘
 ```
 
 - Trois zones : colonne à gauche, centre, fiche à droite **sur demande** (pas de volet permanent).
 - Le centre a plusieurs modes, choisis par une capsule de vue de la barre d'outils et par ⌘1, ⌘2, ⌘3… (Régie : Terminal, Carte, Moniteur).
-- En bas du centre, le message d'action (C § 2.7) : résultat ou échec de la dernière action de fond.
+- En bas à droite du centre, le message d'action (C § 2.7) : résultat ou échec de la dernière action de fond ; il s'efface après 4 s.
 - Quand la surface principale ne peut pas montrer l'élément (hors de son conteneur, terminé, introuvable, refusé, aucun élément vivant), une carte d'état neutre prend sa place (C § 2.8).
 
 ### 7.2 Colonne
@@ -471,7 +473,7 @@ Une ombre n'existe que pour ce qui flotte. Valeurs conseillées : quatre ombres,
 - Un réglage qui ne prend effet qu'au prochain démarrage le dit dans sa bulle.
 - Une erreur liée à une entité (machine, service) s'affiche dans la page de cette entité, là où elle se répare, pas sous le réglage qui l'a provoquée (§ 9.13).
 - Un chemin valable sur des machines distantes est un champ texte (pas de « Choisir… » local), précédé d'une icône d'ordinateur dans le champ.
-- Réglages › Clavier : le clavier AZERTY dessiné, touches de l'application en `accent` sur `teinte` ; un bouton par raccourci, qui affiche pendant l'enregistrement « Tape la combinaison… (⎋ annule) » ; le raccourci d'une fonction désactivée est grisé, la raison en bulle ; interrupteur « Liste des raccourcis » (§ 9.7).
+- Réglages › Clavier : le clavier AZERTY dessiné, touches de l'application en `accent` sur `teinte` ; un bouton par raccourci, qui affiche pendant l'enregistrement « Combinaison attendue… (⎋ annule) » ; le raccourci d'une fonction désactivée est grisé, la raison en bulle ; interrupteur « Liste des raccourcis » (§ 9.7).
 - Détail : C § 7.2.
 
 ### 7.7 Barre des menus
@@ -536,7 +538,7 @@ Pour une opération rare, longue et destructrice sur un sous-groupe (remplacer, 
 - Le détail d'un point ou d'une barre est dans sa bulle.
 - Grilles fines (trait 0,6 px `separateur` ; 100 % un peu plus marquée, `secondaire` à 60 %) ; graduations en 9 px `secondaire` ; valeur du point courant en 600.
 - Opacités : aplat 10 %, barres neutres `secondaire` 35 %, au-delà de la référence `orange` 50 %, au-delà d'un seuil 60 %, période en cours `accent` 55 % (§ 3.5).
-- Exception nommée au principe 3 : dans une bande fine de répartition (deux ou trois catégories, 6 px), la catégorie coûteuse est en `orange` même sans anomalie, les autres en `texte` (§ 15).
+- Exception nommée au principe 3 : dans une bande fine de répartition (deux ou trois catégories, 6 px), la catégorie coûteuse est en `orange` même sans anomalie, les autres en `texte`.
 - Pas de grand aplat, pas de projection colorée, pas de plafond rouge permanent, pas de trait d'une autre teinte.
 - Courbe dans le temps, barres par heure, barres par période, bande fine : C § 5.10. Barres de mesure et bande de répartition : C § 5.2, § 5.3.
 
@@ -558,7 +560,7 @@ Pour une opération rare, longue et destructrice sur un sous-groupe (remplacer, 
 - Commande équivalente : quand une action a une commande en ligne équivalente, la fenêtre l'affiche en chasse fixe `secondaire` à gauche du pied ; un clic la copie. Une anomalie qui se corrige par une commande montre cette commande, copiable au clic.
 - Identifiants, chemins, commandes et noms de fichiers : en chasse fixe. Les nombres dans une phrase : en clair (« 3 journaux lus · 312 Mo »).
 - Résultat d'une action de fond : au passé, en quelques mots, dans le message d'action (C § 2.7) : « Ordre déposé », « ⚠ Envoi impossible ». Pas pour une copie (§ 9.1).
-- État vide d'une vue entière : un titre en 14 px et une ligne d'action, centrés (« Chantier éteint » · « Allumer ») ; le bouton n'apparaît que si l'action est possible, sinon une ligne de renvoi en `secondaire` (C § 2.6). Surface principale sans élément à montrer : carte d'état (C § 2.8) (§ 15).
+- État vide d'une vue entière : un titre en 14 px et une ligne d'action, centrés (« Chantier éteint » · « Allumer ») ; le bouton n'apparaît que si l'action est possible, sinon une ligne de renvoi en `secondaire` (C § 2.6). Surface principale sans élément à montrer : carte d'état (C § 2.8).
 - Liste vide : un texte court en `secondaire` à la place des lignes (« Aucun élément », « Rien en cours », « Aucun <objet> ne correspond »). Jamais de grande icône système.
 - Unités toujours écrites : `Mo`, `%`, `k` (milliers de tokens), `$`, `s`.
 
@@ -601,7 +603,7 @@ Pour une opération rare, longue et destructrice sur un sous-groupe (remplacer, 
 - Survol d'une ligne : fond `champ`, sans trait.
 - Sélection : fond `selection` + trait d'accent de 2 px à gauche. On distingue toujours la ligne ouverte de la ligne survolée.
 - Sélection estompée (l'élément reste choisi mais le centre montre autre chose) : `selection` à moitié, sans trait.
-- Élément qui attend une saisie dans un panneau (demande en attente) : trait de 2 px de la nuance de la demande (`cyan`, § 15) sur le bord gauche de la ligne, 🔒 après le nom ; la ligne dont le panneau a le clavier prend en plus la sélection. Pas de halo pulsant, pas de liseré.
+- Élément qui attend une saisie dans un panneau (demande en attente) : trait de 2 px de la nuance de la demande (`cyan`, une seule nuance pour toutes les demandes) sur le bord gauche de la ligne, 🔒 après le nom ; la ligne dont le panneau a le clavier prend en plus la sélection. Pas de halo pulsant, pas de liseré.
 - Les actions de la ligne apparaissent au survol, en fondu 0,12 s, à droite, séparées du compteur.
 
 ### 9.6 Déplier, replier
@@ -643,7 +645,7 @@ Pour une opération rare, longue et destructrice sur un sous-groupe (remplacer, 
 - Chaque source de données (sonde) a son rythme propre ; un petit anneau de compte à rebours (13 px) à côté de son nom montre le temps avant le prochain relevé ; sa bulle dit « prochain relevé dans N s (toutes les M s) ».
 - Trois vitesses globales : Rapide (coûteux en CPU), Normal (défaut), Lent. Toute liste qui se met à jour (colonne comprise) suit la vitesse globale ; aucune n'a son propre « Rafraîchir ».
 - Réglages › <vue> : la vitesse globale, un tableau des rythmes par sonde (une colonne par vitesse) et les seuils de la vue.
-- En-tête de la vue, à droite : l'heure du dernier relevé en `secondaire` puis « Actualiser » en lien d'accent (« relevé 01:08 · Actualiser ») (§ 15). Pendant un relevé, « Actualiser » devient « actualisation… » en `secondaire`. États d'une donnée : § 3.6.
+- En-tête de la vue, à droite : l'heure du dernier relevé en `secondaire` puis « Actualiser » en lien d'accent (« relevé 01:08 · Actualiser »). Pendant un relevé, « Actualiser » devient « actualisation… » en `secondaire`. États d'une donnée : § 3.6.
 - Le journal des relevés est accessible par un texte gris en bas à droite (« ≡ Journal du sondage ») qui ouvre une bulle défilante.
 
 ### 9.9 Persistance
@@ -696,6 +698,7 @@ Pour une opération rare, longue et destructrice sur un sous-groupe (remplacer, 
 - [ ] Aucun groupe en vert, jaune, orange ou rouge ; couleur de groupe stockée par nom ; groupe rendu par un trait 2 × 12 px (2 × 16 en tête de fiche), jamais par un point.
 - [ ] La couleur n'apparaît que pour un état anormal, une identité de groupe ou une exception nommée (§ 1, principes 2 et 3).
 - [ ] Pas de fond coloré, de cadre coloré, de relief ni de paragraphe en couleur ; toute teinte de fond est `teinte` (14 % / 18 %).
+- [ ] Aucun « tu », « vous », « ton », « votre » ni impératif dans les textes, bulles comprises (principe 15).
 - [ ] Opacités prises dans § 3.5 ; ombres et voiles pris dans § 3.7 ; rayons pris dans § 5.2.
 - [ ] Graisses 400, 500, 600 seulement ; aucun 700. Titres en 16 px (panneau, modale, fiche) ou 14 px (vue, bulle). Petites capitales à 0,05 em ; interligne 1,45.
 - [ ] Champs de 28 px, rayon 7 ; boutons `fbtn` ; un seul bouton principal plein en `accent` ; désactivé à 45 % d'opacité.
@@ -741,6 +744,7 @@ Chaque motif a son remplaçant dans le gabarit.
 
 - Couleur en dur ; valeur hors des échelles (tailles § 4.1, rayons § 5.2, opacités § 3.5, ombres et voiles § 3.7).
 - Graisse 700 ; titre en 13 ou 15 px ; deux interlignes ou deux espacements de petites capitales pour le même rôle.
+- Tutoiement, vouvoiement, impératif (« Choisis… », « Choisissez… ») : infinitif ou nom (§ 2.3).
 - Options de design en réglages (relief, lumière, ombre portée, arrondi, teinte du fond) ; fausses colonnes d'aperçu.
 - Teinter une zone entière pendant un filtre ; bandeau « Filtre « x » : N sur M » ; bordure colorée du champ de filtre → jeton dans le champ, compte en bulle.
 - Fonds colorés de bandeaux, lignes, cartes et encadrés ; contours colorés ou en tirets ; liserés autour d'une surface ou d'un groupe de lignes ; fond teinté de toute la surface principale → bandeau neutre, icône colorée, bandeau de type.
@@ -881,7 +885,7 @@ Ombres et voiles :
 | Voile des fenêtres modales, en clair | noir à 50 % | 32 % | CSS:251 |
 | Voile du diagnostic | 25 % | aucun (feuille de macOS) | JS:1182 |
 | Voile de l'aperçu d'une vignette | 45 % | `voile` | CSS:198 |
-| Voile de la liste des raccourcis | 18 % | aucun (§ 15) | JS:361 |
+| Voile de la liste des raccourcis | 18 % | aucun | JS:361 |
 
 Simulations de la maquette, qui ne sont pas des écarts : feux de fenêtre (`JS:879`), ombre de la fenêtre (`moteur/atelier.css:102`), matériau du menu de la barre des menus (`JS:1262-1264`), fenêtre des réglages dessinée par-dessus la fenêtre principale avec un voile (`CSS:251-252`) ; l'application emploie les rendus natifs de macOS, et la fenêtre des réglages est une fenêtre à part, sans voile.
 
@@ -889,27 +893,19 @@ Simulations de la maquette, qui ne sont pas des écarts : feux de fenêtre (`JS:
 
 ## 15. Points ouverts
 
-Sujets que Pierre n'a pas tranchés. Le texte du gabarit applique la position « retenue » ; elle change si Pierre en décide autrement.
+Sujets que Pierre n'a pas tranchés. Le texte du gabarit applique la position « retenue » ; elle change si Pierre en décide autrement. Les numéros sont ceux de l'atelier d'arbitrage (`arbitrages/gabarit/`) ; les autres points y ont été tranchés le 23 oct. et sont reportés dans le texte.
 
-1. **Sourdine hors des mesures.** Retenu : sourdine pour les graphiques, les tuiles et les capsules d'une mesure (§ 3.5) ; pleine couleur ailleurs. Options : l'étendre à toute surface colorée (barres de mesure, micro-jauges, bande de répartition, fonds de capsule) ; la garder limitée aux mesures.
-2. **Couleurs chaudes du bandeau de type.** Retenu : exception nommée à § 2.4 (élément maître `jaune`, écriture et doublon `orange`, lecture seule `slate`). Options : garder ; élément maître en `accent`, pour que `jaune` reste à la question ; tous les types en `secondaire`, le mot seul coloré.
-3. **Nuance d'une demande en attente.** Retenu : `cyan`, une seule nuance pour toutes les demandes (§ 9.5). Options : `cyan` unique ; quatre nuances autour du sarcelle attribuées par ordre d'ouverture (application actuelle de Régie), à ajouter aux jetons ; une couleur de statut (`jaune`, comme une question).
-4. **Teintes de groupe portées par des marques.** Retenu : `teal` pour l'élément distant (pointillé et « ⇄ ») et le mode sûr « plan », `lavender` pour le mode « édition », `cyan` pour la demande en attente (§ 2.4). Un élément d'un groupe `teal` a alors la même teinte que sa marque. Retenu aussi : sur une ligne, le pointillé occupe le bord gauche, et le trait d'accent plein le remplace quand la ligne est sélectionnée (« ⇄ » reste). Options : garder (la forme distingue) ; réserver aux marques une teinte froide hors des six couleurs de groupe ; marques en `accent` ou `secondaire`.
-5. **Pied « ↵ insérer · ⇥ compléter » du sélecteur liste et aperçu.** Retenu : exception admise au principe 6. Options : la garder ; passer les touches dans la bulle de l'en-tête, comme les autres panneaux.
-6. **Couleur de la référence d'un graphique horaire.** Retenu : tirets fins `secondaire` (cahier des charges de Régie, maquette). Options : `secondaire` ; tirets d'`accent` (point 24 du registre de Régie).
-7. **Ordre de l'heure du relevé et d'« Actualiser ».** Retenu : « relevé 01:08 · Actualiser » (§ 9.8). Options : celui-ci ; « Actualiser » puis l'heure.
-8. **Élément sur une machine injoignable.** Retenu : « injoignable » en `secondaire` dans la colonne, « hors ligne » en `orange` dans un sélecteur (l'utilisateur est prévenu avant d'insérer). Options : garder les deux ; un seul rendu partout.
-9. **Annuler un arrêt programmé (⊗).** Retenu : au survol de l'en-tête d'entité. Option : toujours visible pendant le compte à rebours.
-10. **Pulsation d'une marque d'anomalie.** Retenu : c'est un signal ; seul « Réduire les animations » de macOS la fige (§ 6). Option : la traiter comme une transition, figée aussi par « Animations de l'interface ».
-11. **Réglages de choix de design propres à Régie** : affichage de tous les modes ou des seules exceptions ; flèche ou anneau pour une version en retard de l'élément maître. Retenu : le principe 10 vaut ; une nouvelle application n'a pas ces réglages. Options : les retirer de Régie ; les admettre comme exceptions nommées.
-12. **Colonnes d'aperçu clair | sombre dans Réglages › Groupes.** Le cahier des charges de Régie les retire puis les garde. Retenu : pas de colonnes d'aperçu ; le menu de couleur montre clair et sombre côte à côte (§ 3.4). Option : deux colonnes d'aperçu en direct.
-13. **Tutoiement.** Retenu : l'interface tutoie (§ 2.3), comme tous les textes validés de Régie, sans que Pierre l'ait posé en règle. Option : tournures sans pronom.
-14. **Fenêtre minimale et barre de titre selon la version de macOS** (§ 2.6) : règle générale ou propre à Régie.
-15. **Progression segmentée (barre de tranches)** : rendu que le cahier des charges de Régie ne décrit pas. Retenu : barre de 6 px, segments séparés de 3 px, rayon 2, dans l'ordre acceptés `texte`, en attente `secondaire`, refusés `rouge`, reste `separateur`. Option : un autre rendu à valider.
-16. **Bande fine d'une catégorie coûteuse en `orange` sans anomalie** (§ 7.12) : exception générique ou propre à la mesure des modèles de Régie.
-17. **Deux formes d'état vide.** Retenu : état vide centré pour une vue entière (§ 8), carte d'état posée pour la surface principale (C § 2.8). Option : une seule forme, la carte (rayon 10, `mantle`, filet).
-18. **Voile de la liste des raccourcis.** Retenu : aucun (§ 3.7). Option : noir à 18 %, écrit comme exception.
-19. **Durée d'armement d'une suppression au clavier (⌫).** Retenu : aucune durée ; l'armement tient jusqu'au second ⌫ ou à un changement de sélection. Option : une durée fixe (1,5 s a été proposé).
-20. **Composants propres à Claude Code dans `COMPOSANTS.md`** (hooks, onglet Session) : les garder comme composants génériques ou les passer en exemple de Régie.
-21. **Message d'action** (C § 2.7) : la maquette ne le dessine pas. Retenu : une ligne de 11,5 px `secondaire` en bas de la surface principale, jusqu'à l'action suivante. À décider : sa place exacte et sa durée d'affichage.
-22. **Couleurs ANSI du terminal.** Retenu : les 16 couleurs tirées des jetons (§ 2.1), sans source extérieure. Option : reprendre le thème de terminal officiel de chaque palette d'origine (catppuccin, gruvbox, nord… en publient un), à recopier dans le dépôt.
+**Point 2. Couleur du bandeau de l'élément maître.**
+- Contexte. Vert, jaune, orange et rouge ne servent qu'aux statuts, et chacun y a un sens (§ 3.3) : `jaune` signifie « l'élément pose une question et attend une réponse » (point jaune de la pastille). Le bandeau de type (C § 2.3) colore pourtant en `jaune` celui de l'élément maître. Quand les deux sont visibles ensemble, le jaune du bandeau peut se lire comme « une question attend ».
+- Retenu : A.
+- Options : A, garder le bandeau de l'élément maître en `jaune` (exception nommée, § 2.4) ; B, le passer en `accent`, le jaune ne disant plus que « question » ; C, fond neutre pour tous les bandeaux de type, seul le mot coloré.
+
+**Point 12. Réglages › Groupes : voir une couleur de groupe en clair et en sombre.**
+- Contexte. Une couleur de groupe se résout différemment en thème clair et en thème sombre. Pour la choisir, il faut la voir dans les deux thèmes sans changer le thème de macOS. Les deux options y répondent ; elles diffèrent par l'endroit où se voit l'aperçu.
+- Retenu : A.
+- Options : A, dans le menu de couleur, chaque teinte montrée en deux pastilles côte à côte, claire et sombre, et rien d'autre dans la page ; B, à côté de la liste des groupes, deux aperçus en direct de la colonne de l'application, l'un en thème clair, l'autre en sombre, mis à jour à chaque changement de couleur.
+
+**Point 14. Taille minimale de la fenêtre et barre de titre (§ 2.6).**
+- Contexte. Deux détails de la fenêtre principale de Régie. Taille minimale : 1120 × 640 ; en dessous, la fenêtre ne se réduit plus. Barre de titre : sous macOS 15 et plus, aucun titre écrit (la barre d'outils et ses capsules occupent la barre de titre) ; sous macOS 14, le nom de l'application écrit en titre, avec un sous-titre (Régie : le nom de l'émulateur). La question : la spécification en fait-elle une règle pour toute application, ou les laisse-t-elle à chaque application ?
+- Retenu : A.
+- Options : A, règle générale : chaque application fixe sa taille minimale (selon son contenu) et suit le même traitement de la barre de titre selon la version de macOS ; B, propre à Régie : la spécification ne dit rien de la taille minimale ni du titre.

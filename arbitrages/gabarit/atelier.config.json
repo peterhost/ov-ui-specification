@@ -5,7 +5,7 @@
   "source": {
     "titrePage": "Points ouverts du gabarit",
     "titre": "Points ouverts du gabarit",
-    "intro": "Chaque carte est un point du § 15 de GABARIT.md. La vue du point montre toutes ses options, dessinées avec les jetons du gabarit ; choisis, puis valide.",
+    "intro": "Chaque carte est un point du § 15 de GABARIT.md. La vue du point montre toutes ses options, dessinées avec les jetons du gabarit.",
     "nomVues": "Point",
     "css": [
       "source/arbitrage.css"

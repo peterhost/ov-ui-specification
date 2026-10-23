@@ -2,7 +2,7 @@
 
 Cahier des charges du mode `@@@ui` : dans une session Claude Code locale, Pierre tape `@@@ui` pour revoir l'interface d'une application avec Claude dans un **atelier interactif** publié en artifact. Ce document fixe le modèle de l'atelier et les règles que la session suit, du premier relevé au cahier des charges final.
 
-Ce dépôt (`artefact-template-uidesigner`) porte le modèle : le **moteur** commun à tous les ateliers (`moteur/`), les **outils** (`outils/` : assemblage, registre, tests, audit), le **gabarit d'interface** (`gabarit-ui/`) et un **atelier d'exemple** (`exemple/`). Une application garde dans son propre dépôt une copie de ce modèle (`vendor/uidesigner/`) et n'écrit que ce qui lui est propre : cartes, vues, données d'exemple, rendu (§ 10). Premier atelier construit ainsi : Régie (dépôt `ov-regie-refactorUI`), qui sert de grand exemple.
+Ce dépôt (`ov-uidesigner-artefact`) porte le modèle : le **moteur** commun à tous les ateliers (`moteur/`), les **outils** (`outils/` : assemblage, registre, tests, audit) et un **atelier d'exemple** (`exemple/`). La spécification d'interface que les ateliers appliquent (`GABARIT.md`, `COMPOSANTS.md`, `jetons.json`) est dans le dépôt `ov-ui-specification`. Une application garde dans son propre dépôt une copie de chacun (`vendor/ov-uidesigner-artefact/`, `vendor/ov-ui-specification/`) et n'écrit que ce qui lui est propre : cartes, vues, données d'exemple, rendu (§ 10). Premier atelier construit ainsi : Régie (dépôt `ov-regie-refactorUI`), qui sert de grand exemple.
 
 ---
 
@@ -12,7 +12,7 @@ Ce dépôt (`artefact-template-uidesigner`) porte le modèle : le **moteur** com
 - La session rassemble avant de construire l'atelier :
   1. l'**inventaire des états graphiques** de l'application (un document du type `etats-graphiques.md` : chaque élément, sa fonction, son fichier source, ses états avec leurs couleurs et mesures) ; s'il n'existe pas, elle le rédige d'abord en lisant le code ;
   2. les **captures** que Pierre envoie ; chacune est enregistrée dans `sources/captures/NN-description.ext`, numérotée dans l'ordre d'envoi, et indexée dans `sources/captures/INDEX.md` avec le message de Pierre qui l'accompagnait ;
-  3. le **gabarit d'interface** (`gabarit-ui/GABARIT.md`, `COMPOSANTS.md`, `jetons.json`) : l'atelier part de ses choix, il ne les rediscute que si l'application l'exige ;
+  3. la **spécification d'interface** (dépôt `ov-ui-specification` : `GABARIT.md`, `COMPOSANTS.md`, `jetons.json`, copiée dans `vendor/ov-ui-specification/`) : l'atelier part de ses choix, il ne les rediscute que si l'application l'exige ;
   4. les règles générales de Pierre (thème dotlib, polices, langue : GABARIT § 2).
 - Tant que Pierre envoie des captures en annonçant une suite (« ne fais rien, la suite arrive »), la session les enregistre et attend son signal.
 
@@ -25,7 +25,8 @@ Un dépôt git dédié (par exemple `<app>-refactorUI`), qui contient au moins :
 | `atelier/<app>.html` | L'atelier (une seule page, sans dépendance externe, ouvrable hors ligne), **assemblé** par `npm run construire` ; ne pas l'éditer à la main. |
 | `atelier/source/` | Ce qui est propre à l'application : `<app>.js` (cartes, vues, points, rendu, gestes), `<app>.css` (aperçu), fragments HTML des contrôles au-dessus de l'aperçu, `tete.html` (polices). |
 | `atelier.config.json` | Où sont le moteur, les sources, la page, la base exportée ; options des tests et de l'audit (§ 10.3). |
-| `vendor/uidesigner/` | Copie du modèle (moteur, outils, gabarit, ce document) et `VERSION` (commit copié) ; mise à jour par `npm run maj-moteur`. |
+| `vendor/ov-uidesigner-artefact/` | Copie du modèle (moteur, outils, ce document) et `VERSION` (commit copié) ; mise à jour par `npm run maj-moteur`. |
+| `vendor/ov-ui-specification/` | Copie de la spécification d'interface (`GABARIT.md`, `COMPOSANTS.md`, `jetons.json`) et `VERSION` ; mise à jour par le même script. |
 | `atelier/donnees/fil/`, `atelier/donnees/valides/` | Export de la base de l'atelier (un JSON par document, l'identifiant est le nom du fichier). |
 | `atelier/valides-fige.json` | Choix validés, générés. |
 | `atelier/REFERENCE.md`, `references/` | Mode référence et images de référence (§ 9). |
@@ -129,7 +130,7 @@ Ce qui n'est pas dans ce contrat n'est pas permis. `npm test` en vérifie la par
 
 1. **Lire** : `ArtifactData query` sur `fil`, `auteur == pierre`, `at >` dernier message lu ; et `valides` modifiées depuis.
 2. **Comprendre chaque remarque**, y compris les captures envoyées dans la conversation (enregistrées et indexées, § 1).
-3. **Modifier l'atelier** dans `atelier/source/` (jamais la page assemblée), puis `npm run construire` : options, aperçu, interactions. Une proposition ne contient pas de phrase d'explication dans l'interface montrée (GABARIT § 1, principe 6) ; la carte et le fil expliquent, l'aperçu montre.
+3. **Modifier l'atelier** dans `atelier/source/` (jamais la page assemblée), puis `npm run construire` : options, aperçu, interactions. Une proposition ne contient pas de phrase d'explication dans l'interface montrée (GABARIT § 1, principe 6) ; la carte et le fil expliquent, l'aperçu montre. Style neutre partout, atelier compris : ni tutoiement ni vouvoiement, infinitif pour une action, nom ou participe pour un état (GABARIT § 1, principe 15).
 4. **Tester** : `npm test` (§ 8), puis contrôle visuel des vues touchées (navigateur sans écran, captures d'écran lues).
 5. **Répondre dans le fil**, une réponse par axe, avec `reglage` si un clic doit appliquer la proposition ; heure réelle.
 6. **Exporter** la base dans `atelier/donnees/`, lancer `npm run registre` (registre, choix figés, copie `VALIDES_FIGES` dans la source, réassemblage de la page).
@@ -165,11 +166,11 @@ Quand toutes les cartes sont validées :
    - réglages ajoutés, modifiés et retirés en JSON ;
    - procédure de réception (§ 9) ;
    - points tranchés pendant la rédaction dans un fichier séparé, à valider, avec un lien `#point=N` par point ; ces points deviennent des cartes « Point à valider » dans l'atelier (§ 4.4).
-3. Si l'atelier a fait évoluer des choix génériques, mettre à jour le gabarit (`gabarit-ui/`) et le dire à Pierre.
+3. Si l'atelier a fait évoluer des choix génériques, mettre à jour la spécification (dépôt `ov-ui-specification`) et le dire à Pierre.
 
 ## 8. Tests de l'atelier
 
-`npm test` (jsdom) lance `vendor/uidesigner/outils/tester.js` (tests génériques ci-dessous), puis les tests propres à l'application ; il vérifie au minimum :
+`npm test` (jsdom) lance `vendor/ov-uidesigner-artefact/outils/tester.js` (tests génériques ci-dessous), puis les tests propres à l'application ; il vérifie au minimum :
 
 - la page publiée est l'assemblage exact des sources ;
 - le contrat des cartes (§ 4.6) ;
@@ -183,7 +184,7 @@ Un test est ajouté à chaque nouvelle interaction de l'aperçu.
 
 ### 8.1 Audit dans un navigateur
 
-`npm run audit` (Playwright et Chromium, `vendor/uidesigner/outils/audit.js`) rouvre toutes les cartes sur l'appareil, puis :
+`npm run audit` (Playwright et Chromium, `vendor/ov-uidesigner-artefact/outils/audit.js`) rouvre toutes les cartes sur l'appareil, puis :
 
 - **options sans effet** : pour chaque carte, chaque option doit changer l'aperçu (contenu, classes ou styles de la fenêtre) dans la vue de la carte. Une option sans effet est un bug : rendu jamais écrit, mauvaise première vue dans `WHERE`, ou état qui ne se voit qu'en interaction (alors, choisir l'option montre cet état : renommage en cours, bulle ouverte…). Les points sans élément visible sont exclus ;
 - **actions au hasard** (graine fixe, 600 par défaut) : options, « → Vue », vues, sous-navigation, Avant / Après général, touches A et Échap, thème, palette, clics dans l'aperçu ; après chacune : aucune erreur JavaScript ; une option marquée par carte ouverte, un bouton marqué par groupe ; aucune carte figée sans « validé » ; ni « undefined », ni « NaN », ni « [object Object] » affichés ; sous-navigation présente seulement dans les vues qui en ont ; point ouvert seulement s'il a sa carte.
@@ -240,7 +241,7 @@ Une entrée de `PTS` : `[n, titre, vue, options, sélecteur à encadrer, indicat
 ### 10.3 `atelier.config.json`
 
 ```json
-{ "application": "<App>", "page": "atelier/<app>.html", "moteur": "vendor/uidesigner/moteur",
+{ "application": "<App>", "page": "atelier/<app>.html", "moteur": "vendor/ov-uidesigner-artefact/moteur",
   "source": { "titre": "…", "intro": "…", "nomVues": "Vue de <App>", "tete": "…", "css": ["…"], "js": ["…"],
               "outilsTheme": "…", "outils": "…", "outilsFsTheme": "…" },
   "donnees": "atelier/donnees", "registre": "cdc/registre-des-choix.md", "fige": "atelier/valides-fige.json",
@@ -251,6 +252,6 @@ Une entrée de `PTS` : `[n, titre, vue, options, sélecteur à encadrer, indicat
 ### 10.4 Faire évoluer le modèle
 
 - Une amélioration générique (moteur, outils, gabarit, ce document) se fait **ici**, avec l'atelier d'exemple à jour et `npm test` et `npm run audit` verts ; chaque application la reprend par `npm run maj-moteur` (copie et `VERSION`), puis repasse ses tests et son audit.
-- Une application ne modifie jamais sa copie `vendor/uidesigner/` : un besoin nouveau devient une accroche du moteur.
-- Nouvel atelier : copier `exemple/` dans le dépôt de l'application (`atelier/source/`, `atelier.config.json`), copier le modèle dans `vendor/uidesigner/`, puis remplacer les cartes, les vues et le rendu.
+- Une application ne modifie jamais sa copie `vendor/ov-uidesigner-artefact/` : un besoin nouveau devient une accroche du moteur.
+- Nouvel atelier : copier `exemple/` dans le dépôt de l'application (`atelier/source/`, `atelier.config.json`), copier le modèle dans `vendor/ov-uidesigner-artefact/` et la spécification dans `vendor/ov-ui-specification/`, puis remplacer les cartes, les vues et le rendu.
 
