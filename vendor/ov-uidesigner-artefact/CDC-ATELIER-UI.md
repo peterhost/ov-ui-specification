@@ -1,6 +1,6 @@
 # Atelier d'interface `@@@ui` — modèle et règles
 
-Cahier des charges du mode `@@@ui` : dans une session Claude Code locale, Pierre tape `@@@ui` pour revoir l'interface d'une application avec Claude dans un **atelier interactif** publié en artifact. Ce document fixe le modèle de l'atelier et les règles que la session suit, du premier relevé au cahier des charges final.
+Cahier des charges du mode `@@@ui` : dans une session Claude Code locale, l'utilisateur tape `@@@ui` pour revoir l'interface d'une application avec Claude dans un **atelier interactif** publié en artifact. Ce document fixe le modèle de l'atelier et les règles que la session suit, du premier relevé au cahier des charges final.
 
 Ce dépôt (`ov-uidesigner-artefact`) porte le modèle : le **moteur** commun à tous les ateliers (`moteur/`), les **outils** (`outils/` : assemblage, registre, tests, audit) et un **atelier d'exemple** (`exemple/`). Le modèle ne fixe pas de style : il prend en entrée un **thème d'UI**, la spécification d'interface que l'atelier applique (`GABARIT.md`, `COMPOSANTS.md`, `jetons.json`), tenue dans son propre dépôt (§ 1.1). Premier thème : `ov-ui-specification`. Une application garde dans son propre dépôt une copie du modèle et de son thème (`vendor/ov-uidesigner-artefact/`, `vendor/<thème>/`) et n'écrit que ce qui lui est propre : cartes, vues, données d'exemple, rendu (§ 10). Premier atelier construit ainsi : Régie (dépôt `ov-regie-refactorUI`), qui sert de grand exemple.
 
@@ -11,10 +11,10 @@ Ce dépôt (`ov-uidesigner-artefact`) porte le modèle : le **moteur** commun à
 - `@@@ui [<thème>]` dans une session Claude Code ouverte dans le projet de l'application. L'argument nomme le thème d'UI (§ 1.1) ; sans argument, la session pose la question avant toute autre chose.
 - La session rassemble avant de construire l'atelier :
   1. l'**inventaire des états graphiques** de l'application (un document du type `etats-graphiques.md` : chaque élément, sa fonction, son fichier source, ses états avec leurs couleurs et mesures) ; s'il n'existe pas, elle le rédige d'abord en lisant le code ;
-  2. les **captures** que Pierre envoie ; chacune est enregistrée dans `sources/captures/NN-description.ext`, numérotée dans l'ordre d'envoi, et indexée dans `sources/captures/INDEX.md` avec le message de Pierre qui l'accompagnait ;
+  2. les **captures** que l'utilisateur envoie ; chacune est enregistrée dans `sources/captures/NN-description.ext`, numérotée dans l'ordre d'envoi, et indexée dans `sources/captures/INDEX.md` avec le message de l'utilisateur qui l'accompagnait ;
   3. le **thème d'UI** choisi (§ 1.1), copié dans `vendor/<thème>/` : l'atelier part de ses choix, il ne les rediscute que si l'application l'exige ;
-  4. les règles générales de Pierre, écrites dans le thème (palettes, polices, langue : § 2 du `GABARIT.md` du thème).
-- Tant que Pierre envoie des captures en annonçant une suite (« ne fais rien, la suite arrive »), la session les enregistre et attend son signal.
+  4. les règles générales de l'utilisateur, écrites dans le thème (palettes, polices, langue : § 2 du `GABARIT.md` du thème).
+- Tant que l'utilisateur envoie des captures en annonçant une suite (« ne fais rien, la suite arrive »), la session les enregistre et attend son signal.
 
 ### 1.1 Thème d'UI
 
@@ -26,7 +26,7 @@ Ce dépôt (`ov-uidesigner-artefact`) porte le modèle : le **moteur** commun à
   3. `@@@ui` seul, sans atelier : la session pose la question, en proposant les thèmes du catalogue (nom et description), le premier en tête, et « Nouveau thème ».
   4. « Nouveau thème » : la session demande son nom et le thème de départ ; elle crée le dépôt du nouveau thème en copiant le thème de départ, l'ajoute à `themes.json` (ici), puis l'atelier le fait évoluer (§ 7.3).
 - Le thème choisi est inscrit dans `atelier.config.json` : `"theme": { "nom": "<thème>", "copie": "vendor/<thème>" }`. `npm test` vérifie qu'il est au catalogue et que sa copie respecte le contrat.
-- Un atelier n'applique qu'un thème. Changer de thème en cours de route se fait à la demande de Pierre : nouvelle copie, puis revue des cartes qui en dépendent.
+- Un atelier n'applique qu'un thème. Changer de thème en cours de route se fait à la demande de l'utilisateur : nouvelle copie, puis revue des cartes qui en dépendent.
 
 ## 2. Dépôt de travail
 
@@ -45,8 +45,8 @@ Un dépôt git dédié (par exemple `<app>-refactorUI`), qui contient au moins :
 | `cdc/decisions.md` | Journal des décisions, tenu au fil de l'eau. |
 | `cdc/registre-des-choix.md` | Registre de chaque carte et de tous ses échanges, généré. |
 | `cdc/<app>/` | Cahier des charges final. |
-| `sources/` | Inventaire, captures, documents de Pierre. |
-| `CONTEXTE.md`, `REPRISE.md`, `README.md` | Ce que Pierre a expliqué ; comment reprendre ; plan du dépôt. |
+| `sources/` | Inventaire, captures, documents de l'utilisateur. |
+| `CONTEXTE.md`, `REPRISE.md`, `README.md` | Ce que l'utilisateur a expliqué ; comment reprendre ; plan du dépôt. |
 | `outils/` | Ce qui est propre à l'application : `references.js` (liste des états à capturer), `tests/test.js` (tests de ses interactions), `jetons.js` si le thème évolue, `maj-moteur.sh` (appelle `outils/maj-copies.js` du modèle, puis `npm test`). |
 | `package.json` | `npm run construire`, `npm test`, `npm run audit`, `npm run registre`, `npm run references`, `npm run maj-moteur`. |
 
@@ -71,7 +71,7 @@ L'artifact déclare la capacité `db`. Deux collections :
 
 | Collection | Document | Champs |
 |---|---|---|
-| `fil` | un message | `at` (ISO 8601, heure réelle), `auteur` (`pierre` ou `claude`), `axe` (clé de carte ou absent), `texte`, `choix` (pour Pierre : l'état de toutes les cartes au moment du message), `reglage` (pour Claude : réglages proposés, appliqués d'un clic par « Appliquer ces réglages à l'aperçu »), `theme` |
+| `fil` | un message | `at` (ISO 8601, heure réelle), `auteur` (`pierre` ou `claude`), `axe` (clé de carte ou absent), `texte`, `choix` (pour l'utilisateur : l'état de toutes les cartes au moment du message), `reglage` (pour Claude : réglages proposés, appliqués d'un clic par « Appliquer ces réglages à l'aperçu »), `theme` |
 | `valides` | une carte validée (identifiant = clé de la carte) | `choix` (valeur figée), `at` |
 
 ## 4. Cartes
@@ -91,9 +91,9 @@ L'artifact déclare la capacité `db`. Deux collections :
 
 | État | Condition | Rendu |
 |---|---|---|
-| nouveau | aucun message de Pierre sur l'axe | trait d'accent à gauche, « nouveau » |
-| à revoir | Claude a répondu après le dernier message de Pierre | trait gris, « à revoir · réponse de Claude » |
-| vu | Pierre a commenté après la dernière réponse | normal |
+| nouveau | aucun message de l'utilisateur sur l'axe | trait d'accent à gauche, « nouveau » |
+| à revoir | Claude a répondu après le dernier message de l'utilisateur | trait gris, « à revoir · réponse de Claude » |
+| vu | l'utilisateur a commenté après la dernière réponse | normal |
 | validé | document dans `valides` | repliée (titre seul), descend en bas de la liste, « Rouvrir » |
 
 Les états se calculent sur les heures `at` : une heure fausse (future) fausse les états. **Toujours l'heure réelle** (`date -u`).
@@ -102,7 +102,7 @@ Les états se calculent sur les heures `at` : une heure fausse (future) fausse l
 
 - « Valider » fige la carte sur l'option affichée (`valides`, et une copie dans le navigateur). « Rouvrir » la libère.
 - Une carte figée **impose sa valeur** à l'aperçu ; les préréglages et les réglages proposés dans le fil ne la changent pas.
-- La session ne modifie jamais une valeur validée. Si une validation semble être une erreur de clic (par exemple « Comme aujourd'hui » sur une carte dont Pierre a approuvé la proposition), elle le signale dans le fil et à Pierre, et ne corrige que sur sa demande explicite.
+- La session ne modifie jamais une valeur validée. Si une validation semble être une erreur de clic (par exemple « Comme aujourd'hui » sur une carte dont l'utilisateur a approuvé la proposition), elle le signale dans le fil et à l'utilisateur, et ne corrige que sur sa demande explicite.
 
 ### 4.4 Points à valider
 
@@ -113,7 +113,7 @@ Les états se calculent sur les heures `at` : une heure fausse (future) fausse l
 - « → Voir » : ouvre la vue, encadre l'élément (§ 4.5) et fait défiler la colonne de l'aperçu jusqu'à l'élément s'il est hors champ. Pas de bandeau au-dessus de l'aperçu : la carte dit déjà de quoi il s'agit.
 - **Les options de la carte pilotent l'illustration, un seul état** : « Proposé » montre la décision ; « Aujourd’hui » montre la même UI refaite, où seul l'élément du point reprend son état d'aujourd'hui. Cliquer une option ouvre le point dans cet état ; la touche A bascule l'option tant que la carte n'est pas validée. La colonne garde son défilement d'une option à l'autre. Un point de comportement (raccourci, délai, action d'un menu) n'a rien de visible à basculer. L'Avant / Après général (toutes les cartes à leur état actuel) est un autre réglage : le choisir quitte le point ouvert.
 - Point validé : replié comme une carte validée (filet simple, sans hachures ni mention « POINT À VALIDER »), en bas de la liste.
-- Point clos : quand Pierre juge un point insuffisant pour décider, la session le remplace par une ou plusieurs cartes ordinaires ; le point reste replié avec « clos · remplacé par « carte » » (`clos` dans le modèle) et sort de la navigation des points ouverts.
+- Point clos : quand l'utilisateur juge un point insuffisant pour décider, la session le remplace par une ou plusieurs cartes ordinaires ; le point reste replié avec « clos · remplacé par « carte » » (`clos` dans le modèle) et sort de la navigation des points ouverts.
 - Lien direct : `<atelier>#point=N` ouvre l'atelier sur le point N. Le fichier des points à valider du dépôt donne ce lien pour chaque point.
 
 ### 4.6 Contrat de l'état et des cartes (règles fermées)
@@ -138,7 +138,7 @@ Ce qui n'est pas dans ce contrat n'est pas permis. `npm test` en vérifie la par
 
 ## 5. Boucle de travail
 
-À chaque « update » de Pierre (ou à son retour) :
+À chaque « update » de l'utilisateur (ou à son retour) :
 
 1. **Lire** : `ArtifactData query` sur `fil`, `auteur == pierre`, `at >` dernier message lu ; et `valides` modifiées depuis.
 2. **Comprendre chaque remarque**, y compris les captures envoyées dans la conversation (enregistrées et indexées, § 1).
@@ -148,37 +148,37 @@ Ce qui n'est pas dans ce contrat n'est pas permis. `npm test` en vérifie la par
 6. **Exporter** la base dans `atelier/donnees/`, lancer `npm run registre` (registre, choix figés, copie `VALIDES_FIGES` dans la source, réassemblage de la page).
 7. **Journal** : inscrire dans `cdc/decisions.md` les décisions prises et ce qui reste ouvert.
 8. **Publier** l'atelier (même artifact, même lien), **committer, pousser**.
-9. **Répondre à Pierre** dans la conversation : ce qu'il doit regarder, en peu de mots.
+9. **Répondre à l'utilisateur** dans la conversation : ce qu'il doit regarder, en peu de mots.
 
 Règles de conduite :
 
 - Un choix tranché par axe ; regrouper ce qui suit la même règle.
-- Questions à Pierre seulement si la réponse change le travail ; sinon trancher et le dire.
+- Questions à l'utilisateur seulement si la réponse change le travail ; sinon trancher et le dire.
 - Ne pas prendre une suggestion pour une exigence littérale, ni une remarque pour une validation.
 - Ce qui n'a pas été revu dans l'atelier n'est pas validé : s'il faut le décider pour rédiger, le lister dans un fichier « points à valider ».
-- Pierre peut s'absenter : la session continue sur ce qui est décidé, sans valider à sa place.
+- L'utilisateur peut s'absenter : la session continue sur ce qui est décidé, sans valider à sa place.
 
 ## 6. Comportements de l'aperçu à reproduire
 
 - Toutes les vues dans les 11 palettes, en clair et en sombre.
 - Avant / Après : « Avant » montre l'état actuel de toutes les cartes.
 - Infobulles, bulles de détail, copie au clic, sélection de texte, renommage, replis animés : comme le thème les définit, si l'application les a.
-- Données d'exemple tirées des captures (noms réels, situations réelles), pour que Pierre reconnaisse son application.
+- Données d'exemple tirées des captures (noms réels, situations réelles), pour que l'utilisateur reconnaisse son application.
 
 ## 7. Fin de la phase atelier
 
 Quand toutes les cartes sont validées :
 
-1. Les vues encore non revues (écrans de l'inventaire jamais montrés) sont listées ; Pierre décide de les revoir maintenant ou dans un addendum.
+1. Les vues encore non revues (écrans de l'inventaire jamais montrés) sont listées ; l'utilisateur décide de les revoir maintenant ou dans un addendum.
 2. La session rédige le **cahier des charges** de l'application (`cdc/<app>/`) :
-   - linéaire, sans historique de décision ni connaissance préalable autre que les documents du dépôt et les choix de Pierre ;
+   - linéaire, sans historique de décision ni connaissance préalable autre que les documents du dépôt et les choix de l'utilisateur ;
    - titres de section aux noms d'éléments de l'inventaire ;
    - pour chaque élément : l'état cible, ce qui est à retirer, les captures d'origine (« capture NN ») et les images de référence ;
    - table de correspondance des termes du thème (`GABARIT.md`) vers ceux de l'application, en tête ;
    - réglages ajoutés, modifiés et retirés en JSON ;
    - procédure de réception (§ 9) ;
    - points tranchés pendant la rédaction dans un fichier séparé, à valider, avec un lien `#point=N` par point ; ces points deviennent des cartes « Point à valider » dans l'atelier (§ 4.4).
-3. Si l'atelier a fait évoluer des choix génériques, mettre à jour le thème d'UI (son dépôt) et le dire à Pierre.
+3. Si l'atelier a fait évoluer des choix génériques, mettre à jour le thème d'UI (son dépôt) et le dire à l'utilisateur.
 
 ## 8. Tests de l'atelier
 
@@ -210,7 +210,7 @@ Une fois validé, l'atelier devient la maquette de référence de l'implémentat
 
 - **mode référence** : `atelier/<app>.html#ref&vue=…&theme=…&palette=…` (et paramètres d'état) n'affiche que la fenêtre de l'application, à taille fixe, dans l'état validé, sans la base ni le stockage du navigateur ;
 - **images de référence** : `npm run references` produit une image par état (1280 × 800, clair et sombre, plus quelques palettes) et leur index ;
-- `atelier/REFERENCE.md` explique à la session qui implémente comment s'en servir : capturer l'application dans le même état, comparer côte à côte (structure, jetons, typographie, états, textes), soumettre tout écart à Pierre.
+- `atelier/REFERENCE.md` explique à la session qui implémente comment s'en servir : capturer l'application dans le même état, comparer côte à côte (structure, jetons, typographie, états, textes), soumettre tout écart à l'utilisateur.
 
 ## 10. Moteur et dépôt du modèle
 

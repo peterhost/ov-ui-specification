@@ -28,7 +28,7 @@ const quand = d => (d.at || '').slice(0, 16).replace('T', ' ');
 const out = [];
 out.push('# Registre des choix de l\'atelier', '');
 out.push(`Généré par \`registre.js\` à partir de \`${cfg.page}\` et de \`${cfg.donnees}/\`. Ne pas éditer à la main.`, '');
-out.push('Validé = figé par Pierre dans l\'atelier ; c\'est l\'état de référence. Ouvert = encore en discussion.', '');
+out.push('Validé = figé par l’utilisateur dans l\'atelier ; c\'est l\'état de référence. Ouvert = encore en discussion.', '');
 const nv = AXES.filter(a => valides[a.k]).length;
 out.push(`${nv} cartes validées sur ${AXES.length}.`, '');
 out.push('| Carte | Clé | État | Choix |', '|---|---|---|---|');
@@ -43,14 +43,14 @@ AXES.forEach(a => {
   const msgs = fil.filter(d => d.axe === a.k || (d.auteur === 'claude' && d.reglage && Object.prototype.hasOwnProperty.call(d.reglage, a.k) && !d.axe));
   if (msgs.length) {
     out.push('Échanges :', '');
-    msgs.forEach(d => { out.push(`- **${d.auteur === 'claude' ? 'Claude' : 'Pierre'}**, ${quand(d)} :`); String(d.texte || '').split('\n').forEach(l => out.push('  > ' + l)); });
+    msgs.forEach(d => { out.push(`- **${d.auteur === 'claude' ? 'Claude' : 'l’utilisateur'}**, ${quand(d)} :`); String(d.texte || '').split('\n').forEach(l => out.push('  > ' + l)); });
     out.push('');
   }
 });
 const general = fil.filter(d => !d.axe && !(d.auteur === 'claude' && d.reglage));
 if (general.length) {
   out.push('## Messages généraux du fil', '');
-  general.forEach(d => { out.push(`- **${d.auteur === 'claude' ? 'Claude' : 'Pierre'}**, ${quand(d)} :`); String(d.texte || '').split('\n').forEach(l => out.push('  > ' + l)); });
+  general.forEach(d => { out.push(`- **${d.auteur === 'claude' ? 'Claude' : 'l’utilisateur'}**, ${quand(d)} :`); String(d.texte || '').split('\n').forEach(l => out.push('  > ' + l)); });
   out.push('');
 }
 fs.mkdirSync(path.dirname(R(cfg.registre)), { recursive: true });

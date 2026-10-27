@@ -2,7 +2,7 @@
 
 Généré par `registre.js` à partir de `points-ouverts.html` et de `donnees/`. Ne pas éditer à la main.
 
-Validé = figé par Pierre dans l'atelier ; c'est l'état de référence. Ouvert = encore en discussion.
+Validé = figé par l’utilisateur dans l'atelier ; c'est l'état de référence. Ouvert = encore en discussion.
 
 22 cartes validées sur 22.
 
@@ -49,7 +49,7 @@ Vert, jaune, orange, rouge ne servent qu’aux statuts. Jaune = « une question 
 
 Échanges :
 
-- **Pierre**, 2026-10-23 10:15 :
+- **l’utilisateur**, 2026-10-23 10:15 :
   > "Le jaune est réservé à « question »" : je ne comprends pas, explicite
 - **Claude**, 2026-10-23 10:47 :
   > Reformulé. Vert, jaune, orange et rouge ne servent qu'aux statuts, et chacun a un sens précis : jaune = « une question attend une réponse » (le point jaune de la pastille). Or le bandeau de l'élément maître est jaune lui aussi. Le risque : à côté d'une pastille jaune, ce bandeau se lit comme « question en attente ». L'illustration montre maintenant les deux ensemble. A garde le jaune (exception nommée), B passe le bandeau maître en accent, C met tous les bandeaux sur fond neutre avec le mot seul coloré.
@@ -136,7 +136,7 @@ Une couleur de groupe change entre le thème clair et le thème sombre. Pour la 
 
 Échanges :
 
-- **Pierre**, 2026-10-23 10:24 :
+- **l’utilisateur**, 2026-10-23 10:24 :
   > le but est d'avoir un aperçu theme clair et un aperçu theme sombre, non ? C'est un prinicpe intéressant (sauf si je n'ai rien compris) : reformule clairement
 - **Claude**, 2026-10-23 10:47 :
   > Oui, c'est exactement le but : une couleur de groupe change entre clair et sombre, il faut la voir dans les deux thèmes pour la choisir, sans basculer macOS. Les deux options y répondent ; elles diffèrent par l'endroit. A : dans le menu de couleur, chaque teinte en deux pastilles (claire | sombre). B : à côté de la liste, deux aperçus en direct de la colonne, l'un en clair, l'autre en sombre, mis à jour à chaque changement. B est marqué dans les choix en cours ; à valider pour le reporter.
@@ -147,11 +147,11 @@ Une couleur de groupe change entre le thème clair et le thème sombre. Pour la 
 - Actuel dans Gabarit : B · Style neutre (décidé) (`B`)
 - Options : A · L’interface tutoie (`A`) · B · Style neutre (décidé) (`B`)
 
-Ni tutoiement ni vouvoiement : infinitif pour une action, nom ou participe pour un état. Décidé par Pierre, règle générale. G § 1 (principe 15), § 2.3.
+Ni tutoiement ni vouvoiement : infinitif pour une action, nom ou participe pour un état. Décidé par l’utilisateur, règle générale. G § 1 (principe 15), § 2.3.
 
 Échanges :
 
-- **Pierre**, 2026-10-23 10:25 :
+- **l’utilisateur**, 2026-10-23 10:25 :
   > je ne veux de tutoiement nulle part, et cela va demander un refactor de tout ce que tu as fait. passe au style neutre. C'esr une regle générale, et importante.
 - **Claude**, 2026-10-23 10:47 :
   > Noté et validé (B) : style neutre partout, règle générale. Posé dans la spécification : principe 15, G § 2.3, liste de conformité et « À ne pas faire ». Action à l'infinitif (« Choisir la session cible »), état en nom ou participe (« 99 % de la semaine utilisés »). Refonte en cours : modèle d'atelier (fil : « Aucun message. », « Pierre », « Message · choix en cours joints ») déjà fait ; spécification faite ; Régie (maquette, cahiers des charges) en cours.
@@ -166,7 +166,7 @@ Deux détails de la fenêtre de Régie : taille minimale 1120 × 640 ; aucun tit
 
 Échanges :
 
-- **Pierre**, 2026-10-23 10:25 :
+- **l’utilisateur**, 2026-10-23 10:25 :
   > je ne compredns pas, explicite
 - **Claude**, 2026-10-23 10:47 :
   > Reformulé. Deux détails de la fenêtre principale de Régie : 1) taille minimale 1120 × 640 (en dessous, la fenêtre ne se réduit plus) ; 2) barre de titre : sous macOS 15 et plus, aucun titre écrit (la barre d'outils occupe la barre de titre), sous macOS 14, le nom de l'application avec un sous-titre (Régie : le nom de l'émulateur). Question : est-ce une règle de la spécification pour toute application (A : chacune fixe sa taille minimale et suit le même traitement du titre), ou un détail propre à Régie que la spécification ne règle pas (B) ?

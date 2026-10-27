@@ -188,7 +188,7 @@ window.Atelier = (function () {
       docs.forEach(d => {
         const m = document.createElement('div'); m.className = 'msg ' + (d.auteur === 'claude' ? 'cl' : 'me');
         const who = document.createElement('div'); who.className = 'who';
-        const n = document.createElement('span'); n.textContent = d.auteur === 'claude' ? 'Claude' : 'Pierre';
+        const n = document.createElement('span'); n.textContent = d.auteur === 'claude' ? 'Claude' : 'l’utilisateur';
         const t = document.createElement('span'); t.textContent = fmt(d.at); who.append(n, t); m.appendChild(who);
         const ax = AXES.find(x => x.k === d.axe);
         if (ax) { const s = document.createElement('span'); s.className = 'ax'; s.textContent = ax.t; m.appendChild(s); m.appendChild(document.createElement('br')); }

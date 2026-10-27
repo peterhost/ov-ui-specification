@@ -1,6 +1,6 @@
 # Gabarit d'interface
 
-Modèle d'interface pour toutes les applications de Pierre. Une session qui démarre un projet lit ce document, puis `COMPOSANTS.md`, et applique d'office ce qu'ils décrivent : aspect, comportement et fonctionnel. Elle n'en dévie que si Pierre le demande explicitement pour ce projet.
+Modèle d'interface pour toutes les applications de l'utilisateur. Une session qui démarre un projet lit ce document, puis `COMPOSANTS.md`, et applique d'office ce qu'ils décrivent : aspect, comportement et fonctionnel. Elle n'en dévie que si l'utilisateur le demande explicitement pour ce projet.
 
 Fichiers du gabarit :
 
@@ -48,7 +48,7 @@ Exemple : la table de Régie, l'application dont ce gabarit est tiré. Elle sert
 | sélecteur liste et aperçu | sélecteur `@@@` (⌘L) |
 | bande de médias | sélecteur de captures (⌘I) |
 | demande en attente (panneau de saisie, pile) | mot de passe sudo (askpass) |
-| fenêtre de composition | Ordre de Pierre (⌘O) |
+| fenêtre de composition | Ordre signé (⌘O) |
 | journal d'objets | journal de l'Ordre |
 | alerte à étapes | alerte tmux (arrêt, relance, reprise) |
 | procédure lourde | redémarrage à neuf |
@@ -85,11 +85,11 @@ Ils priment sur tout le reste. Quand un cas n'est pas prévu, on le résout en l
 
 ---
 
-## 2. Règles générales de Pierre (valables pour tous les projets)
+## 2. Règles générales de l'utilisateur (valables pour tous les projets)
 
 ### 2.1 Thème de couleur : dotlib
 
-- Toutes les machines de Pierre suivent un réglage maître posé par `brc theme` (dotlib), écrit dans `~/.dotlib/local/theme.conf` :
+- Toutes les machines de l'utilisateur suivent un réglage maître posé par `brc theme` (dotlib), écrit dans `~/.dotlib/local/theme.conf` :
   - `DOTLIB_PALETTE` : nom de la palette ;
   - `DOTLIB_THEME` : `auto` (suit l'apparence de macOS), `clair` ou `sombre`.
 - Les valeurs exactes des palettes sont dans `~/.dotlib/share/palettes.tsv` (source de vérité, lecture seule). Copie mise en forme : `sources/palettes-dotlib.md` du dépôt `ov-regie-refactorUI`.
@@ -730,12 +730,12 @@ Pour une opération rare, longue et destructrice sur un sous-groupe (remplacer, 
 ## 12. Méthode de travail
 
 - Avant de redessiner une application existante : inventaire de ses éléments graphiques et de leurs états (`etats-graphiques.md`), captures numérotées avec le message qui les accompagne.
-- Pour chaque piste, un choix tranché ; les éléments qui suivent la même règle sont traités ensemble. Les choix se font dans un atelier `@@@ui` (cartes Aujourd'hui / Proposé, Avant / Après) ; le choix validé par Pierre l'emporte sur tout texte plus ancien.
-- Un élément que l'atelier n'a pas traité se tranche en appliquant ce gabarit, puis se soumet à Pierre comme « point à valider ». Un sujet non décidé est listé à part et ne s'applique pas.
-- Une valeur que la maquette emploie sous plusieurs formes pour la même chose se ramène à une seule, écrite dans le gabarit ; l'écart de la maquette est noté (§ 14) jusqu'à ce que Pierre décide de l'aligner.
+- Pour chaque piste, un choix tranché ; les éléments qui suivent la même règle sont traités ensemble. Les choix se font dans un atelier `@@@ui` (cartes Aujourd'hui / Proposé, Avant / Après) ; le choix validé par l'utilisateur l'emporte sur tout texte plus ancien.
+- Un élément que l'atelier n'a pas traité se tranche en appliquant ce gabarit, puis se soumet à l'utilisateur comme « point à valider ». Un sujet non décidé est listé à part et ne s'applique pas.
+- Une valeur que la maquette emploie sous plusieurs formes pour la même chose se ramène à une seule, écrite dans le gabarit ; l'écart de la maquette est noté (§ 14) jusqu'à ce que l'utilisateur décide de l'aligner.
 - Cahier des charges : linéaire, sans historique de décision ; titres de section = noms d'éléments de l'inventaire ; chaque section dit l'état cible, puis « À retirer » ; captures citées ; table de correspondance des termes en tête ; renvois au gabarit (« G § n », « C § n ») plutôt que répétition.
 - Maquette HTML de référence avec un mode référence (`#ref&vue=…&theme=…&palette=…`), images de chaque état en 1280 × 800, clair et sombre, plus la fenêtre principale dans quatre autres palettes ; un test d'intégrité de la maquette.
-- Réception : capturer l'application dans le même état et comparer côte à côte, pas pixel à pixel (structure, présence et absence des couleurs, typographie relative, états, textes mot pour mot). Un écart qui paraît nécessaire est soumis à Pierre avec les deux images, jamais décidé seul.
+- Réception : capturer l'application dans le même état et comparer côte à côte, pas pixel à pixel (structure, présence et absence des couleurs, typographie relative, états, textes mot pour mot). Un écart qui paraît nécessaire est soumis à l'utilisateur avec les deux images, jamais décidé seul.
 
 ---
 
@@ -779,7 +779,7 @@ Chaque motif a son remplaçant dans le gabarit.
 
 ## 14. Écarts connus de la maquette de Régie
 
-La maquette de Régie s'écarte des valeurs de ce gabarit aux endroits listés ici. **La spécification conseille une valeur ; une nouvelle application la suit sauf raison contraire. Pour Régie, l'alignement de la maquette sur ces valeurs reste à décider par Pierre.** Quand le cahier des charges de Régie écrit la valeur de la maquette (rayon 10 des fenêtres modales, voile noir à 50 % en clair, « ⇄ » en 700, nom de l'aperçu en 15 px, point de 10 px des groupes, capsule d'attribut à 16 %), le même arbitrage s'applique.
+La maquette de Régie s'écarte des valeurs de ce gabarit aux endroits listés ici. **La spécification conseille une valeur ; une nouvelle application la suit sauf raison contraire. Pour Régie, l'alignement de la maquette sur ces valeurs reste à décider par l'utilisateur.** Quand le cahier des charges de Régie écrit la valeur de la maquette (rayon 10 des fenêtres modales, voile noir à 50 % en clair, « ⇄ » en 700, nom de l'aperçu en 15 px, point de 10 px des groupes, capsule d'attribut à 16 %), le même arbitrage s'applique.
 
 Renvois : `CSS:n` et `JS:n` désignent la ligne n de `atelier/source/regie.css` et `atelier/source/regie.js` du dépôt `ov-regie-refactorUI`, dans la configuration des cartes validées.
 
@@ -894,4 +894,4 @@ Simulations de la maquette, qui ne sont pas des écarts : feux de fenêtre (`JS:
 
 ## 15. Points ouverts
 
-Aucun. Les 22 points relevés à l'extraction de la spécification ont été tranchés par Pierre le 23 oct. dans l'atelier d'arbitrage (`arbitrages/gabarit/`, registre `arbitrages/gabarit/registre-des-choix.md`) et sont reportés dans le texte. Un sujet non tranché qui apparaît s'ajoute ici, avec la position retenue et les options.
+Aucun. Les 22 points relevés à l'extraction de la spécification ont été tranchés par l'utilisateur le 23 oct. dans l'atelier d'arbitrage (`arbitrages/gabarit/`, registre `arbitrages/gabarit/registre-des-choix.md`) et sont reportés dans le texte. Un sujet non tranché qui apparaît s'ajoute ici, avec la position retenue et les options.

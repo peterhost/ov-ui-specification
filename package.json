@@ -1,7 +1,7 @@
 {
   "name": "ov-ui-specification",
   "private": true,
-  "description": "Spécification du design d'interface des applications de Pierre, et atelier d'arbitrage de ses points ouverts.",
+  "description": "Spécification du design d'interface des applications de l'utilisateur, et atelier d'arbitrage de ses points ouverts.",
   "scripts": {
     "palettes": "node arbitrages/gabarit/source/palettes.gen.js",
     "construire": "node vendor/ov-uidesigner-artefact/outils/assembler.js arbitrages/gabarit/atelier.config.json",

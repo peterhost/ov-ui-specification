@@ -449,7 +449,7 @@ window.Atelier = (function () {
       docs.forEach(d => {
         const m = document.createElement('div'); m.className = 'msg ' + (d.auteur === 'claude' ? 'cl' : 'me');
         const who = document.createElement('div'); who.className = 'who';
-        const n = document.createElement('span'); n.textContent = d.auteur === 'claude' ? 'Claude' : 'Pierre';
+        const n = document.createElement('span'); n.textContent = d.auteur === 'claude' ? 'Claude' : 'l’utilisateur';
         const t = document.createElement('span'); t.textContent = fmt(d.at); who.append(n, t); m.appendChild(who);
         const ax = AXES.find(x => x.k === d.axe);
         if (ax) { const s = document.createElement('span'); s.className = 'ax'; s.textContent = ax.t; m.appendChild(s); m.appendChild(document.createElement('br')); }
@@ -576,7 +576,7 @@ const AXES=[
  {k:'p10',t:'10 · Pulsation d’une marque d’anomalie',why:'Quand « Animations de l’interface » est coupé, la marque qui pulse (◎ orange) continue-t-elle ? Seul « Réduire les animations » de macOS fige tout. G § 6.',o:[['A','A · Signal : elle pulse encore (retenu)'],['B','B · Transition : elle se fige']],now:'A',prop:'A'},
  {k:'p11',t:'11 · Réglages de choix de design',why:'Régie a deux réglages qui ne règlent qu’un choix de design (modes affichés ; flèche ou anneau), contre le principe 10. G § 1.',o:[['A','A · Nouvelles applications sans (retenu)'],['B','B · Les retirer de Régie aussi'],['C','C · Exceptions nommées']],now:'A',prop:'A'},
  {k:'p12',t:'12 · Réglages › Groupes : voir une couleur en clair et en sombre',why:'Une couleur de groupe change entre le thème clair et le thème sombre. Pour la choisir, la voir dans les deux thèmes : où ? G § 3.4.',o:[['A','A · Deux pastilles par teinte, dans le menu'],['B','B · Deux aperçus de la colonne, clair et sombre (retenu)']],now:'B',prop:'B'},
- {k:'p13',t:'13 · Style des textes',why:'Ni tutoiement ni vouvoiement : infinitif pour une action, nom ou participe pour un état. Décidé par Pierre, règle générale. G § 1 (principe 15), § 2.3.',o:[['A','A · L’interface tutoie'],['B','B · Style neutre (décidé)']],now:'B',prop:'B'},
+ {k:'p13',t:'13 · Style des textes',why:'Ni tutoiement ni vouvoiement : infinitif pour une action, nom ou participe pour un état. Décidé par l’utilisateur, règle générale. G § 1 (principe 15), § 2.3.',o:[['A','A · L’interface tutoie'],['B','B · Style neutre (décidé)']],now:'B',prop:'B'},
  {k:'p14',t:'14 · Taille minimale et barre de titre',why:'Deux détails de la fenêtre de Régie : taille minimale 1120 × 640 ; aucun titre écrit sous macOS 15 et plus, nom de l’application et sous-titre sous macOS 14. Règle pour toute application, ou détail propre à Régie ? G § 2.6.',o:[['A','A · Règle pour toute application (retenu)'],['B','B · Propre à Régie']],now:'A',prop:'A'},
  {k:'p15',t:'15 · Progression en tranches',why:'Barre d’une campagne (acceptés, en attente, refusés, reste), que le cahier des charges ne dessine pas. C § 7.1.',o:[['A','A · Segments séparés (retenu)'],['B','B · Barre continue et compte']],now:'A',prop:'A'},
  {k:'p16',t:'16 · Catégorie coûteuse en orange',why:'Bande fine de la consommation par modèle : la catégorie coûteuse est orange sans être une anomalie. G § 7.12.',o:[['A','A · Exception générique (retenu)'],['B','B · Neutre, sauf anomalie']],now:'A',prop:'A'},
