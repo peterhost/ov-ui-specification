@@ -43,7 +43,7 @@ Exemple : la table de Régie, l'application dont ce gabarit est tiré. Elle sert
 | barre de budget | budget du contexte injecté par Overview |
 | bande de répartition | « Qui consomme · 5 h » |
 | capsule d'attribut | capsule « scripts » (projet qui injecte des scripts) |
-| icône de service | pont2 |
+| icône de service | relai |
 | sélecteur flou | complétion projet/session (⌘P) |
 | sélecteur liste et aperçu | sélecteur `@@@` (⌘L) |
 | bande de médias | sélecteur de captures (⌘I) |
@@ -52,7 +52,7 @@ Exemple : la table de Régie, l'application dont ce gabarit est tiré. Elle sert
 | journal d'objets | journal de l'Ordre |
 | alerte à étapes | alerte tmux (arrêt, relance, reprise) |
 | procédure lourde | redémarrage à neuf |
-| feuille de diagnostic | diagnostic d'une machine (Réglages › Pont2 › Machines) |
+| feuille de diagnostic | diagnostic d'une machine (Réglages › Relai › Machines) |
 | plugin | Forge (plugin optionnel) |
 | registre de référence | manifeste d'Overview (« hors manifeste ») |
 | dossier de travail | `~/.regie/` |
