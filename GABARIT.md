@@ -106,7 +106,7 @@ Ils priment sur tout le reste. Quand un cas n'est pas prévu, on le résout en l
 ### 2.2 Polices
 
 - Interface : police système de macOS (SF Pro), jamais une police décorative. IBM Plex est exclue.
-- Texte à chasse fixe (terminal, journaux, chemins, code) : police patchée par `fontpatch` (famille « … Pastilles »). Défaut : **JetBrains Mono en graisse 300 (fine)**. Choix offerts : JetBrains Mono, SF Mono, Menlo, en régulière ou fine, selon ce que `fontpatch` a installé.
+- Texte à chasse fixe (terminal, journaux, chemins, code) : police patchée par `fontpatch` (famille « … Pastilles »). Défaut : **JetBrains Mono Pastilles en graisse 300 (fine)**. La liste est ouverte : le menu offre chaque famille « … Pastilles » installée par `fontpatch` sur la machine, en régulière et en fine quand la graisse existe (SF Mono : régulière et Light) ; une famille non patchée n'est pas proposée. Sans aucune police patchée : SF Mono. Tranché le 27 oct. (point 41 de la maquette).
 - Taille du texte à chasse fixe : réglable de **10 à 14 pt**, défaut **12 pt** ; « A− 12 A+ » à droite de la barre d'onglets ; ⌘− et ⌘+.
 - Police et taille du texte à chasse fixe se règlent dans Réglages › Général › Apparence, sous Palette et Apparence.
 - En graisse fine (300) sur fond sombre, les vues de référence ne descendent pas sous 11 pt ; 10 pt reste permis par le réglage.
@@ -203,7 +203,7 @@ Seuils : deux paliers par défaut (surveillance → `orange`, critique → `roug
 - Nouveau groupe : la couleur proposée par défaut est celle des douze qui est la plus éloignée de celles déjà prises (distance perceptuelle dans la palette en service). But : maximiser le contraste entre groupes.
 - Un groupe sans couleur : `secondaire`.
 - Rendu : **trait vertical de 2 × 12 px**, rayon 1 px, devant le nom du groupe ; même trait devant chaque élément du groupe dans les tableaux, la carte, les sélecteurs, la statusline, les réglages ; **2 × 16 px** en tête de fiche et de vue d'entité. Jamais un point, jamais un trait plus épais, jamais un fond teinté ; jamais un trait horizontal, sauf dans le rail (10 × 2 px sous l'icône, faute de place, C § 1.11). Seule exception de couleur : une bande de répartition (consommation par élément) où chaque part prend la couleur de son groupe (C § 5.3).
-- Réglages › Groupes : une ligne de réglage par groupe (trait de groupe, nom, menu de couleur). Le menu nomme la couleur en français suivie du nom stocké (« Lavande (purple) »), montre les douze teintes résolues dans la palette en service, clair et sombre côte à côte, puis, grisées et non sélectionnables, « Réservées aux statuts » (vert, jaune, orange, rouge), leur usage en bulle. Ligne « + Nouveau groupe · proposée : Bleu », la raison de la proposition en bulle. « Défaut » apparaît quand une couleur a été choisie à la main. Un groupe absent du registre de référence : « hors <registre> » en `secondaire`, menu grisé. Sous la liste, section « Aperçu » : deux aperçus en direct de la colonne (titre de zone, un groupe par ligne avec son trait), l'un en thème clair, l'autre en sombre, dans la palette en service ; ils suivent chaque changement de couleur.
+- Réglages › Groupes : une ligne de réglage par groupe (trait de groupe, nom, menu de couleur). Le menu nomme la couleur en français suivie du nom stocké (« Lavande (purple) »), montre les douze teintes résolues dans la palette en service, clair et sombre côte à côte, sur **deux colonnes de six**, puis sur une seule ligne « Réservées aux statuts » : les quatre pastilles (vert, jaune, orange, rouge) grisées et non sélectionnables, leur usage en bulle. Le menu s'ouvre vers le haut quand la place manque dessous, jamais hors de la fenêtre (point 42, 27 oct.). Ligne « + Nouveau groupe · proposée : Bleu », la raison de la proposition en bulle. « Défaut » apparaît quand une couleur a été choisie à la main. Un groupe absent du registre de référence : « hors <registre> » en `secondaire`, menu grisé. Sous la liste, section « Aperçu » : deux aperçus en direct de la colonne (titre de zone, un groupe par ligne avec son trait), l'un en thème clair, l'autre en sombre, dans la palette en service ; ils suivent chaque changement de couleur.
 
 ### 3.5 Opacités et teintes
 
@@ -787,39 +787,39 @@ Couleurs, teintes et opacités :
 
 | Objet | Maquette | Spécification | Où |
 |---|---|---|---|
-| Pastilles colorées de la statusline (élément maître, entité, dépôt sale, quota) | fond de la couleur à 16 % (clair) / 22 % (sombre) | fond `champ` ; marque en texte d'`accent`, valeur anormale en texte de statut (§ 7.8) | JS:843-851 |
-| Glyphe ▸▸ du mode, statusline | `#F2C740` en dur | `secondaire` | JS:852 |
-| Tuile « Attendu » | `#8E8E93` en dur | `secondaire` | JS:1400 |
-| Capsule « scripts » (capsule d'attribut) | `orange` à 16 % | `teinte` (14 % / 18 %) | JS:983 |
-| Capsule « Bloqué » (capsule d'état) | `rouge` à 14 % en sombre aussi | `teinte` (18 % en sombre) | JS:1413 |
-| Touches de l'application, clavier dessiné | `accent` à 16 % | `teinte` | JS:391 |
-| Touches libres ; touches de macOS | opacité 0,9 ; 0,55 | opacité 1 ; 0,45 | JS:391 |
-| Couleur choisie, menu des couleurs | `accent` à 18 % | `selection` | JS:1260 |
-| Couleurs réservées, menu des couleurs | opacité 0,55 | 0,45 | JS:1260-1264 |
-| Bulles de la barre d'outils (tâches, pont) | fond `base`, rayon 12, ombre modale | `mantle`, rayon 10, ombre « flottant » (C § 3.8, 3.9) | JS:915-916 |
-| Largeur des fenêtres modales | 460, 520, 540, 560 px selon la fenêtre | 540 px (C § 8.5) | JS:596, JS:1287 |
-| Bouton principal désactivé | `accent` à 45 % ; à 40 % (fenêtre de composition) | opacité 0,45 du bouton entier | JS:599, JS:639 |
-| Champ de filtre actif | bordure 1 px `accent` | aucun changement hors du jeton | JS:780 |
-| Jeton de filtre | compte « 27/34 » dans le jeton | compte dans la bulle du jeton | JS:780 |
-| Micro-jauge du tableau dense et des entités | remplissage toujours `secondaire` | paliers de couleur (C § 1.9) | JS:1344, JS:1022 |
-| Sous-groupe vivant, colonne de la carte | ▣ en `vert` | neutre (principe 3) | JS:940 |
-| Encadré de réparation | fond `champ`, rayon 8 | sans fond | JS:1140, JS:1450 |
-| Ligne de Réglages › Groupes | fond `champ`, rayon 6 | ligne de réglage, sans fond | CSS:259, JS:1247 |
-| Verre de la fenêtre qui descend du bord | `mantle` à 45 % (clair) / 50 % (sombre) | `mantle` à 48 % | JS:1479 |
-| Dégradé de la même fenêtre | 0,5 à 55 % de la hauteur | 0,525 | JS:1485 |
-| Halo du texte, même fenêtre | `0 0 5px` `base` à 70 %, actif | désactivé | JS:1485 |
+| Pastilles colorées de la statusline (élément maître, entité, dépôt sale, quota) | fond de la couleur à 16 % (clair) / 22 % (sombre) | fond `champ` ; marque en texte d'`accent`, valeur anormale en texte de statut (§ 7.8) | JS:847-855 |
+| Glyphe ▸▸ du mode, statusline | `#F2C740` en dur | `secondaire` | JS:856 |
+| Tuile « Attendu » | `#8E8E93` en dur | `secondaire` | JS:1416 |
+| Capsule « scripts » (capsule d'attribut) | `orange` à 16 % | `teinte` (14 % / 18 %) | JS:987 |
+| Capsule « Bloqué » (capsule d'état) | `rouge` à 14 % en sombre aussi | `teinte` (18 % en sombre) | JS:1429 |
+| Touches de l'application, clavier dessiné | `accent` à 16 % | `teinte` | JS:395 |
+| Touches libres ; touches de macOS | opacité 0,9 ; 0,55 | opacité 1 ; 0,45 | JS:395 |
+| Couleur choisie, menu des couleurs | `accent` à 18 % | `selection` | JS:1272 |
+| Couleurs réservées, menu des couleurs | opacité 0,55 | 0,45 | JS:1272-1280 |
+| Bulles de la barre d'outils (tâches, pont) | fond `base`, rayon 12, ombre modale | `mantle`, rayon 10, ombre « flottant » (C § 3.8, 3.9) | JS:919-920 |
+| Largeur des fenêtres modales | 460, 520, 540, 560 px selon la fenêtre | 540 px (C § 8.5) | JS:600, JS:1303 |
+| Bouton principal désactivé | `accent` à 45 % ; à 40 % (fenêtre de composition) | opacité 0,45 du bouton entier | JS:603, JS:643 |
+| Champ de filtre actif | bordure 1 px `accent` | aucun changement hors du jeton | JS:784 |
+| Jeton de filtre | compte « 27/34 » dans le jeton | compte dans la bulle du jeton | JS:784 |
+| Micro-jauge du tableau dense et des entités | remplissage toujours `secondaire` | paliers de couleur (C § 1.9) | JS:1360, JS:1026 |
+| Sous-groupe vivant, colonne de la carte | ▣ en `vert` | neutre (principe 3) | JS:944 |
+| Encadré de réparation | fond `champ`, rayon 8 | sans fond | JS:1144, JS:1466 |
+| Ligne de Réglages › Groupes | fond `champ`, rayon 6 | ligne de réglage, sans fond | CSS:259, JS:1259 |
+| Verre de la fenêtre qui descend du bord | `mantle` à 45 % (clair) / 50 % (sombre) | `mantle` à 48 % | JS:1495 |
+| Dégradé de la même fenêtre | 0,5 à 55 % de la hauteur | 0,525 | JS:1501 |
+| Halo du texte, même fenêtre | `0 0 5px` `base` à 70 %, actif | désactivé | JS:1501 |
 | Poignée, même fenêtre | `rgba(127,127,127,.6)` | `secondaire` à 60 % | CSS:154 |
 
 Graisses :
 
 | Objet | Maquette | Spécification | Où |
 |---|---|---|---|
-| Gras sans style : mot du bandeau de type, titre de la bulle de détail, titre d'une règle imposée, titre d'une clause, libellé d'interrupteur, titre d'état vide, N de la boîte de carte, titre de la carte, titre de la bulle de contexte | 700 | 600 | JS:886, JS:1347, JS:1059, JS:1064, CSS:102 et JS:1085, CSS:160, JS:989, CSS:237-238, JS:1434 |
-| Tokens ≥ 100k (tableau dense) | 700 | 600 | JS:1346 |
-| Étiquette de coût au plus haut | `orange` 700 | `orange` 600 | JS:993-996 |
+| Gras sans style : mot du bandeau de type, titre de la bulle de détail, titre d'une règle imposée, titre d'une clause, libellé d'interrupteur, titre d'état vide, N de la boîte de carte, titre de la carte, titre de la bulle de contexte | 700 | 600 | JS:890, JS:1363, JS:1063, JS:1068, CSS:102 et JS:1089, CSS:160, JS:993, CSS:237-238, JS:1450 |
+| Tokens ≥ 100k (tableau dense) | 700 | 600 | JS:1362 |
+| Étiquette de coût au plus haut | `orange` 700 | `orange` 600 | JS:997-1000 |
 | Numéro et marques des vignettes | 700 | 600 | CSS:193-197 |
-| Nombre de l'icône de la barre des menus | 700 | 600 | JS:1298 |
-| « ⇄ » d'un élément distant | 10 px 700 | 10 px 600 | JS:399 |
+| Nombre de l'icône de la barre des menus | 700 | 600 | JS:1314 |
+| « ⇄ » d'un élément distant | 10 px 700 | 10 px 600 | JS:403 |
 | Titre de famille de liens | 650 | 600 | CSS:88 |
 | En-tête du tableau de réglages | 600 | 400 | CSS:248-250 |
 
@@ -827,68 +827,68 @@ Tailles, interlignes, petites capitales :
 
 | Objet | Maquette | Spécification | Où |
 |---|---|---|---|
-| Titres des bulles de barre d'outils (contexte, budget, tâches, consommation) | 13 px | 14 px | JS:1434, JS:1445, JS:1453, JS:1458 |
-| Titres du panneau de procédure (en-tête, verdict, fin) | 15 px | 16 px | JS:381, JS:375, JS:378 |
-| Titre de la fenêtre de composition | 15 px | 16 px | JS:628 |
-| Titre du diagnostic | 14 px | 16 px | JS:1216 |
-| Nom dans l'aperçu du sélecteur liste et aperçu | 15 px 700 | 16 px 600 | JS:568-569 |
-| Corps des fenêtres modales, libellés de champ | 12,5 px | 12 px | JS:596, JS:597 |
-| Nom d'une machine (en-tête d'entité) | 11 px 400 `secondaire` | 12 px 600 `texte`, comme une autre entité | JS:771 |
+| Titres des bulles de barre d'outils (contexte, budget, tâches, consommation) | 13 px | 14 px | JS:1450, JS:1461, JS:1469, JS:1474 |
+| Titres du panneau de procédure (en-tête, verdict, fin) | 15 px | 16 px | JS:385, JS:379, JS:382 |
+| Titre de la fenêtre de composition | 15 px | 16 px | JS:632 |
+| Titre du diagnostic | 14 px | 16 px | JS:1228 |
+| Nom dans l'aperçu du sélecteur liste et aperçu | 15 px 700 | 16 px 600 | JS:572-573 |
+| Corps des fenêtres modales, libellés de champ | 12,5 px | 12 px | JS:600, JS:601 |
+| Nom d'une machine (en-tête d'entité) | 11 px 400 `secondaire` | 12 px 600 `texte`, comme une autre entité | JS:775 |
 | Tableau des rôles d'une entité | 12 px | 11,5 px | CSS:73-74 |
-| Tuiles du quota : libellé ; ligne secondaire ; valeur | 10 px majuscules 0,03 em ; 10 px ; 14 px 700 | 11 px `secondaire` ; 11 px ; 17 px 600 (C § 5.1) | JS:1399, CSS:263, CSS:264 |
+| Tuiles du quota : libellé ; ligne secondaire ; valeur | 10 px majuscules 0,03 em ; 10 px ; 14 px 700 | 11 px `secondaire` ; 11 px ; 17 px 600 (C § 5.1) | JS:1415, CSS:263, CSS:264 |
 | Petites capitales : titre de zone ; famille de liens ; groupe des réglages | 0,04 em ; 0,06 em ; 0,07 em | 0,05 em | CSS:13, CSS:88, CSS:219 |
-| Interligne : bulle « fiche » ; règle imposée ; bulle de détail ; aperçu du sélecteur | 1,4 ; 1,4 ; 1,5 ; 1,5 | 1,45 | CSS:226, CSS:92, CSS:211, JS:569 |
+| Interligne : bulle « fiche » ; règle imposée ; bulle de détail ; aperçu du sélecteur | 1,4 ; 1,4 ; 1,5 ; 1,5 | 1,45 | CSS:226, CSS:92, CSS:211, JS:573 |
 
 Géométrie :
 
 | Objet | Maquette | Spécification | Où |
 |---|---|---|---|
 | Bulle « fiche » d'une pastille | 260 px, rayon 8, marge 7 × 10 px | 280 px, rayon 9, 6 × 10 px | CSS:226 |
-| Menu contextuel d'une ligne | rayon 10 | 9 | JS:341-342 |
+| Menu contextuel d'une ligne | rayon 10 | 9 | JS:345-346 |
 | « Ouvrir avec… » | rayon 8 | 9 | CSS:161-162 |
-| Menu des couleurs | rayon 8, 11,5 px | rayon 9, 12 px | JS:1260-1264 |
-| Fenêtres modales | rayon 10 | 12 | JS:596 |
-| Fenêtre de création d'un élément | 520 px | 540 px | JS:1287 |
-| Diagnostic | fenêtre modale, fond `base` | feuille de macOS, fond `mantle` | JS:1216 |
-| Anneau de la mesure (barre d'outils) | 15 px | 16 px | JS:912 |
-| Champs de saisie | 30 px | 28 px | CSS:185, JS:1172 |
+| Menu des couleurs | rayon 8, 11,5 px | rayon 9, 12 px | JS:1272-1280 |
+| Fenêtres modales | rayon 10 | 12 | JS:600 |
+| Fenêtre de création d'un élément | 520 px | 540 px | JS:1303 |
+| Diagnostic | fenêtre modale, fond `base` | feuille de macOS, fond `mantle` | JS:1228 |
+| Anneau de la mesure (barre d'outils) | 15 px | 16 px | JS:916 |
+| Champs de saisie | 30 px | 28 px | CSS:185, JS:1184 |
 | Recherche de la carte | environ 24 px (marge 4 × 10) | 28 px | CSS:239 |
-| Boutons de la fenêtre de création | marge 5 × 14 px | `fbtn` (3 × 9 px) | JS:1290 |
-| Segments de la fenêtre de création | 3 × 14 px, 12 px | 2 × 9 px, 11,5 px | JS:1284 |
+| Boutons de la fenêtre de création | marge 5 × 14 px | `fbtn` (3 × 9 px) | JS:1306 |
+| Segments de la fenêtre de création | 3 × 14 px, 12 px | 2 × 9 px, 11,5 px | JS:1300 |
 | Segment de la fiche (Effort) | 2 × 12 px | 2 × 9 px | CSS:20 |
 | Segment actif, colonne et fiche | sans relief | relief (§ 3.7) | CSS:19 |
 | Segment actif, autres segments | `base` en sombre aussi, ombre à 12 % | `segmentActif`, relief à 15 % | CSS:147 |
-| Boutons de l'encadré de réparation | capsules (11 px, 1 × 8 px, rayon 9) | `fbtn` | JS:1142, CSS:247 |
-| « facultatif », fenêtre de création | capsule | mot `secondaire` | JS:1282 |
-| Menu local : palette ; police | `fbtn` « ⌄ » ; texte nu « ⌃⌄ » | `fbtn` « ⌃⌄ » | JS:1165, JS:1166 |
+| Boutons de l'encadré de réparation | capsules (11 px, 1 × 8 px, rayon 9) | `fbtn` | JS:1146, CSS:247 |
+| « facultatif », fenêtre de création | capsule | mot `secondaire` | JS:1298 |
+| Menu local : palette ; police | `fbtn` « ⌄ » ; texte nu « ⌃⌄ » | `fbtn` « ⌃⌄ » | JS:1177, JS:1178 |
 | Point dans un onglet de fiche | 6 px | 8 px (point d'état) | CSS:62 |
-| Groupe dans Réglages › Groupes | point de 10 px | trait 2 × 12 px | JS:1247 |
-| Trait de groupe : boîte de carte ; colonne de la carte ; méta d'« À traiter » ; rail | 2 × 13 ; 3 × 13 ; 2 × 10 ; 10 × 2 horizontal | 2 × 12 vertical | JS:977, JS:938, JS:766, JS:811 |
-| Trait de groupe, pastille d'élément de la statusline | bord de 4 px | 2 px | JS:848 |
-| Barres : menu de la barre des menus ; progression segmentée ; liste « qui consomme » | 5 px ; 5 px ; 4 px | 6 px | JS:1302, JS:1025, JS:1458 |
+| Groupe dans Réglages › Groupes | point de 10 px | trait 2 × 12 px | JS:1259 |
+| Trait de groupe : boîte de carte ; colonne de la carte ; méta d'« À traiter » ; rail | 2 × 13 ; 3 × 13 ; 2 × 10 ; 10 × 2 horizontal | 2 × 12 vertical | JS:981, JS:942, JS:770, JS:815 |
+| Trait de groupe, pastille d'élément de la statusline | bord de 4 px | 2 px | JS:852 |
+| Barres : menu de la barre des menus ; progression segmentée ; liste « qui consomme » | 5 px ; 5 px ; 4 px | 6 px | JS:1318, JS:1029, JS:1474 |
 | Survol d'une ligne d'historique | rayon 4 | 5 | CSS:87 |
 | Survol d'un lien de fiche | aucun fond | fond `champ` | CSS:77 |
 | Tuiles du quota | fond `champ`, rayon 8, écart 6 px | sans fond, écart 16 px (C § 5.1) | CSS:262-263 |
-| Étapes en colonne (procédure) | sans nœud | nœud de 17 px | JS:362 |
-| Fiche réduite | nom et onglets écrits à la verticale | flèche de dépliage seule (§ 7.2) | JS:1115 |
+| Étapes en colonne (procédure) | sans nœud | nœud de 17 px | JS:366 |
+| Fiche réduite | nom et onglets écrits à la verticale | flèche de dépliage seule (§ 7.2) | JS:1119 |
 
 Ombres et voiles :
 
 | Objet | Maquette | Spécification | Où |
 |---|---|---|---|
-| Bulle « fiche » d'une pastille | `0 6px 20px rgba(0,0,0,.25)` | flottant | JS:1510 |
-| Menu déroulant, « Ouvrir avec… », menu des couleurs | `rgba(0,0,0,.30)` | flottant (`.28`) | CSS:224, CSS:161, JS:1260 |
-| Diagnostic | `0 14px 40px rgba(0,0,0,.3)` | ombre de feuille de macOS | JS:1216 |
-| Panneau de procédure | `0 20px 50px rgba(0,0,0,.35)` | modale | JS:378-381 |
-| Aperçu d'une vignette | `0 18px 50px rgba(0,0,0,.4)` | modale | JS:484 |
-| Bords de la pile de demandes | `0 4px 14px rgba(0,0,0,.18)` | mini | JS:590-591 |
+| Bulle « fiche » d'une pastille | `0 6px 20px rgba(0,0,0,.25)` | flottant | JS:1526 |
+| Menu déroulant, « Ouvrir avec… », menu des couleurs | `rgba(0,0,0,.30)` | flottant (`.28`) | CSS:224, CSS:161, JS:1272 |
+| Diagnostic | `0 14px 40px rgba(0,0,0,.3)` | ombre de feuille de macOS | JS:1228 |
+| Panneau de procédure | `0 20px 50px rgba(0,0,0,.35)` | modale | JS:382-385 |
+| Aperçu d'une vignette | `0 18px 50px rgba(0,0,0,.4)` | modale | JS:488 |
+| Bords de la pile de demandes | `0 4px 14px rgba(0,0,0,.18)` | mini | JS:594-595 |
 | Fenêtre qui descend du bord | `0 18px 40px rgba(0,0,0,.35)` | modale | CSS:151 |
 | Voile des fenêtres modales, en clair | noir à 50 % | 32 % | CSS:251 |
-| Voile du diagnostic | 25 % | aucun (feuille de macOS) | JS:1216 |
+| Voile du diagnostic | 25 % | aucun (feuille de macOS) | JS:1228 |
 | Voile de l'aperçu d'une vignette | 45 % | `voile` | CSS:198 |
-| Voile de la liste des raccourcis | 18 % | aucun | JS:395 |
+| Voile de la liste des raccourcis | 18 % | aucun | JS:399 |
 
-Simulations de la maquette, qui ne sont pas des écarts : feux de fenêtre (`JS:913`), ombre de la fenêtre (`moteur/atelier.css:102`), matériau du menu de la barre des menus (`JS:1299-1301`), fenêtre des réglages dessinée par-dessus la fenêtre principale avec un voile (`CSS:251-252`) ; l'application emploie les rendus natifs de macOS, et la fenêtre des réglages est une fenêtre à part, sans voile.
+Simulations de la maquette, qui ne sont pas des écarts : feux de fenêtre (`JS:917`), ombre de la fenêtre (`moteur/atelier.css:102`), matériau du menu de la barre des menus (`JS:1315-1317`), fenêtre des réglages dessinée par-dessus la fenêtre principale avec un voile (`CSS:251-252`) ; l'application emploie les rendus natifs de macOS, et la fenêtre des réglages est une fenêtre à part, sans voile.
 
 ---
 
