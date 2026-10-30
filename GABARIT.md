@@ -592,7 +592,7 @@ Pour une opération rare, longue et destructrice sur un sous-groupe (remplacer, 
 - Apparition 0,12 s ; centrée, 6 px sous l'élément, ou au-dessus s'il reste moins de 40 px en dessous ; jamais à moins de 6 px d'un bord de la fenêtre ; disparaît à la sortie du survol ou au clic.
 - Pour les éléments non évidents seulement : icônes, pastilles, marques, titres dont l'unité ou la portée n'est pas dite, barres. Une infobulle par icône de barre d'outils, avec son nom et son raccourci.
 - Infobulle d'une pastille d'état : une « fiche » de même anatomie que toute infobulle (rayon 9, 280 px, 6 × 10 px, ombre flottante) : point ou losange de l'état, titre en 600, l'élément et la raison en `secondaire`, ancienneté, puis l'action possible.
-- La bulle d'une marque dit ce qu'est l'attribut et la règle qui va avec (« Distant, sur <machine> · <app> n'y envoie rien »). Cette règle n'est écrite nulle part ailleurs.
+- La bulle d'une marque dit ce qu'est l'attribut et la règle qui va avec (« Distant, sur <machine> · <app> n'y envoie que ce que sa règle permet »). Cette règle n'est écrite nulle part ailleurs.
 
 ### 9.4 Renommer
 
